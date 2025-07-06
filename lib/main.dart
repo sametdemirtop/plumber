@@ -84,6 +84,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   String _selectedService = '';
+  bool _isHovered = false;
+  Map<String, bool> _hoveredCards = {};
+  Map<String, bool> _hoveredButtons = {};
 
   @override
   void dispose() {
@@ -176,19 +179,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       _buildNavItem(AppLocalizations.of(context).reviews,
                           () => _scrollToSection('reviews')),
                       const SizedBox(width: 20),
-                      ElevatedButton(
+                      _buildHoverButton(
                         onPressed: () => _scrollToSection('request'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF7A3D),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                        buttonId: 'request',
                         child: Text(
                           AppLocalizations.of(context).requestTechnician,
                           style: const TextStyle(fontWeight: FontWeight.w600),
@@ -233,6 +226,96 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHoverButton({
+    required VoidCallback onPressed,
+    required Widget child,
+    required String buttonId,
+    Color backgroundColor = const Color(0xFFFF7A3D),
+    Color hoverBackgroundColor = const Color(0xFFFF6B2B),
+    EdgeInsetsGeometry? padding,
+  }) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => _hoveredButtons[buttonId] = true),
+          onExit: (_) => setState(() => _hoveredButtons[buttonId] = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _hoveredButtons[buttonId] == true
+                    ? hoverBackgroundColor
+                    : backgroundColor,
+                foregroundColor: Colors.white,
+                padding: padding ??
+                    const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                elevation: _hoveredButtons[buttonId] == true ? 8 : 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: child,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildHoverCard({
+    required Widget child,
+    required String cardId,
+    Color backgroundColor = Colors.white,
+    Color hoverBackgroundColor = const Color(0xFFF8FAFC),
+  }) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => _hoveredCards[cardId] = true),
+          onExit: (_) => setState(() => _hoveredCards[cardId] = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            transform: Matrix4.identity()
+              ..translate(
+                0.0,
+                _hoveredCards[cardId] == true ? -4.0 : 0.0,
+                0.0,
+              ),
+            decoration: BoxDecoration(
+              color: _hoveredCards[cardId] == true
+                  ? hoverBackgroundColor
+                  : backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+              border: backgroundColor != Colors.transparent
+                  ? Border.all(
+                      color: Colors.grey.shade200,
+                      width: _hoveredCards[cardId] == true ? 2 : 1,
+                    )
+                  : null,
+              boxShadow: backgroundColor != Colors.transparent
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(
+                          _hoveredCards[cardId] == true ? 0.1 : 0.05,
+                        ),
+                        blurRadius: _hoveredCards[cardId] == true ? 20 : 10,
+                        offset:
+                            Offset(0, _hoveredCards[cardId] == true ? 4 : 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: child,
+          ),
+        );
+      },
     );
   }
 
@@ -302,23 +385,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                ElevatedButton(
+                _buildHoverButton(
                   onPressed: () => _scrollToSection('request'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF7A3D),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 16,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  buttonId: 'request',
                   child: Text(
                     AppLocalizations.of(context).requestTechnician,
                     style: const TextStyle(fontWeight: FontWeight.w600),
@@ -557,54 +626,46 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildServiceCard(IconData icon, String title, String description) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xFF2B4B80).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(28),
+    return _buildHoverCard(
+      cardId: title,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: const Color(0xFF2B4B80).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(28),
+              ),
+              child: Icon(
+                icon,
+                size: 28,
+                color: const Color(0xFF2B4B80),
+              ),
             ),
-            child: Icon(
-              icon,
-              size: 28,
-              color: const Color(0xFF2B4B80),
+            const SizedBox(height: 16),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1F2937),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1F2937),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF6B7280),
+                height: 1.6,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF6B7280),
-              height: 1.6,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -723,19 +784,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildDetailedServiceCard(
       String imageUrl, String title, String description) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return _buildHoverCard(
+      cardId: title,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -848,19 +898,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       columnSpacing: 16,
                       children: [
                         ResponsiveRowColumnItem(
-                          child: ElevatedButton(
+                          child: _buildHoverButton(
                             onPressed: () => _scrollToSection('request'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFF7A3D),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                            buttonId: 'cta_request',
                             child: Text(
                               AppLocalizations.of(context).requestService,
                               style:
@@ -869,20 +909,25 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           ),
                         ),
                         ResponsiveRowColumnItem(
-                          child: OutlinedButton.icon(
+                          child: _buildHoverButton(
                             onPressed: () => _launchPhone(),
-                            icon: const Icon(Icons.phone),
-                            label: Text(AppLocalizations.of(context).callUsNow),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF2B4B80),
-                              side: const BorderSide(color: Color(0xFF2B4B80)),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            buttonId: 'cta_call',
+                            backgroundColor: Colors.white,
+                            hoverBackgroundColor: const Color(0xFFF8FAFC),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.phone,
+                                    color: Color(0xFF2B4B80)),
+                                const SizedBox(width: 8),
+                                Text(
+                                  AppLocalizations.of(context).callUsNow,
+                                  style: const TextStyle(
+                                    color: Color(0xFF2B4B80),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -1090,19 +1135,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: _buildHoverButton(
                         onPressed: _submitForm,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF7A3D),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                        buttonId: 'submit_form',
                         child: Text(
                           AppLocalizations.of(context).submitRequest,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1114,26 +1152,40 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               ),
             ),
             const SizedBox(height: 24),
-            GestureDetector(
-              onTap: () => _launchWhatsApp(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.chat,
-                    color: Color(0xFF25D366),
-                    size: 24,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    AppLocalizations.of(context).whatsappChat,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF2B4B80),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () => _launchWhatsApp(),
+                child: _buildHoverCard(
+                  cardId: 'whatsapp_button',
+                  backgroundColor: Colors.transparent,
+                  hoverBackgroundColor: Colors.grey.withOpacity(0.1),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.chat,
+                          color: Color(0xFF25D366),
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalizations.of(context).whatsappChat,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2B4B80),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ],
@@ -1376,89 +1428,81 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
 
   Widget _buildReviewCard(
       String initials, String name, int rating, String review) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2B4B80).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Center(
-                  child: Text(
-                    initials,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF2B4B80),
+    return _buildHoverCard(
+      cardId: name,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2B4B80).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Center(
+                    child: Text(
+                      initials,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2B4B80),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1F2937),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: List.generate(5, (index) {
-                        if (index < rating) {
-                          return const Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Color(0xFFFBBF24),
-                          );
-                        } else {
-                          return const Icon(
-                            Icons.star_border,
-                            size: 16,
-                            color: Color(0xFFFBBF24),
-                          );
-                        }
-                      }),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Row(
+                        children: List.generate(5, (index) {
+                          if (index < rating) {
+                            return const Icon(
+                              Icons.star,
+                              size: 16,
+                              color: Color(0xFFFBBF24),
+                            );
+                          } else {
+                            return const Icon(
+                              Icons.star_border,
+                              size: 16,
+                              color: Color(0xFFFBBF24),
+                            );
+                          }
+                        }),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '"$review"',
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF6B7280),
-              height: 1.6,
-              fontStyle: FontStyle.italic,
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Text(
+              '"$review"',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF6B7280),
+                height: 1.6,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
