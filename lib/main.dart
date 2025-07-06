@@ -1041,33 +1041,29 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           ),
                           items: [
                             DropdownMenuItem(
-                                value: 'painting',
-                                child: Text(
-                                    AppLocalizations.of(context).painting)),
-                            DropdownMenuItem(
-                                value: 'plumbing',
-                                child: Text(
-                                    AppLocalizations.of(context).plumbing)),
-                            DropdownMenuItem(
-                                value: 'electrical',
-                                child: Text(
-                                    AppLocalizations.of(context).electrical)),
-                            DropdownMenuItem(
-                                value: 'tiling',
-                                child:
-                                    Text(AppLocalizations.of(context).tiling)),
-                            DropdownMenuItem(
-                                value: 'doors-windows',
-                                child: Text(
-                                    AppLocalizations.of(context).doorsWindows)),
-                            DropdownMenuItem(
-                                value: 'garden',
+                                value: 'drain_cleaning',
                                 child: Text(AppLocalizations.of(context)
-                                    .gardenExterior)),
+                                    .drainCleaning)),
                             DropdownMenuItem(
-                                value: 'other',
-                                child:
-                                    Text(AppLocalizations.of(context).other)),
+                                value: 'bathroom_repair',
+                                child: Text(AppLocalizations.of(context)
+                                    .bathroomRepair)),
+                            DropdownMenuItem(
+                                value: 'kitchen_plumbing',
+                                child: Text(AppLocalizations.of(context)
+                                    .kitchenPlumbing)),
+                            DropdownMenuItem(
+                                value: 'emergency_service',
+                                child: Text(AppLocalizations.of(context)
+                                    .emergencyService)),
+                            DropdownMenuItem(
+                                value: 'bathroom_renovation',
+                                child: Text(AppLocalizations.of(context)
+                                    .bathroomRenovation)),
+                            DropdownMenuItem(
+                                value: 'maintenance_service',
+                                child: Text(AppLocalizations.of(context)
+                                    .maintenanceService)),
                           ],
                           onChanged: (value) {
                             setState(() {
@@ -1076,7 +1072,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please select a service type';
+                              return AppLocalizations.of(context)
+                                  .selectServiceType;
                             }
                             return null;
                           },

@@ -50,31 +50,31 @@ class AppLocalizations {
       'projects_completed': 'Projects Completed',
       'customer_satisfaction': 'Customer Satisfaction',
       'emergency_service': 'Emergency Service',
-      'what_we_can_help': 'What We Can Help You With',
+      'what_we_can_help': 'Our Plumbing Services',
       'what_we_can_help_subtitle':
-          'From small repairs to complete renovations, our skilled technicians can handle all your home improvement needs.',
-      'ready_to_repair': 'Ready to get your repair project started?',
+          'Professional plumbing solutions for your home and business. Our experienced master plumbers are ready to solve all your plumbing needs.',
+      'ready_to_repair': 'Ready to Fix Your Plumbing Issues?',
       'ready_to_repair_subtitle':
-          'Our team of skilled technicians is ready to help with your home or business repair needs. Request service today and get a quick response.',
+          'Contact us now for professional plumbing solutions',
       'call_us_now': 'Call Us Now',
-      'need_fix': 'Need a Fix? Let\'s Get Started',
+      'need_fix': 'Need a Plumbing Fix?',
       'need_fix_subtitle':
-          'Fill out the form below to request our services. We\'ll get back to you within 24 hours to schedule your appointment.',
+          'Fill out the form below and we\'ll get back to you shortly',
       'full_name': 'Full Name',
       'enter_full_name': 'Enter your full name',
       'phone_number': 'Phone Number',
       'enter_phone': 'Enter your phone number',
       'address': 'Address',
       'enter_address': 'Enter your address',
-      'type_of_need': 'Type of Need',
-      'select_service_type': 'Select service type',
-      'additional_notes': 'Additional Notes (optional)',
-      'describe_needs': 'Describe your repair needs in detail',
+      'type_of_need': 'Type of Service Needed',
+      'select_service_type': 'Select Service Type',
+      'additional_notes': 'Additional Notes',
+      'describe_needs': 'Describe your plumbing needs in detail',
       'submit_request': 'Submit Request',
-      'whatsapp_chat': 'Prefer WhatsApp? Click here to chat with us now',
+      'whatsapp_chat': 'Chat with us on WhatsApp',
       'what_customers_say': 'What Our Customers Say',
       'customers_say_subtitle':
-          'Don\'t just take our word for it. Here\'s what our satisfied customers have to say about our services.',
+          'Read what our satisfied customers have to say about our plumbing services',
       'doors_windows': 'Doors & Windows',
       'garden_exterior': 'Garden & Exterior',
       'other': 'Other',
@@ -82,6 +82,28 @@ class AppLocalizations {
       'kitchen_renovation': 'Kitchen Renovation',
       'water_leakage': 'Water Leakage',
       'water_leakage_repair': 'Water Leakage Repair',
+      'drain_cleaning': 'Drain Cleaning',
+      'bathroom_repair': 'Bathroom Repairs',
+      'kitchen_plumbing': 'Kitchen Plumbing',
+      'maintenance_service': 'Maintenance Service',
+      'service1_title': 'Drain Cleaning',
+      'service1_desc':
+          'Professional drain cleaning for kitchen, bathroom, and all household drains. We solve persistent clogs and ensure proper water flow.',
+      'service2_title': 'Bathroom Repairs',
+      'service2_desc':
+          'Complete bathroom plumbing services including toilet repairs, faucet replacement, shower system installation, and leak fixes.',
+      'service3_title': 'Kitchen Plumbing',
+      'service3_desc':
+          'Expert kitchen plumbing services including sink repairs, faucet installation, drain maintenance, and pipe leak fixes.',
+      'service4_title': 'Emergency Plumbing',
+      'service4_desc':
+          'Fast response emergency plumbing service for urgent issues like burst pipes, major leaks, and severe clogs.',
+      'service5_title': 'Bathroom Renovation',
+      'service5_desc':
+          'Complete bathroom renovation services with focus on plumbing infrastructure, including pipe replacement and fixture installation.',
+      'service6_title': 'Maintenance Service',
+      'service6_desc':
+          'Regular plumbing maintenance and inspection to prevent issues and ensure your plumbing system works efficiently.',
       'review1_name': 'James Davidson',
       'review1_initials': 'JD',
       'review1_text':
@@ -106,27 +128,6 @@ class AppLocalizations {
       'review6_initials': 'MA',
       'review6_text':
           'Having served countless customers over 20 years at Özinan Yapı, I can confidently say that no plumbing problem is too difficult for us. We use the latest technology and techniques to ensure lasting solutions for all your plumbing needs.',
-      'service1_title': 'Drain Cleaning',
-      'service1_desc':
-          'Professional drain cleaning for kitchen, bathroom, and all household drains. We solve persistent clogs and ensure proper water flow.',
-      'service2_title': 'Bathroom Repairs',
-      'service2_desc':
-          'Complete bathroom plumbing services including toilet repairs, faucet replacement, shower system installation, and leak fixes.',
-      'service3_title': 'Kitchen Plumbing',
-      'service3_desc':
-          'Expert kitchen plumbing services including sink repairs, faucet installation, drain maintenance, and pipe leak fixes.',
-      'service4_title': 'Emergency Plumbing',
-      'service4_desc':
-          'Fast response emergency plumbing service for urgent issues like burst pipes, major leaks, and severe clogs.',
-      'service5_title': 'Bathroom Renovation',
-      'service5_desc':
-          'Complete bathroom renovation services with focus on plumbing infrastructure, including pipe replacement and fixture installation.',
-      'service6_title': 'Maintenance Service',
-      'service6_desc':
-          'Regular plumbing maintenance and inspection to prevent issues and ensure your plumbing system works efficiently.',
-      'whatWeCanHelp': 'Our Plumbing Services',
-      'whatWeCanHelpSubtitle':
-          'Professional plumbing solutions for your home and business. Our experienced master plumbers are ready to solve all your plumbing needs.',
     },
     'tr': {
       'hero_title': 'Güvenilir Yerel Tamir ve Yenileme Hizmetleri',
@@ -164,39 +165,60 @@ class AppLocalizations {
       'projects_completed': 'Tamamlanan Proje',
       'customer_satisfaction': 'Müşteri Memnuniyeti',
       'emergency_service': 'Acil Servis',
-      'what_we_can_help': 'Size Nasıl Yardımcı Olabiliriz',
+      'what_we_can_help': 'Tesisat Hizmetlerimiz',
       'what_we_can_help_subtitle':
-          'Küçük tamirlerden komple yenilemelere kadar, uzman ustalarımız tüm ev geliştirme ihtiyaçlarınızı karşılayabilir.',
-      'ready_to_repair': 'Tamir projenize başlamaya hazır mısınız?',
+          'Ev ve işyeriniz için profesyonel tesisat çözümleri. Deneyimli usta tesisatçılarımız tüm tesisat ihtiyaçlarınızı çözmeye hazır.',
+      'ready_to_repair': 'Tesisat Sorununuzu Çözmeye Hazır mısınız?',
       'ready_to_repair_subtitle':
-          'Uzman usta ekibimiz, ev veya işyeri tamir ihtiyaçlarınız için yardıma hazır. Hemen hizmet talep edin ve hızlı yanıt alın.',
-      'call_us_now': 'Hemen Arayın',
-      'need_fix': 'Tamire mi İhtiyacınız Var? Hemen Başlayalım',
+          'Profesyonel tesisat çözümleri için hemen iletişime geçin',
+      'call_us_now': 'Hemen Ara',
+      'need_fix': 'Tesisat Tamiri mi Lazım?',
       'need_fix_subtitle':
-          'Hizmetlerimizi talep etmek için aşağıdaki formu doldurun. 24 saat içinde randevunuzu planlamak için size geri döneceğiz.',
+          'Aşağıdaki formu doldurun, en kısa sürede size dönüş yapalım',
       'full_name': 'Ad Soyad',
       'enter_full_name': 'Adınızı ve soyadınızı girin',
       'phone_number': 'Telefon Numarası',
       'enter_phone': 'Telefon numaranızı girin',
       'address': 'Adres',
       'enter_address': 'Adresinizi girin',
-      'type_of_need': 'İhtiyaç Türü',
-      'select_service_type': 'Hizmet türü seçin',
-      'additional_notes': 'Ek Notlar (opsiyonel)',
-      'describe_needs': 'Tamir ihtiyaçlarınızı detaylı olarak açıklayın',
+      'type_of_need': 'İhtiyaç Duyulan Hizmet',
+      'select_service_type': 'Hizmet Türü Seçin',
+      'additional_notes': 'Ek Notlar',
+      'describe_needs': 'Tesisat ihtiyacınızı detaylı olarak açıklayın',
       'submit_request': 'Talebi Gönder',
-      'whatsapp_chat':
-          'WhatsApp tercih eder misiniz? Hemen bizimle sohbet etmek için tıklayın',
-      'what_customers_say': 'Müşterilerimiz Ne Diyor',
+      'whatsapp_chat': 'WhatsApp\'tan Yazın',
+      'what_customers_say': 'Müşterilerimiz Ne Diyor?',
       'customers_say_subtitle':
-          'Sadece bizim sözümüze güvenmeyin. İşte memnun müşterilerimizin hizmetlerimiz hakkında söyledikleri.',
+          'Tesisat hizmetlerimizden memnun kalan müşterilerimizin yorumlarını okuyun',
       'doors_windows': 'Kapı ve Pencereler',
       'garden_exterior': 'Bahçe ve Dış Mekan',
       'other': 'Diğer',
       'bathroom_renovation': 'Banyo Yenileme',
       'kitchen_renovation': 'Mutfak Yenileme',
-      'water_leakage': 'Su Sızıntısı',
-      'water_leakage_repair': 'Su Sızıntısı Tamiri',
+      'water_leakage': 'Su Kaçağı',
+      'water_leakage_repair': 'Su Kaçağı Tamiri',
+      'drain_cleaning': 'Gider Açma',
+      'bathroom_repair': 'Banyo Tamiratı',
+      'kitchen_plumbing': 'Mutfak Tesisatı',
+      'maintenance_service': 'Bakım Hizmeti',
+      'service1_title': 'Gider Açma',
+      'service1_desc':
+          'Mutfak, banyo ve tüm ev giderlerinde profesyonel tıkanıklık açma hizmeti. İnatçı tıkanıklıkları çözüyor ve düzgün su akışını sağlıyoruz.',
+      'service2_title': 'Banyo Tamiratı',
+      'service2_desc':
+          'Klozet tamiri, musluk değişimi, duş sistemi kurulumu ve su kaçağı onarımı dahil komple banyo tesisat hizmetleri.',
+      'service3_title': 'Mutfak Tesisatı',
+      'service3_desc':
+          'Lavabo tamiri, musluk montajı, gider bakımı ve boru sızıntısı onarımı dahil uzman mutfak tesisat hizmetleri.',
+      'service4_title': 'Acil Tesisat',
+      'service4_desc':
+          'Patlak boru, büyük sızıntılar ve ciddi tıkanıklıklar gibi acil durumlar için hızlı müdahale hizmeti.',
+      'service5_title': 'Banyo Yenileme',
+      'service5_desc':
+          'Boru değişimi ve tesisat montajı dahil, tesisat altyapısına odaklı komple banyo yenileme hizmetleri.',
+      'service6_title': 'Bakım Hizmeti',
+      'service6_desc':
+          'Sorunları önlemek ve tesisat sisteminizin verimli çalışmasını sağlamak için düzenli tesisat bakımı ve kontrolü.',
       'review1_name': 'Ahmet Yılmaz',
       'review1_initials': 'AY',
       'review1_text':
@@ -221,27 +243,6 @@ class AppLocalizations {
       'review6_initials': 'MA',
       'review6_text':
           'Özinan Yapı\'da 20 yılı aşkın süredir sayısız müşteriye hizmet verdikten sonra diyebilirim ki, bizim için çözülemeyecek tesisat sorunu yoktur. En son teknoloji ve teknikleri kullanarak tüm tesisat ihtiyaçlarınıza kalıcı çözümler sunuyoruz.',
-      'service1_title': 'Gider Açma',
-      'service1_desc':
-          'Mutfak, banyo ve tüm ev giderlerinde profesyonel tıkanıklık açma hizmeti. İnatçı tıkanıklıkları çözüyor ve düzgün su akışını sağlıyoruz.',
-      'service2_title': 'Banyo Tamiratı',
-      'service2_desc':
-          'Klozet tamiri, musluk değişimi, duş sistemi kurulumu ve su kaçağı onarımı dahil komple banyo tesisat hizmetleri.',
-      'service3_title': 'Mutfak Tesisatı',
-      'service3_desc':
-          'Lavabo tamiri, musluk montajı, gider bakımı ve boru sızıntısı onarımı dahil uzman mutfak tesisat hizmetleri.',
-      'service4_title': 'Acil Tesisat',
-      'service4_desc':
-          'Patlak boru, büyük sızıntılar ve ciddi tıkanıklıklar gibi acil durumlar için hızlı müdahale hizmeti.',
-      'service5_title': 'Banyo Yenileme',
-      'service5_desc':
-          'Boru değişimi ve tesisat montajı dahil, tesisat altyapısına odaklı komple banyo yenileme hizmetleri.',
-      'service6_title': 'Bakım Hizmeti',
-      'service6_desc':
-          'Sorunları önlemek ve tesisat sisteminizin verimli çalışmasını sağlamak için düzenli tesisat bakımı ve kontrolü.',
-      'whatWeCanHelp': 'Tesisat Hizmetlerimiz',
-      'whatWeCanHelpSubtitle':
-          'Ev ve işyeriniz için profesyonel tesisat çözümleri. Deneyimli usta tesisatçılarımız tüm tesisat ihtiyaçlarınızı çözmeye hazır.',
     },
   };
 
@@ -348,6 +349,38 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['water_leakage']!;
   String get waterLeakageRepair =>
       _localizedValues[locale.languageCode]!['water_leakage_repair']!;
+  String get drainCleaning =>
+      _localizedValues[locale.languageCode]!['drain_cleaning']!;
+  String get bathroomRepair =>
+      _localizedValues[locale.languageCode]!['bathroom_repair']!;
+  String get kitchenPlumbing =>
+      _localizedValues[locale.languageCode]!['kitchen_plumbing']!;
+  String get maintenanceService =>
+      _localizedValues[locale.languageCode]!['maintenance_service']!;
+  String get service1Title =>
+      _localizedValues[locale.languageCode]!['service1_title']!;
+  String get service1Desc =>
+      _localizedValues[locale.languageCode]!['service1_desc']!;
+  String get service2Title =>
+      _localizedValues[locale.languageCode]!['service2_title']!;
+  String get service2Desc =>
+      _localizedValues[locale.languageCode]!['service2_desc']!;
+  String get service3Title =>
+      _localizedValues[locale.languageCode]!['service3_title']!;
+  String get service3Desc =>
+      _localizedValues[locale.languageCode]!['service3_desc']!;
+  String get service4Title =>
+      _localizedValues[locale.languageCode]!['service4_title']!;
+  String get service4Desc =>
+      _localizedValues[locale.languageCode]!['service4_desc']!;
+  String get service5Title =>
+      _localizedValues[locale.languageCode]!['service5_title']!;
+  String get service5Desc =>
+      _localizedValues[locale.languageCode]!['service5_desc']!;
+  String get service6Title =>
+      _localizedValues[locale.languageCode]!['service6_title']!;
+  String get service6Desc =>
+      _localizedValues[locale.languageCode]!['service6_desc']!;
   String get review1Name =>
       _localizedValues[locale.languageCode]!['review1_name']!;
   String get review1Initials =>
@@ -384,30 +417,6 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['review6_initials']!;
   String get review6Text =>
       _localizedValues[locale.languageCode]!['review6_text']!;
-  String get service1Title =>
-      _localizedValues[locale.languageCode]!['service1_title']!;
-  String get service1Desc =>
-      _localizedValues[locale.languageCode]!['service1_desc']!;
-  String get service2Title =>
-      _localizedValues[locale.languageCode]!['service2_title']!;
-  String get service2Desc =>
-      _localizedValues[locale.languageCode]!['service2_desc']!;
-  String get service3Title =>
-      _localizedValues[locale.languageCode]!['service3_title']!;
-  String get service3Desc =>
-      _localizedValues[locale.languageCode]!['service3_desc']!;
-  String get service4Title =>
-      _localizedValues[locale.languageCode]!['service4_title']!;
-  String get service4Desc =>
-      _localizedValues[locale.languageCode]!['service4_desc']!;
-  String get service5Title =>
-      _localizedValues[locale.languageCode]!['service5_title']!;
-  String get service5Desc =>
-      _localizedValues[locale.languageCode]!['service5_desc']!;
-  String get service6Title =>
-      _localizedValues[locale.languageCode]!['service6_title']!;
-  String get service6Desc =>
-      _localizedValues[locale.languageCode]!['service6_desc']!;
 }
 
 class _AppLocalizationsDelegate
