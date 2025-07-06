@@ -642,7 +642,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20using%20modern%20equipment%20to%20clean%20a%20drain%20in%20a%20bathroom.%20The%20image%20shows%20the%20plumber%20working%20with%20specialized%20tools%20and%20equipment.%20Clean%2C%20professional%20setting%20with%20good%20lighting.&width=600&height=400&seq=service1&orientation=landscape',
+                          'assets/images/gider.png',
                           AppLocalizations.of(context).service1Title,
                           AppLocalizations.of(context).service1Desc,
                         ),
@@ -650,7 +650,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Close-up%20of%20a%20plumber%20repairing%20a%20bathroom%20faucet%20and%20sink.%20Professional%20plumbing%20tools%20visible%20in%20the%20frame.%20Modern%20bathroom%20setting%20with%20clean%2C%20professional%20appearance.&width=600&height=400&seq=service2&orientation=landscape',
+                          'assets/images/banyo.png',
                           AppLocalizations.of(context).service2Title,
                           AppLocalizations.of(context).service2Desc,
                         ),
@@ -658,7 +658,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20working%20under%20a%20kitchen%20sink%2C%20fixing%20pipes.%20Tools%20and%20equipment%20neatly%20arranged%20nearby.%20Modern%20kitchen%20setting%20with%20good%20lighting.&width=600&height=400&seq=service3&orientation=landscape',
+                          'assets/images/mutfak.png',
                           AppLocalizations.of(context).service3Title,
                           AppLocalizations.of(context).service3Desc,
                         ),
@@ -678,7 +678,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Emergency%20plumber%20responding%20to%20a%20burst%20pipe%20situation.%20The%20plumber%20is%20working%20quickly%20with%20professional%20tools.%20Scene%20shows%20urgency%20and%20expertise%20in%20handling%20emergency%20situations.&width=600&height=400&seq=service4&orientation=landscape',
+                          'assets/images/acil.png',
                           AppLocalizations.of(context).service4Title,
                           AppLocalizations.of(context).service4Desc,
                         ),
@@ -686,7 +686,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Bathroom%20renovation%20in%20progress%2C%20focusing%20on%20plumbing%20installation.%20New%20pipes%20and%20fixtures%20being%20installed.%20Clean%2C%20professional%20work%20environment%20showing%20modern%20bathroom%20renovation%20techniques.&width=600&height=400&seq=service5&orientation=landscape',
+                          'assets/images/banyoyenileme.png',
                           AppLocalizations.of(context).service5Title,
                           AppLocalizations.of(context).service5Desc,
                         ),
@@ -694,7 +694,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20performing%20routine%20maintenance%20check%20on%20household%20plumbing%20system.%20Using%20diagnostic%20tools%20and%20performing%20preventive%20maintenance.%20Clean%2C%20organized%20work%20environment.&width=600&height=400&seq=service6&orientation=landscape',
+                          'assets/images/bakım.png',
                           AppLocalizations.of(context).service6Title,
                           AppLocalizations.of(context).service6Desc,
                         ),
@@ -731,7 +731,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: SizedBox(
-              height: 200,
+              height: 300,
               width: double.infinity,
               child: Image.network(
                 imageUrl,
@@ -750,7 +750,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -762,7 +762,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     color: Color(0xFF1F2937),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 6),
                 Text(
                   description,
                   style: const TextStyle(

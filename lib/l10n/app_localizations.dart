@@ -39,13 +39,13 @@ class AppLocalizations {
       'all_rights_reserved': 'All rights reserved.',
       'company_name': 'Özinan Yapı Malzemeleri',
       'working_hours': 'Mon-Sat: 8.30AM - 8PM',
-      'trusted_experts_title': 'Your Trusted Local Repair Experts',
+      'trusted_experts_title': 'Professional Plumbing Solutions Since 1995',
       'trusted_experts_desc1':
-          'Since 2010, HandyFix has been providing top-quality repair and renovation services to homeowners and businesses across the region. Our team of skilled technicians brings expertise and dedication to every project, no matter how big or small.',
+          'Founded by Master Davut in 1995, Özinan Yapı Malzemeleri has been providing expert plumbing solutions for over 30 years. Our deep expertise in plumbing repairs and renovations has made us the trusted choice for countless households in Istanbul.',
       'trusted_experts_desc2':
-          'We understand that home repairs can be stressful, which is why we focus on providing reliable, transparent, and affordable services. Our technicians arrive on time, work efficiently, and always clean up after the job is done.',
+          'At Özinan Yapı Malzemeleri, we combine our extensive experience with high-quality plumbing materials and modern techniques. We specialize in bathroom and kitchen repairs, drain cleaning, complete bathroom renovations, and emergency plumbing services.',
       'trusted_experts_desc3':
-          'Whether you need a quick fix for a leaky faucet or a complete room renovation, we\'re here to help with the skill and care your home deserves.',
+          'Our team of skilled plumbers, led by Master Davut, ensures every job is completed to the highest standards. Whether it\'s a simple faucet repair or a complete bathroom renovation, we provide reliable solutions with quality materials from our own supply store.',
       'years_experience': 'Years Experience',
       'projects_completed': 'Projects Completed',
       'customer_satisfaction': 'Customer Satisfaction',
@@ -153,13 +153,13 @@ class AppLocalizations {
       'all_rights_reserved': 'Tüm hakları saklıdır.',
       'company_name': 'Özinan Yapı Malzemeleri',
       'working_hours': 'Pzt-Cmt: 8.30-20.00',
-      'trusted_experts_title': 'Güvenilir Yerel Tamir Uzmanlarınız',
+      'trusted_experts_title': '1995\'den Beri Profesyonel Tesisat Çözümleri',
       'trusted_experts_desc1':
-          '2010 yılından beri HandyFix, ev sahiplerine ve işletmelere bölge genelinde yüksek kaliteli tamir ve yenileme hizmetleri sunmaktadır. Uzman teknisyen ekibimiz, büyük küçük her projeye uzmanlık ve özveriyle yaklaşmaktadır.',
+          '1995 yılında Davut Usta tarafından kurulan Özinan Yapı Malzemeleri, 30 yılı aşkın süredir uzman tesisat çözümleri sunuyor. Tesisat onarımları ve yenilemelerdeki derin uzmanlığımız, İstanbul\'da sayısız evin güvenilir tercihi olmamızı sağladı.',
       'trusted_experts_desc2':
-          'Ev tamirlerinin stresli olabileceğini biliyoruz, bu yüzden güvenilir, şeffaf ve uygun fiyatlı hizmetler sunmaya odaklanıyoruz. Teknisyenlerimiz zamanında gelir, verimli çalışır ve iş bittikten sonra her zaman temizlik yapar.',
+          'Özinan Yapı Malzemeleri olarak, uzun yıllara dayanan tecrübemizi kaliteli tesisat malzemeleri ve modern tekniklerle birleştiriyoruz. Banyo ve mutfak tamiratları, gider açma, komple banyo yenileme ve acil tesisat hizmetleri konularında uzmanız.',
       'trusted_experts_desc3':
-          'İster damlayan bir musluk için hızlı bir onarım, ister komple bir oda yenilemesi ihtiyacınız olsun, evinize hak ettiği beceri ve özenle yardımcı olmak için buradayız.',
+          'Davut Usta önderliğindeki uzman tesisatçı ekibimiz, her işin en yüksek standartlarda tamamlanmasını sağlıyor. Basit bir musluk tamirinden komple banyo yenilemesine kadar, kendi malzeme mağazamızdan temin ettiğimiz kaliteli ürünlerle güvenilir çözümler sunuyoruz.',
       'years_experience': 'Yıllık Deneyim',
       'projects_completed': 'Tamamlanan Proje',
       'customer_satisfaction': 'Müşteri Memnuniyeti',
