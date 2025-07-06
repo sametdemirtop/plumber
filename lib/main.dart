@@ -26,7 +26,9 @@ class HandyFixApp extends StatelessWidget {
       builder: (context, localeProvider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'HandyFix - Reliable Local Repair & Renovation Services',
+          title: localeProvider.locale.languageCode == 'tr'
+              ? 'Özinan Yapı Malzemeleri - Tamir ve Tadilat Hizmetleri'
+              : 'Özinan Yapı Malzemeleri - Repair and Renovation Services',
           locale: localeProvider.locale,
           supportedLocales: const [
             Locale('en'),
@@ -389,7 +391,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildStatItem('15+',
+                          child: _buildStatItem('30+',
                               AppLocalizations.of(context).yearsExperience),
                         ),
                         Expanded(
@@ -484,33 +486,33 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 ResponsiveRowColumnItem(
                   rowFlex: 1,
                   child: _buildServiceCard(
-                    Icons.brush,
-                    'Painting',
-                    'Interior and exterior painting services with premium finishes and colors.',
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: _buildServiceCard(
                     Icons.plumbing,
-                    'Plumbing',
-                    'Fix leaky faucets, clogged drains, toilet repairs, and more.',
+                    AppLocalizations.of(context).service1Title,
+                    AppLocalizations.of(context).service1Desc,
                   ),
                 ),
                 ResponsiveRowColumnItem(
                   rowFlex: 1,
                   child: _buildServiceCard(
-                    Icons.electrical_services,
-                    'Electrical',
-                    'Outlet installation, lighting fixtures, wiring repairs and upgrades.',
+                    Icons.bathroom,
+                    AppLocalizations.of(context).service2Title,
+                    AppLocalizations.of(context).service2Desc,
                   ),
                 ),
                 ResponsiveRowColumnItem(
                   rowFlex: 1,
                   child: _buildServiceCard(
-                    Icons.grid_view,
-                    'Tiling',
-                    'Tile installation and repair for floors, walls, backsplashes and more.',
+                    Icons.kitchen,
+                    AppLocalizations.of(context).service3Title,
+                    AppLocalizations.of(context).service3Desc,
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: _buildServiceCard(
+                    Icons.emergency,
+                    AppLocalizations.of(context).service4Title,
+                    AppLocalizations.of(context).service4Desc,
                   ),
                 ),
               ],
@@ -640,25 +642,25 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Interior%20painting%20of%20a%20modern%20living%20room%20with%20bright%20natural%20light.%20A%20professional%20painter%20carefully%20applying%20paint%20to%20a%20wall%20with%20a%20roller.%20The%20scene%20shows%20clean%20drop%20cloths%20protecting%20the%20floor%2C%20and%20a%20neat%20paint%20tray%20setup.%20The%20image%20has%20a%20bright%2C%20clean%20aesthetic%20with%20soft%20neutral%20colors.&width=600&height=400&seq=service1&orientation=landscape',
-                          'Interior & Exterior Painting',
-                          'Professional painting services for walls, ceilings, trim, and exteriors with premium paints and finishes.',
+                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20using%20modern%20equipment%20to%20clean%20a%20drain%20in%20a%20bathroom.%20The%20image%20shows%20the%20plumber%20working%20with%20specialized%20tools%20and%20equipment.%20Clean%2C%20professional%20setting%20with%20good%20lighting.&width=600&height=400&seq=service1&orientation=landscape',
+                          AppLocalizations.of(context).service1Title,
+                          AppLocalizations.of(context).service1Desc,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=Close-up%20of%20a%20professional%20tile%20installer%20laying%20ceramic%20floor%20tiles%20in%20a%20modern%20bathroom.%20The%20image%20shows%20precise%20tile%20placement%20with%20spacers%2C%20a%20level%2C%20and%20tile%20cutting%20tools%20nearby.%20The%20scene%20depicts%20a%20clean%20work%20environment%20with%20organized%20materials.%20The%20lighting%20is%20bright%20and%20natural%2C%20highlighting%20the%20quality%20of%20workmanship.&width=600&height=400&seq=service2&orientation=landscape',
-                          'Tiling and Ceramic Flooring',
-                          'Expert installation and repair of ceramic, porcelain, and natural stone tiles for floors, walls, and backsplashes.',
+                          'https://readdy.ai/api/search-image?query=Close-up%20of%20a%20plumber%20repairing%20a%20bathroom%20faucet%20and%20sink.%20Professional%20plumbing%20tools%20visible%20in%20the%20frame.%20Modern%20bathroom%20setting%20with%20clean%2C%20professional%20appearance.&width=600&height=400&seq=service2&orientation=landscape',
+                          AppLocalizations.of(context).service2Title,
+                          AppLocalizations.of(context).service2Desc,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=A%20professional%20plumber%20fixing%20a%20bathroom%20sink%20faucet.%20The%20image%20shows%20the%20plumbers%20hands%20working%20with%20tools%20under%20the%20sink%20cabinet.%20Plumbing%20tools%20are%20neatly%20arranged%20nearby.%20The%20bathroom%20has%20modern%20fixtures%20and%20good%20lighting.%20The%20scene%20conveys%20professional%20expertise%20and%20attention%20to%20detail.&width=600&height=400&seq=service3&orientation=landscape',
-                          'Minor Plumbing',
-                          'Repair and replacement of faucets, toilets, sinks, and drains. We fix leaks, clogs, and other common plumbing issues.',
+                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20working%20under%20a%20kitchen%20sink%2C%20fixing%20pipes.%20Tools%20and%20equipment%20neatly%20arranged%20nearby.%20Modern%20kitchen%20setting%20with%20good%20lighting.&width=600&height=400&seq=service3&orientation=landscape',
+                          AppLocalizations.of(context).service3Title,
+                          AppLocalizations.of(context).service3Desc,
                         ),
                       ),
                     ],
@@ -676,25 +678,25 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=A%20close-up%20view%20of%20a%20handyman%20repairing%20a%20wooden%20door%20frame%20in%20a%20residential%20home.%20The%20image%20shows%20detailed%20carpentry%20work%20with%20wood%20repair%20tools%20visible.%20The%20lighting%20is%20bright%20and%20natural%2C%20highlighting%20the%20craftsmanship.%20The%20scene%20depicts%20a%20professional%20working%20environment%20with%20attention%20to%20detail.&width=600&height=400&seq=service4&orientation=landscape',
-                          'Door and Window Repair',
-                          'Fix sticking doors, broken windows, damaged frames, hardware replacement, and weatherstripping installation.',
+                          'https://readdy.ai/api/search-image?query=Emergency%20plumber%20responding%20to%20a%20burst%20pipe%20situation.%20The%20plumber%20is%20working%20quickly%20with%20professional%20tools.%20Scene%20shows%20urgency%20and%20expertise%20in%20handling%20emergency%20situations.&width=600&height=400&seq=service4&orientation=landscape',
+                          AppLocalizations.of(context).service4Title,
+                          AppLocalizations.of(context).service4Desc,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=An%20electrician%20installing%20a%20new%20light%20fixture%20in%20a%20modern%20home%20ceiling.%20The%20image%20shows%20the%20electrician%20on%20a%20ladder%2C%20carefully%20connecting%20wires.%20Safety%20equipment%20and%20electrical%20tools%20are%20visible%20nearby.%20The%20room%20is%20well-lit%20with%20natural%20light%2C%20showing%20a%20professional%20work%20environment%20with%20attention%20to%20safety%20protocols.&width=600&height=400&seq=service5&orientation=landscape',
-                          'Electrical Fixes',
-                          'Installation and repair of outlets, switches, light fixtures, ceiling fans, and minor electrical troubleshooting.',
+                          'https://readdy.ai/api/search-image?query=Bathroom%20renovation%20in%20progress%2C%20focusing%20on%20plumbing%20installation.%20New%20pipes%20and%20fixtures%20being%20installed.%20Clean%2C%20professional%20work%20environment%20showing%20modern%20bathroom%20renovation%20techniques.&width=600&height=400&seq=service5&orientation=landscape',
+                          AppLocalizations.of(context).service5Title,
+                          AppLocalizations.of(context).service5Desc,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
-                          'https://readdy.ai/api/search-image?query=A%20landscaper%20repairing%20a%20garden%20pathway%20in%20a%20well-maintained%20backyard.%20The%20image%20shows%20the%20professional%20laying%20pavers%20or%20stones%20to%20create%20a%20beautiful%20walkway.%20Garden%20tools%20and%20materials%20are%20neatly%20organized%20nearby.%20The%20scene%20is%20bright%20with%20natural%20sunlight%2C%20showing%20lush%20greenery%20and%20flowers%20surrounding%20the%20work%20area.&width=600&height=400&seq=service6&orientation=landscape',
-                          'Garden and Exterior Repairs',
-                          'Fence repair, deck maintenance, garden structures, pathway installation, and general exterior improvements.',
+                          'https://readdy.ai/api/search-image?query=Professional%20plumber%20performing%20routine%20maintenance%20check%20on%20household%20plumbing%20system.%20Using%20diagnostic%20tools%20and%20performing%20preventive%20maintenance.%20Clean%2C%20organized%20work%20environment.&width=600&height=400&seq=service6&orientation=landscape',
+                          AppLocalizations.of(context).service6Title,
+                          AppLocalizations.of(context).service6Desc,
                         ),
                       ),
                     ],
@@ -738,7 +740,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   return Container(
                     color: Colors.grey.shade200,
                     child: const Icon(
-                      Icons.image,
+                      Icons.plumbing,
                       size: 64,
                       color: Colors.grey,
                     ),
@@ -767,15 +769,6 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     fontSize: 14,
                     color: Color(0xFF6B7280),
                     height: 1.6,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Special pricing available if materials are purchased from us.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF9CA3AF),
-                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ],
@@ -857,9 +850,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Text(
-                              'Request a Technician',
-                              style: TextStyle(fontWeight: FontWeight.w600),
+                            child: Text(
+                              AppLocalizations.of(context).requestService,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
@@ -1257,28 +1251,28 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'JD',
-                          'James Davidson',
+                          AppLocalizations.of(context).review1Initials,
+                          AppLocalizations.of(context).review1Name,
                           5,
-                          'We had our bathroom tiles redone by the HandyFix team – amazing job, fast and clean! The technician was professional and completed the work ahead of schedule. Will definitely use them again.',
+                          AppLocalizations.of(context).review1Text,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'SL',
-                          'Sarah Livingston',
+                          AppLocalizations.of(context).review2Initials,
+                          AppLocalizations.of(context).review2Name,
                           4,
-                          'Great service, very responsive and affordable. I had several electrical issues in my home that needed fixing, and the technician was knowledgeable and efficient. Everything works perfectly now!',
+                          AppLocalizations.of(context).review2Text,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'MR',
-                          'Michael Rodriguez',
+                          AppLocalizations.of(context).review3Initials,
+                          AppLocalizations.of(context).review3Name,
                           5,
-                          'I needed my living room and kitchen painted on short notice. HandyFix came through with excellent service. The painters were meticulous, and the finish looks fantastic. Highly recommend!',
+                          AppLocalizations.of(context).review3Text,
                         ),
                       ),
                     ],
@@ -1296,28 +1290,28 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'ET',
-                          'Emily Thompson',
+                          AppLocalizations.of(context).review4Initials,
+                          AppLocalizations.of(context).review4Name,
                           4,
-                          'Had a persistent plumbing issue that two other companies couldn\'t fix. The HandyFix technician identified the problem immediately and fixed it in under an hour. Fair pricing and excellent communication throughout.',
+                          AppLocalizations.of(context).review4Text,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'RB',
-                          'Robert Bennett',
+                          AppLocalizations.of(context).review5Initials,
+                          AppLocalizations.of(context).review5Name,
                           4,
-                          'The garden repair work HandyFix did for us exceeded our expectations. They fixed our damaged fence, repaired the garden pathway, and even helped with some landscaping. Professional service from start to finish.',
+                          AppLocalizations.of(context).review5Text,
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildReviewCard(
-                          'AK',
-                          'Amanda Keller',
+                          AppLocalizations.of(context).review6Initials,
+                          AppLocalizations.of(context).review6Name,
                           5,
-                          'I\'ve used HandyFix for multiple projects in my home over the past year. Their team is always punctual, professional, and does quality work. The pricing is transparent with no surprises. They\'re now my go-to for all home repairs.',
+                          AppLocalizations.of(context).review6Text,
                         ),
                       ),
                     ],

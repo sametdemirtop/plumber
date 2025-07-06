@@ -14,13 +14,14 @@ class AppLocalizations {
 
   static final Map<String, Map<String, String>> _localizedValues = {
     'en': {
-      'app_title': 'HandyFix - Reliable Local Repair & Renovation Services',
       'hero_title': 'Reliable Local Repair & Renovation Services',
       'hero_subtitle':
           'Quick, affordable help for your home or business – from painting to plumbing.',
       'request_technician': 'Request a Technician',
       'home': 'Home',
       'services': 'Services',
+      'app_name':
+          'Özinan Yapı Malzemeleri - Reliable Local Repair & Renovation Services',
       'request_service': 'Request Service',
       'reviews': 'Reviews',
       'our_services': 'Our Services',
@@ -81,15 +82,60 @@ class AppLocalizations {
       'kitchen_renovation': 'Kitchen Renovation',
       'water_leakage': 'Water Leakage',
       'water_leakage_repair': 'Water Leakage Repair',
+      'review1_name': 'James Davidson',
+      'review1_initials': 'JD',
+      'review1_text':
+          'Had a major bathroom renovation done by Özinan Yapı. They replaced all the plumbing, installed a new shower system, and fixed some long-standing drainage issues. The team was professional and the quality of work is outstanding!',
+      'review2_name': 'Sarah Livingston',
+      'review2_initials': 'SL',
+      'review2_text':
+          'Called them for an emergency pipe leak in my kitchen. They arrived quickly, identified the problem, and fixed it efficiently. Very reasonable pricing and excellent service. Would definitely recommend!',
+      'review3_name': 'Michael Rodriguez',
+      'review3_initials': 'MR',
+      'review3_text':
+          'They did a complete renovation of our bathroom including new toilet installation and fixing all plumbing issues. Master Turgut personally supervised the work and ensured everything was perfect. Very satisfied with the result.',
+      'review4_name': 'Emily Thompson',
+      'review4_initials': 'ET',
+      'review4_text':
+          'Had persistent clogging issues in multiple drains that other companies couldn\'t solve. Master Mahmut from Özinan Yapı identified the root cause and fixed everything permanently. Their expertise is unmatched!',
+      'review5_name': 'Master Turgut',
+      'review5_initials': 'TU',
+      'review5_text':
+          'As a master plumber with 25 years of experience at Özinan Yapı, I take pride in solving complex plumbing issues. We specialize in bathroom and kitchen repairs, drain cleaning, and complete bathroom renovations. Quality and customer satisfaction are our priorities.',
+      'review6_name': 'Master Mahmut',
+      'review6_initials': 'MA',
+      'review6_text':
+          'Having served countless customers over 20 years at Özinan Yapı, I can confidently say that no plumbing problem is too difficult for us. We use the latest technology and techniques to ensure lasting solutions for all your plumbing needs.',
+      'service1_title': 'Drain Cleaning',
+      'service1_desc':
+          'Professional drain cleaning for kitchen, bathroom, and all household drains. We solve persistent clogs and ensure proper water flow.',
+      'service2_title': 'Bathroom Repairs',
+      'service2_desc':
+          'Complete bathroom plumbing services including toilet repairs, faucet replacement, shower system installation, and leak fixes.',
+      'service3_title': 'Kitchen Plumbing',
+      'service3_desc':
+          'Expert kitchen plumbing services including sink repairs, faucet installation, drain maintenance, and pipe leak fixes.',
+      'service4_title': 'Emergency Plumbing',
+      'service4_desc':
+          'Fast response emergency plumbing service for urgent issues like burst pipes, major leaks, and severe clogs.',
+      'service5_title': 'Bathroom Renovation',
+      'service5_desc':
+          'Complete bathroom renovation services with focus on plumbing infrastructure, including pipe replacement and fixture installation.',
+      'service6_title': 'Maintenance Service',
+      'service6_desc':
+          'Regular plumbing maintenance and inspection to prevent issues and ensure your plumbing system works efficiently.',
+      'whatWeCanHelp': 'Our Plumbing Services',
+      'whatWeCanHelpSubtitle':
+          'Professional plumbing solutions for your home and business. Our experienced master plumbers are ready to solve all your plumbing needs.',
     },
     'tr': {
-      'app_title': 'HandyFix - Güvenilir Yerel Tamir ve Yenileme Hizmetleri',
       'hero_title': 'Güvenilir Yerel Tamir ve Yenileme Hizmetleri',
       'hero_subtitle':
           'Eviniz veya işyeriniz için hızlı, uygun fiyatlı yardım – boyamadan tesisata.',
       'request_technician': 'Teknisyen Talep Et',
       'home': 'Ana Sayfa',
       'services': 'Hizmetler',
+      'app_name': 'Özinan Yapı Malzemeleri - Tamir ve Tadilat Hizmetleri',
       'request_service': 'Hizmet Talebi',
       'reviews': 'Yorumlar',
       'our_services': 'Hizmetlerimiz',
@@ -151,16 +197,61 @@ class AppLocalizations {
       'kitchen_renovation': 'Mutfak Yenileme',
       'water_leakage': 'Su Sızıntısı',
       'water_leakage_repair': 'Su Sızıntısı Tamiri',
+      'review1_name': 'Ahmet Yılmaz',
+      'review1_initials': 'AY',
+      'review1_text':
+          'Özinan Yapı\'ya banyomuzun yenilenmesi için başvurduk. Tüm tesisatı yenilediler, yeni duş sistemi kurdular ve uzun süredir devam eden gider sorunlarını çözdüler. Ekip çok profesyoneldi ve işçilik kalitesi mükemmel!',
+      'review2_name': 'Sevgi Kaya',
+      'review2_initials': 'SK',
+      'review2_text':
+          'Mutfaktaki acil boru sızıntısı için aradım. Hızlıca geldiler, sorunu tespit ettiler ve etkili bir şekilde çözdüler. Çok makul fiyat ve mükemmel hizmet. Kesinlikle tavsiye ederim!',
+      'review3_name': 'Mehmet Demir',
+      'review3_initials': 'MD',
+      'review3_text':
+          'Banyomuzun komple yenilenmesi, klozet değişimi ve tüm tesisat sorunlarının giderilmesi işlemlerini yaptılar. Turgut Usta bizzat işin başında durdu ve her şeyin mükemmel olmasını sağladı. Sonuçtan çok memnun kaldık.',
+      'review4_name': 'Elif Türk',
+      'review4_initials': 'ET',
+      'review4_text':
+          'Diğer firmaların çözemediği birden fazla giderdeki tıkanıklık sorunumuz vardı. Özinan Yapı\'dan Mahmut Usta kök nedeni tespit etti ve kalıcı olarak çözdü. Uzmanlıkları gerçekten benzersiz!',
+      'review5_name': 'Turgut Usta',
+      'review5_initials': 'TU',
+      'review5_text':
+          'Özinan Yapı\'da 25 yıllık usta tesisatçı olarak, karmaşık tesisat sorunlarını çözmekten gurur duyuyorum. Banyo ve mutfak tamiratları, gider açma ve komple banyo yenileme konularında uzmanız. Kalite ve müşteri memnuniyeti önceliğimizdir.',
+      'review6_name': 'Mahmut Usta',
+      'review6_initials': 'MA',
+      'review6_text':
+          'Özinan Yapı\'da 20 yılı aşkın süredir sayısız müşteriye hizmet verdikten sonra diyebilirim ki, bizim için çözülemeyecek tesisat sorunu yoktur. En son teknoloji ve teknikleri kullanarak tüm tesisat ihtiyaçlarınıza kalıcı çözümler sunuyoruz.',
+      'service1_title': 'Gider Açma',
+      'service1_desc':
+          'Mutfak, banyo ve tüm ev giderlerinde profesyonel tıkanıklık açma hizmeti. İnatçı tıkanıklıkları çözüyor ve düzgün su akışını sağlıyoruz.',
+      'service2_title': 'Banyo Tamiratı',
+      'service2_desc':
+          'Klozet tamiri, musluk değişimi, duş sistemi kurulumu ve su kaçağı onarımı dahil komple banyo tesisat hizmetleri.',
+      'service3_title': 'Mutfak Tesisatı',
+      'service3_desc':
+          'Lavabo tamiri, musluk montajı, gider bakımı ve boru sızıntısı onarımı dahil uzman mutfak tesisat hizmetleri.',
+      'service4_title': 'Acil Tesisat',
+      'service4_desc':
+          'Patlak boru, büyük sızıntılar ve ciddi tıkanıklıklar gibi acil durumlar için hızlı müdahale hizmeti.',
+      'service5_title': 'Banyo Yenileme',
+      'service5_desc':
+          'Boru değişimi ve tesisat montajı dahil, tesisat altyapısına odaklı komple banyo yenileme hizmetleri.',
+      'service6_title': 'Bakım Hizmeti',
+      'service6_desc':
+          'Sorunları önlemek ve tesisat sisteminizin verimli çalışmasını sağlamak için düzenli tesisat bakımı ve kontrolü.',
+      'whatWeCanHelp': 'Tesisat Hizmetlerimiz',
+      'whatWeCanHelpSubtitle':
+          'Ev ve işyeriniz için profesyonel tesisat çözümleri. Deneyimli usta tesisatçılarımız tüm tesisat ihtiyaçlarınızı çözmeye hazır.',
     },
   };
 
-  String get appTitle => _localizedValues[locale.languageCode]!['app_title']!;
   String get heroTitle => _localizedValues[locale.languageCode]!['hero_title']!;
   String get heroSubtitle =>
       _localizedValues[locale.languageCode]!['hero_subtitle']!;
   String get requestTechnician =>
       _localizedValues[locale.languageCode]!['request_technician']!;
   String get home => _localizedValues[locale.languageCode]!['home']!;
+  String get appName => _localizedValues[locale.languageCode]!['app_name']!;
   String get services => _localizedValues[locale.languageCode]!['services']!;
   String get requestService =>
       _localizedValues[locale.languageCode]!['request_service']!;
@@ -257,6 +348,66 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['water_leakage']!;
   String get waterLeakageRepair =>
       _localizedValues[locale.languageCode]!['water_leakage_repair']!;
+  String get review1Name =>
+      _localizedValues[locale.languageCode]!['review1_name']!;
+  String get review1Initials =>
+      _localizedValues[locale.languageCode]!['review1_initials']!;
+  String get review1Text =>
+      _localizedValues[locale.languageCode]!['review1_text']!;
+  String get review2Name =>
+      _localizedValues[locale.languageCode]!['review2_name']!;
+  String get review2Initials =>
+      _localizedValues[locale.languageCode]!['review2_initials']!;
+  String get review2Text =>
+      _localizedValues[locale.languageCode]!['review2_text']!;
+  String get review3Name =>
+      _localizedValues[locale.languageCode]!['review3_name']!;
+  String get review3Initials =>
+      _localizedValues[locale.languageCode]!['review3_initials']!;
+  String get review3Text =>
+      _localizedValues[locale.languageCode]!['review3_text']!;
+  String get review4Name =>
+      _localizedValues[locale.languageCode]!['review4_name']!;
+  String get review4Initials =>
+      _localizedValues[locale.languageCode]!['review4_initials']!;
+  String get review4Text =>
+      _localizedValues[locale.languageCode]!['review4_text']!;
+  String get review5Name =>
+      _localizedValues[locale.languageCode]!['review5_name']!;
+  String get review5Initials =>
+      _localizedValues[locale.languageCode]!['review5_initials']!;
+  String get review5Text =>
+      _localizedValues[locale.languageCode]!['review5_text']!;
+  String get review6Name =>
+      _localizedValues[locale.languageCode]!['review6_name']!;
+  String get review6Initials =>
+      _localizedValues[locale.languageCode]!['review6_initials']!;
+  String get review6Text =>
+      _localizedValues[locale.languageCode]!['review6_text']!;
+  String get service1Title =>
+      _localizedValues[locale.languageCode]!['service1_title']!;
+  String get service1Desc =>
+      _localizedValues[locale.languageCode]!['service1_desc']!;
+  String get service2Title =>
+      _localizedValues[locale.languageCode]!['service2_title']!;
+  String get service2Desc =>
+      _localizedValues[locale.languageCode]!['service2_desc']!;
+  String get service3Title =>
+      _localizedValues[locale.languageCode]!['service3_title']!;
+  String get service3Desc =>
+      _localizedValues[locale.languageCode]!['service3_desc']!;
+  String get service4Title =>
+      _localizedValues[locale.languageCode]!['service4_title']!;
+  String get service4Desc =>
+      _localizedValues[locale.languageCode]!['service4_desc']!;
+  String get service5Title =>
+      _localizedValues[locale.languageCode]!['service5_title']!;
+  String get service5Desc =>
+      _localizedValues[locale.languageCode]!['service5_desc']!;
+  String get service6Title =>
+      _localizedValues[locale.languageCode]!['service6_title']!;
+  String get service6Desc =>
+      _localizedValues[locale.languageCode]!['service6_desc']!;
 }
 
 class _AppLocalizationsDelegate
