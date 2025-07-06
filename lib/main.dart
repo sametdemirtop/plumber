@@ -87,6 +87,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   bool _isHovered = false;
   Map<String, bool> _hoveredCards = {};
   Map<String, bool> _hoveredButtons = {};
+  bool _isMobileMenuOpen = false;
 
   @override
   void dispose() {
@@ -150,64 +151,191 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget _buildNavigation() {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: ResponsiveRowColumn(
-        layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-            ? ResponsiveRowColumnType.COLUMN
-            : ResponsiveRowColumnType.ROW,
-        rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
-        rowCrossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          ResponsiveRowColumnItem(
-            child: Image.asset(
-              'assets/images/logo1.png',
-              height: 100,
-              fit: BoxFit.contain,
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 16
+                  : 20,
+              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 12
+                  : 16,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: SizedBox(
+                    height:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? 60
+                            : 100,
+                    child: Image.asset(
+                      'assets/images/logo1.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                if (ResponsiveBreakpoints.of(context).smallerThan(TABLET))
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(
+                      _isMobileMenuOpen ? Icons.close : Icons.menu,
+                      size: 28,
+                      color: const Color(0xFF2B4B80),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isMobileMenuOpen = !_isMobileMenuOpen;
+                      });
+                    },
+                  )
+                else
+                  Flexible(
+                    flex: 2,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _buildNavItem(AppLocalizations.of(context).home,
+                              () => _scrollToSection('home')),
+                          _buildNavItem(AppLocalizations.of(context).services,
+                              () => _scrollToSection('services')),
+                          _buildNavItem(
+                              AppLocalizations.of(context).requestService,
+                              () => _scrollToSection('request')),
+                          _buildNavItem(AppLocalizations.of(context).reviews,
+                              () => _scrollToSection('reviews')),
+                          const SizedBox(width: 20),
+                          _buildHoverButton(
+                            onPressed: () => _scrollToSection('request'),
+                            buttonId: 'nav_request',
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context).requestTechnician,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          IconButton(
+                            onPressed: () {
+                              context.read<LocaleProvider>().toggleLocale();
+                            },
+                            icon: Text(
+                              context
+                                  .watch<LocaleProvider>()
+                                  .locale
+                                  .languageCode
+                                  .toUpperCase(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2B4B80),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
-          ResponsiveRowColumnItem(
-            child: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                ? const SizedBox()
-                : Row(
-                    children: [
-                      _buildNavItem(AppLocalizations.of(context).home,
-                          () => _scrollToSection('home')),
-                      _buildNavItem(AppLocalizations.of(context).services,
-                          () => _scrollToSection('services')),
-                      _buildNavItem(AppLocalizations.of(context).requestService,
-                          () => _scrollToSection('request')),
-                      _buildNavItem(AppLocalizations.of(context).reviews,
-                          () => _scrollToSection('reviews')),
-                      const SizedBox(width: 20),
-                      _buildHoverButton(
-                        onPressed: () => _scrollToSection('request'),
-                        buttonId: 'request',
-                        child: Text(
-                          AppLocalizations.of(context).requestTechnician,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      IconButton(
-                        onPressed: () {
-                          context.read<LocaleProvider>().toggleLocale();
-                        },
-                        icon: Text(
-                          context
-                              .watch<LocaleProvider>()
-                              .locale
-                              .languageCode
-                              .toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2B4B80),
-                          ),
-                        ),
-                      ),
-                    ],
+          if (ResponsiveBreakpoints.of(context).smallerThan(TABLET) &&
+              _isMobileMenuOpen)
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    offset: const Offset(0, 4),
+                    blurRadius: 8,
                   ),
-          ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildMobileNavItem(AppLocalizations.of(context).home,
+                      () => _scrollToSection('home')),
+                  _buildMobileNavItem(AppLocalizations.of(context).services,
+                      () => _scrollToSection('services')),
+                  _buildMobileNavItem(
+                      AppLocalizations.of(context).requestService,
+                      () => _scrollToSection('request')),
+                  _buildMobileNavItem(AppLocalizations.of(context).reviews,
+                      () => _scrollToSection('reviews')),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    child: _buildHoverButton(
+                      onPressed: () => _scrollToSection('request'),
+                      buttonId: 'mobile_request',
+                      child: Text(
+                        AppLocalizations.of(context).requestTechnician,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: IconButton(
+                      onPressed: () {
+                        context.read<LocaleProvider>().toggleLocale();
+                      },
+                      icon: Text(
+                        context
+                            .watch<LocaleProvider>()
+                            .locale
+                            .languageCode
+                            .toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2B4B80),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMobileNavItem(String title, VoidCallback onTap) {
+    return InkWell(
+      onTap: () {
+        onTap();
+        setState(() {
+          _isMobileMenuOpen = false;
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF1F2937),
+          ),
+        ),
       ),
     );
   }
@@ -339,23 +467,13 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget _buildHeroSection() {
     return Container(
       key: _heroKey,
-      height: 600,
+      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 600,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
             'https://readdy.ai/api/search-image?query=A%20professional%20handyman%20in%20work%20clothes%20fixing%20a%20sink%20in%20a%20modern%20kitchen.%20The%20image%20shows%20the%20handyman%20from%20the%20side%2C%20focused%20on%20his%20work.%20The%20left%20side%20of%20the%20image%20has%20a%20clean%2C%20simple%20background%20that%20gradually%20transitions%20to%20the%20detailed%20scene%20on%20the%20right.%20The%20lighting%20is%20bright%20and%20natural%2C%20creating%20a%20friendly%20and%20trustworthy%20atmosphere.%20The%20color%20palette%20is%20professional%20with%20blues%20and%20whites.&width=1600&height=800&seq=hero1&orientation=landscape',
           ),
           fit: BoxFit.cover,
-        ),
-        gradient: LinearGradient(
-          colors: [
-            Color.fromRGBO(43, 75, 128, 0.85),
-            Color.fromRGBO(43, 75, 128, 0.6),
-            Color.fromRGBO(43, 75, 128, 0),
-          ],
-          stops: [0.0, 0.5, 1.0],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
         ),
       ),
       child: Container(
@@ -371,7 +489,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             end: Alignment.centerRight,
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(
+          horizontal:
+              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        ),
         child: Align(
           alignment: Alignment.centerLeft,
           child: ConstrainedBox(
@@ -385,7 +506,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   style: TextStyle(
                     fontSize:
                         ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? 32
+                            ? 28
                             : 48,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -395,8 +516,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context).heroSubtitle,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  style: TextStyle(
+                    fontSize:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? 16
+                            : 20,
                     color: Colors.white,
                     height: 1.5,
                   ),
@@ -404,7 +528,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 const SizedBox(height: 32),
                 _buildHoverButton(
                   onPressed: () => _scrollToSection('request'),
-                  buttonId: 'request',
+                  buttonId: 'hero_request',
                   child: Text(
                     AppLocalizations.of(context).requestTechnician,
                     style: const TextStyle(fontWeight: FontWeight.w600),
@@ -420,7 +544,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildIntroSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
       color: Colors.white,
       child: MaxWidthBox(
         maxWidth: 1200,
@@ -438,10 +567,13 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 children: [
                   Text(
                     AppLocalizations.of(context).trustedExpertsTitle,
-                    style: const TextStyle(
-                      fontSize: 32,
+                    style: TextStyle(
+                      fontSize:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 24
+                              : 32,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
+                      color: const Color(0xFF1F2937),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -477,40 +609,43 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             ResponsiveRowColumnItem(
               rowFlex: 1,
               child: Container(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.all(
+                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                      ? 24
+                      : 32,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9FAFB),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildStatItem('30+',
-                              AppLocalizations.of(context).yearsExperience),
-                        ),
-                        Expanded(
-                          child: _buildStatItem('5,000+',
-                              AppLocalizations.of(context).projectsCompleted),
-                        ),
-                      ],
+                    _buildStatItem(
+                        '30+', AppLocalizations.of(context).yearsExperience),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
                     ),
-                    const SizedBox(height: 32),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildStatItem(
-                              '98%',
-                              AppLocalizations.of(context)
-                                  .customerSatisfaction),
-                        ),
-                        Expanded(
-                          child: _buildStatItem('8.30-20.00',
-                              AppLocalizations.of(context).emergencyService),
-                        ),
-                      ],
+                    _buildStatItem('5,000+',
+                        AppLocalizations.of(context).projectsCompleted),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
                     ),
+                    _buildStatItem('98%',
+                        AppLocalizations.of(context).customerSatisfaction),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
+                    _buildStatItem('8.30-20.00',
+                        AppLocalizations.of(context).emergencyService),
                   ],
                 ),
               ),
@@ -522,32 +657,59 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildStatItem(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2B4B80),
-          ),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 24,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: const Color(0xFFE5E7EB),
+          width: 1,
         ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Color(0xFF6B7280),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 28
+                  : 36,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF2B4B80),
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF6B7280),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildServicesPreview() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
       color: const Color(0xFFF9FAFB),
       child: MaxWidthBox(
         maxWidth: 1200,
@@ -555,10 +717,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           children: [
             Text(
               AppLocalizations.of(context).ourServices,
-              style: const TextStyle(
-                fontSize: 32,
+              style: TextStyle(
+                fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 24
+                    : 32,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
+                color: const Color(0xFF1F2937),
               ),
             ),
             const SizedBox(height: 16),
@@ -571,13 +735,15 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 48),
+            SizedBox(
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 32
+                  : 48,
+            ),
             ResponsiveRowColumn(
-              layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? ResponsiveRowColumnType.COLUMN
-                  : ResponsiveRowColumnType.ROW,
+              layout: ResponsiveRowColumnType.COLUMN,
               rowSpacing: 24,
-              columnSpacing: 16,
+              columnSpacing: 24,
               children: [
                 ResponsiveRowColumnItem(
                   rowFlex: 1,
@@ -643,41 +809,47 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildServiceCard(IconData icon, String title, String description) {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return _buildHoverCard(
       cardId: title,
       child: Container(
-        padding: const EdgeInsets.all(24),
+        width: double.infinity,
+        padding: EdgeInsets.all(isMobile ? 20 : 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFF2B4B80).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(28),
-              ),
-              child: Icon(
-                icon,
-                size: 28,
-                color: const Color(0xFF2B4B80),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF1F2937),
-              ),
+            Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2B4B80).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 28,
+                    color: const Color(0xFF2B4B80),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: isMobile ? 18 : 20,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1F2937),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Text(
               description,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF6B7280),
+                color: const Color(0xFF6B7280),
                 height: 1.6,
               ),
             ),
@@ -690,7 +862,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget _buildServicesSection() {
     return Container(
       key: _servicesKey,
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
       color: Colors.white,
       child: MaxWidthBox(
         maxWidth: 1200,
@@ -698,11 +875,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           children: [
             Text(
               AppLocalizations.of(context).whatWeCanHelp,
-              style: const TextStyle(
-                fontSize: 32,
+              style: TextStyle(
+                fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 24
+                    : 32,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
+                color: const Color(0xFF1F2937),
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
@@ -714,10 +894,17 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 48),
+            SizedBox(
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 32
+                  : 48,
+            ),
             ResponsiveRowColumn(
               layout: ResponsiveRowColumnType.COLUMN,
-              columnSpacing: 24,
+              columnSpacing:
+                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                      ? 16
+                      : 24,
               children: [
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
@@ -744,14 +931,6 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           AppLocalizations.of(context).service2Desc,
                         ),
                       ),
-                      ResponsiveRowColumnItem(
-                        rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/mutfak.png',
-                          AppLocalizations.of(context).service3Title,
-                          AppLocalizations.of(context).service3Desc,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -767,11 +946,31 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
+                          'assets/images/mutfak.png',
+                          AppLocalizations.of(context).service3Title,
+                          AppLocalizations.of(context).service3Desc,
+                        ),
+                      ),
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: _buildDetailedServiceCard(
                           'assets/images/acil.png',
                           AppLocalizations.of(context).service4Title,
                           AppLocalizations.of(context).service4Desc,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  child: ResponsiveRowColumn(
+                    layout:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? ResponsiveRowColumnType.COLUMN
+                            : ResponsiveRowColumnType.ROW,
+                    rowSpacing: 24,
+                    columnSpacing: 16,
+                    children: [
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         child: _buildDetailedServiceCard(
@@ -809,9 +1008,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: SizedBox(
-              height: 300,
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 200
+                  : 300,
               width: double.infinity,
-              child: Image.network(
+              child: Image.asset(
                 imageUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
@@ -828,19 +1029,29 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 16
+                  : 24,
+              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 16
+                  : 20,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  style: TextStyle(
+                    fontSize:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? 18
+                            : 20,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
+                    color: const Color(0xFF1F2937),
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 Text(
                   description,
                   style: const TextStyle(
@@ -907,10 +1118,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     ),
                     const SizedBox(height: 24),
                     ResponsiveRowColumn(
-                      layout:
-                          ResponsiveBreakpoints.of(context).smallerThan(MOBILE)
-                              ? ResponsiveRowColumnType.COLUMN
-                              : ResponsiveRowColumnType.ROW,
+                      layout: ResponsiveRowColumnType.ROW,
                       rowSpacing: 16,
                       columnSpacing: 16,
                       children: [
@@ -919,7 +1127,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                             onPressed: () => _scrollToSection('request'),
                             buttonId: 'cta_request',
                             child: Text(
-                              AppLocalizations.of(context).requestService,
+                              AppLocalizations.of(context).requestTechnician,
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
                             ),
@@ -979,7 +1187,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   void _launchPhone() async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: '+15551234567');
+    final Uri phoneUri = Uri(scheme: 'tel', path: '+905324533802');
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
     }
@@ -988,7 +1196,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget _buildRequestSection() {
     return Container(
       key: _requestKey,
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
       color: Colors.white,
       child: MaxWidthBox(
         maxWidth: 800,
@@ -996,11 +1209,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           children: [
             Text(
               AppLocalizations.of(context).needFix,
-              style: const TextStyle(
-                fontSize: 32,
+              style: TextStyle(
+                fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 24
+                    : 32,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
+                color: const Color(0xFF1F2937),
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
@@ -1012,9 +1228,15 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 48),
+            SizedBox(
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 32
+                  : 48,
+            ),
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: EdgeInsets.all(
+                ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 20 : 32,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -1041,7 +1263,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
                     _buildFormField(
                       controller: _phoneController,
                       label: AppLocalizations.of(context).phoneNumber,
@@ -1054,7 +1281,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
                     _buildFormField(
                       controller: _addressController,
                       label: AppLocalizations.of(context).address,
@@ -1066,7 +1298,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1084,7 +1321,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                               ? null
                               : _selectedService,
                           hint: Text(
-                              AppLocalizations.of(context).selectServiceType),
+                            AppLocalizations.of(context).selectServiceType,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF6B7280),
+                            ),
+                          ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -1096,9 +1338,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                               borderSide: const BorderSide(
                                   color: Color(0xFF2B4B80), width: 2),
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                               horizontal: 16,
-                              vertical: 12,
+                              vertical: ResponsiveBreakpoints.of(context)
+                                      .smallerThan(TABLET)
+                                  ? 12
+                                  : 16,
                             ),
                           ),
                           items: [
@@ -1142,14 +1387,24 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
                     _buildFormField(
                       controller: _notesController,
                       label: AppLocalizations.of(context).additionalNotes,
                       hintText: AppLocalizations.of(context).describeNeeds,
                       maxLines: 4,
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 24
+                              : 32,
+                    ),
                     SizedBox(
                       width: double.infinity,
                       child: _buildHoverButton(
@@ -1165,43 +1420,6 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _launchWhatsApp(),
-                child: _buildHoverCard(
-                  cardId: 'whatsapp_button',
-                  backgroundColor: Colors.transparent,
-                  hoverBackgroundColor: Colors.grey.withOpacity(0.1),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.chat,
-                          color: Color(0xFF25D366),
-                          size: 24,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          AppLocalizations.of(context).whatsappChat,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF2B4B80),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -1236,8 +1454,16 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           keyboardType: keyboardType,
           maxLines: maxLines,
           validator: validator,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF1F2937),
+          ),
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF6B7280),
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
@@ -1246,9 +1472,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Color(0xFF2B4B80), width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 12,
+              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 12
+                  : 16,
             ),
           ),
         ),
@@ -1319,7 +1547,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   void _launchWhatsApp() async {
-    final Uri whatsAppUri = Uri.parse('https://wa.me/15551234567');
+    final Uri whatsAppUri = Uri.parse('https://wa.me/905324533802');
     if (await canLaunchUrl(whatsAppUri)) {
       await launchUrl(whatsAppUri);
     }
@@ -1526,7 +1754,12 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
 
   Widget _buildFooter() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 32 : 48,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
       color: const Color(0xFF1F2937),
       child: MaxWidthBox(
         maxWidth: 1200,
@@ -1548,7 +1781,10 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
                           'assets/images/logo1.png',
-                          height: 100,
+                          height: ResponsiveBreakpoints.of(context)
+                                  .smallerThan(TABLET)
+                              ? 80
+                              : 100,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -1581,8 +1817,11 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     children: [
                       Text(
                         AppLocalizations.of(context).quickLinks,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: ResponsiveBreakpoints.of(context)
+                                  .smallerThan(TABLET)
+                              ? 16
+                              : 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -1607,8 +1846,11 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     children: [
                       Text(
                         AppLocalizations.of(context).services,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: ResponsiveBreakpoints.of(context)
+                                  .smallerThan(TABLET)
+                              ? 16
+                              : 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -1637,8 +1879,11 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     children: [
                       Text(
                         AppLocalizations.of(context).contactUs,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: ResponsiveBreakpoints.of(context)
+                                  .smallerThan(TABLET)
+                              ? 16
+                              : 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -1655,7 +1900,11 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            SizedBox(
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 24
+                  : 32,
+            ),
             Container(
               height: 1,
               color: const Color(0xFF374151),
@@ -1676,11 +1925,18 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                       fontSize: 14,
                       color: Color(0xFF9CA3AF),
                     ),
+                    textAlign:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? TextAlign.center
+                            : TextAlign.left,
                   ),
                 ),
                 ResponsiveRowColumnItem(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.start,
                     children: [
                       _buildFooterLink(
                           AppLocalizations.of(context).privacyPolicy, () {}),
