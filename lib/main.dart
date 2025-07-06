@@ -1189,12 +1189,32 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // Prepare WhatsApp message with form data
+      final String message = '''
+Ad Soyad: ${_nameController.text}
+Telefon: ${_phoneController.text}
+Adres: ${_addressController.text}
+Hizmet: ${_getServiceName(_selectedService)}
+${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}''';
+
+      // Encode message for URL
+      final encodedMessage = Uri.encodeComponent(message);
+
+      // Create WhatsApp URL with Turkish phone number
+      final whatsappUrl =
+          Uri.parse('https://wa.me/905324533802?text=$encodedMessage');
+
+      // Launch WhatsApp
+      launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
+
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-              'Thank you for your request! We will contact you shortly to schedule your service.'),
-          backgroundColor: Color(0xFF10B981),
+            AppLocalizations.of(context).requestSubmitted,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: const Color(0xFF10B981),
         ),
       );
 
@@ -1207,6 +1227,25 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       setState(() {
         _selectedService = '';
       });
+    }
+  }
+
+  String _getServiceName(String serviceValue) {
+    switch (serviceValue) {
+      case 'drain_cleaning':
+        return AppLocalizations.of(context).drainCleaning;
+      case 'bathroom_repair':
+        return AppLocalizations.of(context).bathroomRepair;
+      case 'kitchen_plumbing':
+        return AppLocalizations.of(context).kitchenPlumbing;
+      case 'emergency_service':
+        return AppLocalizations.of(context).emergencyService;
+      case 'bathroom_renovation':
+        return AppLocalizations.of(context).bathroomRenovation;
+      case 'maintenance_service':
+        return AppLocalizations.of(context).maintenanceService;
+      default:
+        return serviceValue;
     }
   }
 

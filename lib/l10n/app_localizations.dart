@@ -128,6 +128,8 @@ class AppLocalizations {
       'review6_initials': 'MA',
       'review6_text':
           'Having served countless customers over 20 years at Özinan Yapı, I can confidently say that no plumbing problem is too difficult for us. We use the latest technology and techniques to ensure lasting solutions for all your plumbing needs.',
+      'requestSubmitted':
+          'Thank you for your request! We will contact you shortly.',
     },
     'tr': {
       'hero_title': 'Güvenilir Yerel Tamir ve Yenileme Hizmetleri',
@@ -243,6 +245,8 @@ class AppLocalizations {
       'review6_initials': 'MA',
       'review6_text':
           'Özinan Yapı\'da 20 yılı aşkın süredir sayısız müşteriye hizmet verdikten sonra diyebilirim ki, bizim için çözülemeyecek tesisat sorunu yoktur. En son teknoloji ve teknikleri kullanarak tüm tesisat ihtiyaçlarınıza kalıcı çözümler sunuyoruz.',
+      'requestSubmitted':
+          'Talebiniz için teşekkürler! En kısa sürede sizinle iletişime geçeceğiz.',
     },
   };
 
@@ -417,6 +421,8 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['review6_initials']!;
   String get review6Text =>
       _localizedValues[locale.languageCode]!['review6_text']!;
+  String get requestSubmitted =>
+      _localizedValues[locale.languageCode]!['requestSubmitted']!;
 }
 
 class _AppLocalizationsDelegate
