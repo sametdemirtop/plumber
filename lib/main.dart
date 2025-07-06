@@ -213,19 +213,36 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildNavItem(String title, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF1F2937),
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          onEnter: (_) => setState(() => _hoveredButtons['nav_$title'] = true),
+          onExit: (_) => setState(() => _hoveredButtons['nav_$title'] = false),
+          child: GestureDetector(
+            onTap: onTap,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: _hoveredButtons['nav_$title'] == true
+                    ? const Color(0xFF2B4B80).withOpacity(0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: _hoveredButtons['nav_$title'] == true
+                      ? FontWeight.w600
+                      : FontWeight.w500,
+                  color: const Color(0xFF1F2937),
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -1701,19 +1718,39 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildFooterLink(String title, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Color(0xFF9CA3AF),
-            decoration: TextDecoration.underline,
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (_) =>
+              setState(() => _hoveredButtons['footer_$title'] = true),
+          onExit: (_) =>
+              setState(() => _hoveredButtons['footer_$title'] = false),
+          child: GestureDetector(
+            onTap: onTap,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: _hoveredButtons['footer_$title'] == true
+                    ? Colors.white.withOpacity(0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: _hoveredButtons['footer_$title'] == true
+                      ? Colors.white.withOpacity(0.9)
+                      : const Color(0xFF9CA3AF),
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
