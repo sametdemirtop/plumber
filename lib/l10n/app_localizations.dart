@@ -132,7 +132,7 @@ class AppLocalizations {
       'hero_title': 'Güvenilir Yerel Tamir ve Yenileme Hizmetleri',
       'hero_subtitle':
           'Eviniz veya işyeriniz için hızlı, uygun fiyatlı yardım – boyamadan tesisata.',
-      'request_technician': 'Teknisyen Talep Et',
+      'request_technician': 'Usta Talep Et',
       'home': 'Ana Sayfa',
       'services': 'Hizmetler',
       'app_name': 'Özinan Yapı Malzemeleri - Tamir ve Tadilat Hizmetleri',
@@ -166,10 +166,10 @@ class AppLocalizations {
       'emergency_service': 'Acil Servis',
       'what_we_can_help': 'Size Nasıl Yardımcı Olabiliriz',
       'what_we_can_help_subtitle':
-          'Küçük tamirlerden komple yenilemelere kadar, uzman teknisyenlerimiz tüm ev geliştirme ihtiyaçlarınızı karşılayabilir.',
+          'Küçük tamirlerden komple yenilemelere kadar, uzman ustalarımız tüm ev geliştirme ihtiyaçlarınızı karşılayabilir.',
       'ready_to_repair': 'Tamir projenize başlamaya hazır mısınız?',
       'ready_to_repair_subtitle':
-          'Uzman teknisyen ekibimiz, ev veya işyeri tamir ihtiyaçlarınız için yardıma hazır. Hemen hizmet talep edin ve hızlı yanıt alın.',
+          'Uzman usta ekibimiz, ev veya işyeri tamir ihtiyaçlarınız için yardıma hazır. Hemen hizmet talep edin ve hızlı yanıt alın.',
       'call_us_now': 'Hemen Arayın',
       'need_fix': 'Tamire mi İhtiyacınız Var? Hemen Başlayalım',
       'need_fix_subtitle':

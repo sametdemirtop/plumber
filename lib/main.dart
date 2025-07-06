@@ -74,6 +74,10 @@ class HandyFixHomePage extends StatefulWidget {
 
 class _HandyFixHomePageState extends State<HandyFixHomePage> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _servicesKey = GlobalKey();
+  final GlobalKey _requestKey = GlobalKey();
+  final GlobalKey _reviewsKey = GlobalKey();
+  final GlobalKey _heroKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -92,24 +96,29 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   void _scrollToSection(String sectionId) {
-    // Implementation for smooth scrolling to sections
-    double offset = 0;
+    GlobalKey? targetKey;
     switch (sectionId) {
+      case 'home':
+        targetKey = _heroKey;
+        break;
       case 'services':
-        offset = 1000;
+        targetKey = _servicesKey;
         break;
       case 'request':
-        offset = 2000;
+        targetKey = _requestKey;
         break;
       case 'reviews':
-        offset = 3000;
+        targetKey = _reviewsKey;
         break;
     }
-    _scrollController.animateTo(
-      offset,
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeInOut,
-    );
+
+    if (targetKey?.currentContext != null) {
+      Scrollable.ensureVisible(
+        targetKey!.currentContext!,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -229,6 +238,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildHeroSection() {
     return Container(
+      key: _heroKey,
       height: 600,
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -601,6 +611,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildServicesSection() {
     return Container(
+      key: _servicesKey,
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
       color: Colors.white,
       child: MaxWidthBox(
@@ -914,6 +925,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildRequestSection() {
     return Container(
+      key: _requestKey,
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
       color: Colors.white,
       child: MaxWidthBox(
@@ -1210,6 +1222,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildReviewsSection() {
     return Container(
+      key: _reviewsKey,
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
       color: const Color(0xFFF9FAFB),
       child: MaxWidthBox(
