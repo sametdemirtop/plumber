@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
+import 'providers/locale_provider.dart';
 
 void main() {
-  runApp(const HandyFixApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => LocaleProvider(),
+      child: const HandyFixApp(),
+    ),
+  );
 }
 
 class HandyFixApp extends StatelessWidget {
@@ -12,27 +21,43 @@ class HandyFixApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HandyFix - Reliable Local Repair & Renovation Services',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2B4B80),
-          primary: const Color(0xFF2B4B80),
-          secondary: const Color(0xFFFF7A3D),
-        ),
-        useMaterial3: true,
-        textTheme: GoogleFonts.interTextTheme(),
-      ),
-      builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
-        breakpoints: [
-          const Breakpoint(start: 0, end: 450, name: MOBILE),
-          const Breakpoint(start: 451, end: 800, name: TABLET),
-          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-        ],
-      ),
-      home: const HandyFixHomePage(),
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'HandyFix - Reliable Local Repair & Renovation Services',
+          locale: localeProvider.locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('tr'),
+          ],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF2B4B80),
+              primary: const Color(0xFF2B4B80),
+              secondary: const Color(0xFFFF7A3D),
+            ),
+            useMaterial3: true,
+            textTheme: GoogleFonts.interTextTheme(),
+          ),
+          builder: (context, child) => ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: [
+              const Breakpoint(start: 0, end: 450, name: MOBILE),
+              const Breakpoint(start: 451, end: 800, name: TABLET),
+              const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+            ],
+          ),
+          home: const HandyFixHomePage(),
+        );
+      },
     );
   }
 }
@@ -133,13 +158,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 ? const SizedBox()
                 : Row(
                     children: [
-                      _buildNavItem('Home', () => _scrollToSection('home')),
-                      _buildNavItem(
-                          'Services', () => _scrollToSection('services')),
-                      _buildNavItem(
-                          'Request Service', () => _scrollToSection('request')),
-                      _buildNavItem(
-                          'Reviews', () => _scrollToSection('reviews')),
+                      _buildNavItem(AppLocalizations.of(context).home,
+                          () => _scrollToSection('home')),
+                      _buildNavItem(AppLocalizations.of(context).services,
+                          () => _scrollToSection('services')),
+                      _buildNavItem(AppLocalizations.of(context).requestService,
+                          () => _scrollToSection('request')),
+                      _buildNavItem(AppLocalizations.of(context).reviews,
+                          () => _scrollToSection('reviews')),
                       const SizedBox(width: 20),
                       ElevatedButton(
                         onPressed: () => _scrollToSection('request'),
@@ -154,9 +180,26 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'Request a Technician',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                        child: Text(
+                          AppLocalizations.of(context).requestTechnician,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      IconButton(
+                        onPressed: () {
+                          context.read<LocaleProvider>().toggleLocale();
+                        },
+                        icon: Text(
+                          context
+                              .watch<LocaleProvider>()
+                              .locale
+                              .languageCode
+                              .toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2B4B80),
+                          ),
                         ),
                       ),
                     ],
@@ -228,7 +271,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Reliable Local Repair & Renovation Services',
+                  AppLocalizations.of(context).heroTitle,
                   style: TextStyle(
                     fontSize:
                         ResponsiveBreakpoints.of(context).smallerThan(TABLET)
@@ -240,9 +283,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Quick, affordable help for your home or business – from painting to plumbing.',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).heroSubtitle,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     height: 1.5,
@@ -266,7 +309,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: const Text('Request a Technician'),
+                  child: Text(
+                    AppLocalizations.of(context).requestTechnician,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ],
             ),
@@ -289,41 +335,41 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           rowSpacing: 48,
           columnSpacing: 32,
           children: [
-            const ResponsiveRowColumnItem(
+            ResponsiveRowColumnItem(
               rowFlex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your Trusted Local Repair Experts',
-                    style: TextStyle(
+                    AppLocalizations.of(context).trustedExpertsTitle,
+                    style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1F2937),
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
-                    'Since 2010, HandyFix has been providing top-quality repair and renovation services to homeowners and businesses across the region. Our team of skilled technicians brings expertise and dedication to every project, no matter how big or small.',
-                    style: TextStyle(
+                    AppLocalizations.of(context).trustedExpertsDesc1,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF6B7280),
                       height: 1.6,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
-                    'We understand that home repairs can be stressful, which is why we focus on providing reliable, transparent, and affordable services. Our technicians arrive on time, work efficiently, and always clean up after the job is done.',
-                    style: TextStyle(
+                    AppLocalizations.of(context).trustedExpertsDesc2,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF6B7280),
                       height: 1.6,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
-                    'Whether you need a quick fix for a leaky faucet or a complete room renovation, we\'re here to help with the skill and care your home deserves.',
-                    style: TextStyle(
+                    AppLocalizations.of(context).trustedExpertsDesc3,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF6B7280),
                       height: 1.6,
@@ -345,10 +391,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildStatItem('15+', 'Years Experience'),
+                          child: _buildStatItem('15+',
+                              AppLocalizations.of(context).yearsExperience),
                         ),
                         Expanded(
-                          child: _buildStatItem('5,000+', 'Projects Completed'),
+                          child: _buildStatItem('5,000+',
+                              AppLocalizations.of(context).projectsCompleted),
                         ),
                       ],
                     ),
@@ -356,10 +404,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildStatItem('98%', 'Customer Satisfaction'),
+                          child: _buildStatItem(
+                              '98%',
+                              AppLocalizations.of(context)
+                                  .customerSatisfaction),
                         ),
                         Expanded(
-                          child: _buildStatItem('24/7', 'Emergency Service'),
+                          child: _buildStatItem('24/7',
+                              AppLocalizations.of(context).emergencyService),
                         ),
                       ],
                     ),
@@ -405,18 +457,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         maxWidth: 1200,
         child: Column(
           children: [
-            const Text(
-              'Our Services',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).ourServices,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F2937),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'We offer a comprehensive range of repair and renovation services to keep your home or business in perfect condition.',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).servicesSubtitle,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Color(0xFF6B7280),
                 height: 1.6,
@@ -555,18 +607,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         maxWidth: 1200,
         child: Column(
           children: [
-            const Text(
-              'What We Can Help You With',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).whatWeCanHelp,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F2937),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'From small repairs to complete renovations, our skilled technicians can handle all your home improvement needs.',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).whatWeCanHelpSubtitle,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Color(0xFF6B7280),
                 height: 1.6,
@@ -767,18 +819,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Ready to get your repair project started?',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context).readyToRepair,
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1F2937),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Our team of skilled technicians is ready to help with your home or business repair needs. Request service today and get a quick response.',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context).readyToRepairSubtitle,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Color(0xFF6B7280),
                         height: 1.6,
@@ -817,7 +869,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           child: OutlinedButton.icon(
                             onPressed: () => _launchPhone(),
                             icon: const Icon(Icons.phone),
-                            label: const Text('Call Us Now'),
+                            label: Text(AppLocalizations.of(context).callUsNow),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: const Color(0xFF2B4B80),
                               side: const BorderSide(color: Color(0xFF2B4B80)),
@@ -876,18 +928,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         maxWidth: 800,
         child: Column(
           children: [
-            const Text(
-              'Need a Fix? Let\'s Get Started',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).needFix,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F2937),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Fill out the form below to request our services. We\'ll get back to you within 24 hours to schedule your appointment.',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).needFixSubtitle,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Color(0xFF6B7280),
                 height: 1.6,
@@ -914,8 +966,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   children: [
                     _buildFormField(
                       controller: _nameController,
-                      label: 'Full Name',
-                      hintText: 'Enter your full name',
+                      label: AppLocalizations.of(context).fullName,
+                      hintText: AppLocalizations.of(context).enterFullName,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your full name';
@@ -926,8 +978,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     const SizedBox(height: 24),
                     _buildFormField(
                       controller: _phoneController,
-                      label: 'Phone Number',
-                      hintText: 'Enter your phone number',
+                      label: AppLocalizations.of(context).phoneNumber,
+                      hintText: AppLocalizations.of(context).enterPhone,
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -939,8 +991,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     const SizedBox(height: 24),
                     _buildFormField(
                       controller: _addressController,
-                      label: 'Address',
-                      hintText: 'Enter your address',
+                      label: AppLocalizations.of(context).address,
+                      hintText: AppLocalizations.of(context).enterAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your address';
@@ -952,9 +1004,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Type of Need',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context).typeOfNeed,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF1F2937),
@@ -965,7 +1017,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                           value: _selectedService.isEmpty
                               ? null
                               : _selectedService,
-                          hint: const Text('Select service type'),
+                          hint: Text(
+                              AppLocalizations.of(context).selectServiceType),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -982,23 +1035,35 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                               vertical: 12,
                             ),
                           ),
-                          items: const [
+                          items: [
                             DropdownMenuItem(
-                                value: 'painting', child: Text('Painting')),
+                                value: 'painting',
+                                child: Text(
+                                    AppLocalizations.of(context).painting)),
                             DropdownMenuItem(
-                                value: 'plumbing', child: Text('Plumbing')),
+                                value: 'plumbing',
+                                child: Text(
+                                    AppLocalizations.of(context).plumbing)),
                             DropdownMenuItem(
-                                value: 'electrical', child: Text('Electrical')),
+                                value: 'electrical',
+                                child: Text(
+                                    AppLocalizations.of(context).electrical)),
                             DropdownMenuItem(
-                                value: 'tiling', child: Text('Tiling')),
+                                value: 'tiling',
+                                child:
+                                    Text(AppLocalizations.of(context).tiling)),
                             DropdownMenuItem(
                                 value: 'doors-windows',
-                                child: Text('Doors & Windows')),
+                                child: Text(
+                                    AppLocalizations.of(context).doorsWindows)),
                             DropdownMenuItem(
                                 value: 'garden',
-                                child: Text('Garden & Exterior')),
+                                child: Text(AppLocalizations.of(context)
+                                    .gardenExterior)),
                             DropdownMenuItem(
-                                value: 'other', child: Text('Other')),
+                                value: 'other',
+                                child:
+                                    Text(AppLocalizations.of(context).other)),
                           ],
                           onChanged: (value) {
                             setState(() {
@@ -1017,8 +1082,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     const SizedBox(height: 24),
                     _buildFormField(
                       controller: _notesController,
-                      label: 'Additional Notes (optional)',
-                      hintText: 'Describe your repair needs in detail',
+                      label: AppLocalizations.of(context).additionalNotes,
+                      hintText: AppLocalizations.of(context).describeNeeds,
                       maxLines: 4,
                     ),
                     const SizedBox(height: 32),
@@ -1034,8 +1099,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'Submit Request',
+                        child: Text(
+                          AppLocalizations.of(context).submitRequest,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -1050,17 +1115,17 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             const SizedBox(height: 24),
             GestureDetector(
               onTap: () => _launchWhatsApp(),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.chat,
                     color: Color(0xFF25D366),
                     size: 24,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
-                    'Prefer WhatsApp? Click here to chat with us now',
+                    AppLocalizations.of(context).whatsappChat,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -1159,18 +1224,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         maxWidth: 1200,
         child: Column(
           children: [
-            const Text(
-              'What Our Customers Say',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).whatCustomersSay,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F2937),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Don\'t just take our word for it. Here\'s what our satisfied customers have to say about our services.',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context).customersSaySubtitle,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Color(0xFF6B7280),
                 height: 1.6,
@@ -1445,11 +1510,19 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _buildFooterLink('Plumbing', () {}),
-                      _buildFooterLink('Bathroom Renovation', () {}),
-                      _buildFooterLink('Kitchen Renovation', () {}),
-                      _buildFooterLink('Water Leakage', () {}),
-                      _buildFooterLink('Water Leakage Repair', () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).plumbing, () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).bathroomRenovation,
+                          () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).kitchenRenovation,
+                          () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).waterLeakage, () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).waterLeakageRepair,
+                          () {}),
                     ],
                   ),
                 ),
