@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -144,13 +145,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         rowCrossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ResponsiveRowColumnItem(
-            child: Text(
-              'HandyFix',
-              style: GoogleFonts.pacifico(
-                fontSize: 28,
-                color: const Color(0xFF2B4B80),
-                fontWeight: FontWeight.bold,
-              ),
+            child: Image.asset(
+              'assets/images/logo1.png',
+              height: 100,
+              fit: BoxFit.contain,
             ),
           ),
           ResponsiveRowColumnItem(
@@ -410,7 +408,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                                   .customerSatisfaction),
                         ),
                         Expanded(
-                          child: _buildStatItem('24/7',
+                          child: _buildStatItem('8.30-20.00',
                               AppLocalizations.of(context).emergencyService),
                         ),
                       ],
@@ -520,19 +518,19 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () => _scrollToSection('services'),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'View all services',
-                    style: TextStyle(
+                    AppLocalizations.of(context).viewAllServices,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF2B4B80),
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
+                  const SizedBox(width: 8),
+                  const Icon(
                     Icons.arrow_forward,
                     size: 16,
                     color: Color(0xFF2B4B80),
@@ -1442,18 +1440,18 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'HandyFix',
-                        style: GoogleFonts.pacifico(
-                          fontSize: 28,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          'assets/images/logo1.png',
+                          height: 100,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Your trusted local repair and renovation service since 2010. Quality workmanship guaranteed.',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).workingHours,
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF9CA3AF),
                           height: 1.6,
@@ -1477,22 +1475,24 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Quick Links',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).quickLinks,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _buildFooterLink('Home', () => _scrollToSection('home')),
+                      _buildFooterLink(AppLocalizations.of(context).home,
+                          () => _scrollToSection('home')),
+                      _buildFooterLink(AppLocalizations.of(context).services,
+                          () => _scrollToSection('services')),
                       _buildFooterLink(
-                          'Services', () => _scrollToSection('services')),
-                      _buildFooterLink(
-                          'Request Service', () => _scrollToSection('request')),
-                      _buildFooterLink(
-                          'Reviews', () => _scrollToSection('reviews')),
+                          AppLocalizations.of(context).requestService,
+                          () => _scrollToSection('request')),
+                      _buildFooterLink(AppLocalizations.of(context).reviews,
+                          () => _scrollToSection('reviews')),
                     ],
                   ),
                 ),
@@ -1501,9 +1501,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Services',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).services,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -1531,9 +1531,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Contact Us',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).contactUs,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -1543,9 +1543,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       _buildContactInfo(Icons.location_on,
                           'Namık Kemal Mah. 10.Sokak No:4/A Esenler/İstanbul'),
                       _buildContactInfo(Icons.phone, '(532) 453 38 02'),
-                      _buildContactInfo(Icons.email, 'info@handyfix.com'),
-                      _buildContactInfo(
-                          Icons.access_time, 'Mon-Sat: 8.30AM - 8PM'),
+                      _buildContactInfo(Icons.email, 'demirtopdavut@gmail.com'),
+                      _buildContactInfo(Icons.access_time,
+                          AppLocalizations.of(context).workingHours),
                     ],
                   ),
                 ),
@@ -1565,10 +1565,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               rowCrossAxisAlignment: CrossAxisAlignment.center,
               columnSpacing: 16,
               children: [
-                const ResponsiveRowColumnItem(
+                ResponsiveRowColumnItem(
                   child: Text(
-                    '© 2025 Özinan Yapı Malzemeleri. All rights reserved.',
-                    style: TextStyle(
+                    AppLocalizations.of(context).allRightsReserved,
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF9CA3AF),
                     ),
@@ -1578,9 +1578,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildFooterLink('Privacy Policy', () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).privacyPolicy, () {}),
                       const SizedBox(width: 16),
-                      _buildFooterLink('Terms of Service', () {}),
+                      _buildFooterLink(
+                          AppLocalizations.of(context).termsOfService, () {}),
                     ],
                   ),
                 ),
