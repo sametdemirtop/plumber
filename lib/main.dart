@@ -398,7 +398,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 foregroundColor: Colors.white,
                 padding: padding ??
                     const EdgeInsets.symmetric(
-                      horizontal: 24,
+                      horizontal: 12,
                       vertical: 16,
                     ),
                 elevation: _hoveredButtons[buttonId] == true ? 8 : 2,
@@ -1075,7 +1075,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       child: MaxWidthBox(
         maxWidth: 1000,
         child: Container(
-          padding: const EdgeInsets.all(48),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -1143,10 +1143,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Icon(Icons.phone,
-                                    color: Color(0xFF2B4B80)),
+                                    size: 19, color: Color(0xFF2B4B80)),
                                 const SizedBox(width: 8),
                                 Text(
                                   AppLocalizations.of(context).callUsNow,
+                                  textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: Color(0xFF2B4B80),
                                     fontWeight: FontWeight.w600,
@@ -1190,6 +1191,21 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     final Uri phoneUri = Uri(scheme: 'tel', path: '+905324533802');
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
+    }
+  }
+
+  void _launchMail() async {
+    final Uri mailUri = Uri(scheme: 'mailto', path: 'demirtopdavut@gmail.com');
+    if (await canLaunchUrl(mailUri)) {
+      await launchUrl(mailUri);
+    }
+  }
+
+  void _launchMap() async {
+    final Uri googleMapsUri = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=41.030057,28.896884');
+    if (await canLaunchUrl(googleMapsUri)) {
+      await launchUrl(googleMapsUri);
     }
   }
 
@@ -1766,109 +1782,129 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
         child: Column(
           children: [
             ResponsiveRowColumn(
-              layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? ResponsiveRowColumnType.COLUMN
-                  : ResponsiveRowColumnType.ROW,
+              layout: ResponsiveRowColumnType.COLUMN,
               rowSpacing: 32,
               columnSpacing: 32,
               children: [
                 ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          'assets/images/logo1.png',
-                          height: ResponsiveBreakpoints.of(context)
-                                  .smallerThan(TABLET)
-                              ? 80
-                              : 100,
-                          fit: BoxFit.contain,
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                'assets/images/logo1.png',
+                                height: ResponsiveBreakpoints.of(context)
+                                        .smallerThan(TABLET)
+                                    ? 80
+                                    : 100,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(context).workingHours,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF9CA3AF),
+                                height: 1.6,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Wrap(
+                              spacing: ResponsiveBreakpoints.of(context)
+                                      .smallerThan(TABLET)
+                                  ? 3
+                                  : 12,
+                              runSpacing: 12,
+                              children: [
+                                _buildSocialButton(Icons.facebook, () {
+                                  launchUrl(
+                                      mode: LaunchMode.externalApplication,
+                                      Uri.parse(
+                                          'https://www.facebook.com/ozinanyapi/?locale=tr_TR'));
+                                }),
+                                _buildSocialButton(Icons.camera_alt, () {}),
+                                _buildSocialButton(Icons.alternate_email, () {
+                                  _launchMail();
+                                }),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        AppLocalizations.of(context).workingHours,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF9CA3AF),
-                          height: 1.6,
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context).quickLinks,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: ResponsiveBreakpoints.of(context)
+                                        .smallerThan(TABLET)
+                                    ? 16
+                                    : 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            _buildFooterLink(AppLocalizations.of(context).home,
+                                () => _scrollToSection('home')),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).services,
+                                () => _scrollToSection('services')),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).requestService,
+                                () => _scrollToSection('request')),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).reviews,
+                                () => _scrollToSection('reviews')),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          _buildSocialButton(Icons.facebook, () {}),
-                          const SizedBox(width: 12),
-                          _buildSocialButton(Icons.camera_alt, () {}),
-                          const SizedBox(width: 12),
-                          _buildSocialButton(Icons.alternate_email, () {}),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context).quickLinks,
-                        style: TextStyle(
-                          fontSize: ResponsiveBreakpoints.of(context)
-                                  .smallerThan(TABLET)
-                              ? 16
-                              : 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context).services,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: ResponsiveBreakpoints.of(context)
+                                        .smallerThan(TABLET)
+                                    ? 16
+                                    : 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).plumbing, () {}),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).bathroomRenovation,
+                                () {}),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).kitchenRenovation,
+                                () {}),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).waterLeakage,
+                                () {}),
+                            _buildFooterLink(
+                                AppLocalizations.of(context).waterLeakageRepair,
+                                () {}),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      _buildFooterLink(AppLocalizations.of(context).home,
-                          () => _scrollToSection('home')),
-                      _buildFooterLink(AppLocalizations.of(context).services,
-                          () => _scrollToSection('services')),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).requestService,
-                          () => _scrollToSection('request')),
-                      _buildFooterLink(AppLocalizations.of(context).reviews,
-                          () => _scrollToSection('reviews')),
-                    ],
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context).services,
-                        style: TextStyle(
-                          fontSize: ResponsiveBreakpoints.of(context)
-                                  .smallerThan(TABLET)
-                              ? 16
-                              : 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).plumbing, () {}),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).bathroomRenovation,
-                          () {}),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).kitchenRenovation,
-                          () {}),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).waterLeakage, () {}),
-                      _buildFooterLink(
-                          AppLocalizations.of(context).waterLeakageRepair,
-                          () {}),
                     ],
                   ),
                 ),
@@ -1891,7 +1927,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                       const SizedBox(height: 16),
                       _buildContactInfo(Icons.location_on,
                           'Namık Kemal Mah. 10.Sokak No:4/A Esenler/İstanbul'),
-                      _buildContactInfo(Icons.phone, '(532) 453 38 02'),
+                      _buildContactInfo(Icons.phone, '+90 532 453 38 02'),
                       _buildContactInfo(Icons.email, 'demirtopdavut@gmail.com'),
                       _buildContactInfo(Icons.access_time,
                           AppLocalizations.of(context).workingHours),
@@ -1932,15 +1968,16 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                   ),
                 ),
                 ResponsiveRowColumnItem(
-                  child: Row(
-                    mainAxisAlignment:
+                  child: Wrap(
+                    alignment:
                         ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? MainAxisAlignment.center
-                            : MainAxisAlignment.start,
+                            ? WrapAlignment.center
+                            : WrapAlignment.start,
+                    spacing: 16,
+                    runSpacing: 8,
                     children: [
                       _buildFooterLink(
                           AppLocalizations.of(context).privacyPolicy, () {}),
-                      const SizedBox(width: 16),
                       _buildFooterLink(
                           AppLocalizations.of(context).termsOfService, () {}),
                     ],
@@ -1995,6 +2032,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               ),
               child: Text(
                 title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
                   color: _hoveredButtons['footer_$title'] == true
@@ -2011,27 +2049,40 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildContactInfo(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: const Color(0xFFFF7A3D),
-            size: 16,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF9CA3AF),
+    return GestureDetector(
+      onTap: () {
+        if (icon == Icons.email) {
+          _launchMail();
+        }
+        if (icon == Icons.phone) {
+          _launchPhone();
+        }
+        if (icon == Icons.location_on) {
+          _launchMap();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: const Color(0xFFFF7A3D),
+              size: 16,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF9CA3AF),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
