@@ -6,11 +6,19 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/locale_provider.dart';
+import 'providers/menu_state.dart';
+import 'providers/hover_state.dart';
+import 'providers/service_state.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => LocaleProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (_) => MenuState()),
+        ChangeNotifierProvider(create: (_) => HoverState()),
+        ChangeNotifierProvider(create: (_) => ServiceState()),
+      ],
       child: const HandyFixApp(),
     ),
   );
@@ -76,16 +84,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   final GlobalKey _servicesKey = GlobalKey();
   final GlobalKey _requestKey = GlobalKey();
   final GlobalKey _reviewsKey = GlobalKey();
-  final GlobalKey _heroKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-  String _selectedService = '';
-  Map<String, bool>? _hoveredCards;
-  Map<String, bool>? _hoveredButtons;
-  bool _isMobileMenuOpen = false;
+  final GlobalKey _heroKey = GlobalKey();
 
   // Reusable Text Component
   Widget customText(String text,
@@ -152,8 +156,6 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   @override
   void initState() {
-    _hoveredCards = {};
-    _hoveredButtons = {};
     super.initState();
   }
 
@@ -250,14 +252,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: Icon(
-                      _isMobileMenuOpen ? Icons.close : Icons.menu,
+                      context.watch<MenuState>().isMobileMenuOpen
+                          ? Icons.close
+                          : Icons.menu,
                       size: 28,
                       color: const Color(0xFF2B4B80),
                     ),
                     onPressed: () {
-                      setState(() {
-                        _isMobileMenuOpen = !_isMobileMenuOpen;
-                      });
+                      context.read<MenuState>().toggleMobileMenu();
                     },
                   )
                 else
@@ -313,7 +315,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             ),
           ),
           if (ResponsiveBreakpoints.of(context).smallerThan(TABLET) &&
-              _isMobileMenuOpen)
+              context.watch<MenuState>().isMobileMenuOpen)
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -381,9 +383,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return InkWell(
       onTap: () {
         onTap();
-        setState(() {
-          _isMobileMenuOpen = false;
-        });
+        context.read<MenuState>().closeMobileMenu();
       },
       child: Container(
         width: double.infinity,
@@ -405,15 +405,17 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredButtons?['nav_$title'] = true),
-          onExit: (_) => setState(() => _hoveredButtons?['nav_$title'] = false),
+          onEnter: (_) =>
+              context.read<HoverState>().setHoveredButton('nav_$title', true),
+          onExit: (_) =>
+              context.read<HoverState>().setHoveredButton('nav_$title', false),
           child: GestureDetector(
             onTap: onTap,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: _hoveredButtons?['nav_$title'] == true
+                color: context.watch<HoverState>().isHoveredButton('nav_$title')
                     ? const Color(0xFF2B4B80).withOpacity(0.1)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
@@ -421,9 +423,10 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               child: customText(
                 title,
                 fontSize: 16,
-                fontWeight: _hoveredButtons?['nav_$title'] == true
-                    ? FontWeight.w600
-                    : FontWeight.w500,
+                fontWeight:
+                    context.watch<HoverState>().isHoveredButton('nav_$title')
+                        ? FontWeight.w600
+                        : FontWeight.w500,
                 color: const Color(0xFF1F2937),
               ),
             ),
@@ -444,23 +447,28 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredButtons?[buttonId] = true),
-          onExit: (_) => setState(() => _hoveredButtons?[buttonId] = false),
+          onEnter: (_) =>
+              context.read<HoverState>().setHoveredButton(buttonId, true),
+          onExit: (_) =>
+              context.read<HoverState>().setHoveredButton(buttonId, false),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             child: ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _hoveredButtons?[buttonId] == true
-                    ? hoverBackgroundColor
-                    : backgroundColor,
+                backgroundColor:
+                    context.watch<HoverState>().isHoveredButton(buttonId)
+                        ? hoverBackgroundColor
+                        : backgroundColor,
                 foregroundColor: Colors.white,
                 padding: padding ??
                     const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 16,
                     ),
-                elevation: _hoveredButtons?[buttonId] == true ? 8 : 2,
+                elevation: context.watch<HoverState>().isHoveredButton(buttonId)
+                    ? 8
+                    : 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -482,36 +490,48 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredCards?[cardId] = true),
-          onExit: (_) => setState(() => _hoveredCards?[cardId] = false),
+          onEnter: (_) =>
+              context.read<HoverState>().setHoveredCard(cardId, true),
+          onExit: (_) =>
+              context.read<HoverState>().setHoveredCard(cardId, false),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             transform: Matrix4.identity()
               ..translate(
                 0.0,
-                _hoveredCards?[cardId] == true ? -4.0 : 0.0,
+                context.watch<HoverState>().isHoveredCard(cardId) ? -4.0 : 0.0,
                 0.0,
               ),
             decoration: BoxDecoration(
-              color: _hoveredCards?[cardId] == true
+              color: context.watch<HoverState>().isHoveredCard(cardId)
                   ? hoverBackgroundColor
                   : backgroundColor,
               borderRadius: BorderRadius.circular(12),
               border: backgroundColor != Colors.transparent
                   ? Border.all(
                       color: Colors.grey.shade200,
-                      width: _hoveredCards?[cardId] == true ? 2 : 1,
+                      width: context.watch<HoverState>().isHoveredCard(cardId)
+                          ? 2
+                          : 1,
                     )
                   : null,
               boxShadow: backgroundColor != Colors.transparent
                   ? [
                       BoxShadow(
                         color: Colors.black.withOpacity(
-                          _hoveredCards?[cardId] == true ? 0.1 : 0.05,
+                          context.watch<HoverState>().isHoveredCard(cardId)
+                              ? 0.1
+                              : 0.05,
                         ),
-                        blurRadius: _hoveredCards?[cardId] == true ? 20 : 10,
-                        offset:
-                            Offset(0, _hoveredCards?[cardId] == true ? 4 : 2),
+                        blurRadius:
+                            context.watch<HoverState>().isHoveredCard(cardId)
+                                ? 20
+                                : 10,
+                        offset: Offset(
+                            0,
+                            context.watch<HoverState>().isHoveredCard(cardId)
+                                ? 4
+                                : 2),
                       ),
                     ]
                   : null,
@@ -1337,9 +1357,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         ),
                         const SizedBox(height: 8),
                         DropdownButtonFormField<String>(
-                          value: _selectedService.isEmpty
+                          value: context
+                                  .watch<ServiceState>()
+                                  .selectedService
+                                  .isEmpty
                               ? null
-                              : _selectedService,
+                              : context.watch<ServiceState>().selectedService,
                           hint: customText(
                             AppLocalizations.of(context).selectServiceType,
                             fontSize: 14,
@@ -1391,9 +1414,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                                     .maintenanceService)),
                           ],
                           onChanged: (value) {
-                            setState(() {
-                              _selectedService = value ?? '';
-                            });
+                            context
+                                .read<ServiceState>()
+                                .setSelectedService(value ?? '');
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1506,7 +1529,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 Ad Soyad: ${_nameController.text}
 Telefon: ${_phoneController.text}
 Adres: ${_addressController.text}
-Hizmet: ${_getServiceName(_selectedService)}
+Hizmet: ${context.watch<ServiceState>().getServiceName(context.watch<ServiceState>().selectedService)}
 ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}''';
 
       // Encode message for URL
@@ -1536,29 +1559,12 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
       _phoneController.clear();
       _addressController.clear();
       _notesController.clear();
-      setState(() {
-        _selectedService = '';
-      });
+      context.read<ServiceState>().setSelectedService('');
     }
   }
 
   String _getServiceName(String serviceValue) {
-    switch (serviceValue) {
-      case 'drain_cleaning':
-        return AppLocalizations.of(context).drainCleaning;
-      case 'bathroom_repair':
-        return AppLocalizations.of(context).bathroomRepair;
-      case 'kitchen_plumbing':
-        return AppLocalizations.of(context).kitchenPlumbing;
-      case 'emergency_service':
-        return AppLocalizations.of(context).emergencyService;
-      case 'bathroom_renovation':
-        return AppLocalizations.of(context).bathroomRenovation;
-      case 'maintenance_service':
-        return AppLocalizations.of(context).maintenanceService;
-      default:
-        return serviceValue;
-    }
+    return context.read<ServiceState>().getServiceName(serviceValue);
   }
 
   Widget _buildReviewsSection() {
@@ -1981,28 +1987,32 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
       builder: (context, setState) {
         return MouseRegion(
           cursor: SystemMouseCursors.click,
-          onEnter: (_) =>
-              setState(() => _hoveredButtons?['footer_$title'] = true),
-          onExit: (_) =>
-              setState(() => _hoveredButtons?['footer_$title'] = false),
+          onEnter: (_) => setState(() => context
+              .read<HoverState>()
+              .setHoveredButton('footer_$title', true)),
+          onExit: (_) => setState(() => context
+              .read<HoverState>()
+              .setHoveredButton('footer_$title', false)),
           child: GestureDetector(
             onTap: onTap,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: _hoveredButtons?['footer_$title'] == true
-                    ? Colors.white.withOpacity(0.1)
-                    : Colors.transparent,
+                color:
+                    context.watch<HoverState>().isHoveredButton('footer_$title')
+                        ? Colors.white.withOpacity(0.1)
+                        : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: customText(
                 title,
                 textAlign: TextAlign.center,
                 fontSize: 14,
-                color: _hoveredButtons?['footer_$title'] == true
-                    ? Colors.white.withOpacity(0.9)
-                    : const Color(0xFF9CA3AF),
+                color:
+                    context.watch<HoverState>().isHoveredButton('footer_$title')
+                        ? Colors.white.withOpacity(0.9)
+                        : const Color(0xFF9CA3AF),
                 decoration: TextDecoration.none,
               ),
             ),
