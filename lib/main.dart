@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -84,9 +83,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   String _selectedService = '';
-  bool _isHovered = false;
-  Map<String, bool> _hoveredCards = {};
-  Map<String, bool> _hoveredButtons = {};
+  Map<String, bool>? _hoveredCards;
+  Map<String, bool>? _hoveredButtons;
   bool _isMobileMenuOpen = false;
 
   @override
@@ -344,15 +342,15 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredButtons['nav_$title'] = true),
-          onExit: (_) => setState(() => _hoveredButtons['nav_$title'] = false),
+          onEnter: (_) => setState(() => _hoveredButtons?['nav_$title'] = true),
+          onExit: (_) => setState(() => _hoveredButtons?['nav_$title'] = false),
           child: GestureDetector(
             onTap: onTap,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: _hoveredButtons['nav_$title'] == true
+                color: _hoveredButtons?['nav_$title'] == true
                     ? const Color(0xFF2B4B80).withOpacity(0.1)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
@@ -361,7 +359,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 title,
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: _hoveredButtons['nav_$title'] == true
+                  fontWeight: _hoveredButtons?['nav_$title'] == true
                       ? FontWeight.w600
                       : FontWeight.w500,
                   color: const Color(0xFF1F2937),
@@ -385,14 +383,14 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredButtons[buttonId] = true),
-          onExit: (_) => setState(() => _hoveredButtons[buttonId] = false),
+          onEnter: (_) => setState(() => _hoveredButtons?[buttonId] = true),
+          onExit: (_) => setState(() => _hoveredButtons?[buttonId] = false),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             child: ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _hoveredButtons[buttonId] == true
+                backgroundColor: _hoveredButtons?[buttonId] == true
                     ? hoverBackgroundColor
                     : backgroundColor,
                 foregroundColor: Colors.white,
@@ -401,7 +399,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       horizontal: 12,
                       vertical: 16,
                     ),
-                elevation: _hoveredButtons[buttonId] == true ? 8 : 2,
+                elevation: _hoveredButtons?[buttonId] == true ? 8 : 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -423,36 +421,36 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => _hoveredCards[cardId] = true),
-          onExit: (_) => setState(() => _hoveredCards[cardId] = false),
+          onEnter: (_) => setState(() => _hoveredCards?[cardId] = true),
+          onExit: (_) => setState(() => _hoveredCards?[cardId] = false),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             transform: Matrix4.identity()
               ..translate(
                 0.0,
-                _hoveredCards[cardId] == true ? -4.0 : 0.0,
+                _hoveredCards?[cardId] == true ? -4.0 : 0.0,
                 0.0,
               ),
             decoration: BoxDecoration(
-              color: _hoveredCards[cardId] == true
+              color: _hoveredCards?[cardId] == true
                   ? hoverBackgroundColor
                   : backgroundColor,
               borderRadius: BorderRadius.circular(12),
               border: backgroundColor != Colors.transparent
                   ? Border.all(
                       color: Colors.grey.shade200,
-                      width: _hoveredCards[cardId] == true ? 2 : 1,
+                      width: _hoveredCards?[cardId] == true ? 2 : 1,
                     )
                   : null,
               boxShadow: backgroundColor != Colors.transparent
                   ? [
                       BoxShadow(
                         color: Colors.black.withOpacity(
-                          _hoveredCards[cardId] == true ? 0.1 : 0.05,
+                          _hoveredCards?[cardId] == true ? 0.1 : 0.05,
                         ),
-                        blurRadius: _hoveredCards[cardId] == true ? 20 : 10,
+                        blurRadius: _hoveredCards?[cardId] == true ? 20 : 10,
                         offset:
-                            Offset(0, _hoveredCards[cardId] == true ? 4 : 2),
+                            Offset(0, _hoveredCards?[cardId] == true ? 4 : 2),
                       ),
                     ]
                   : null,
@@ -847,9 +845,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             const SizedBox(height: 8),
             Text(
               description,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
-                color: const Color(0xFF6B7280),
+                color: Color(0xFF6B7280),
                 height: 1.6,
               ),
             ),
@@ -1562,13 +1560,6 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
     }
   }
 
-  void _launchWhatsApp() async {
-    final Uri whatsAppUri = Uri.parse('https://wa.me/905324533802');
-    if (await canLaunchUrl(whatsAppUri)) {
-      await launchUrl(whatsAppUri);
-    }
-  }
-
   Widget _buildReviewsSection() {
     return Container(
       key: _reviewsKey,
@@ -2016,16 +2007,16 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
         return MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (_) =>
-              setState(() => _hoveredButtons['footer_$title'] = true),
+              setState(() => _hoveredButtons?['footer_$title'] = true),
           onExit: (_) =>
-              setState(() => _hoveredButtons['footer_$title'] = false),
+              setState(() => _hoveredButtons?['footer_$title'] = false),
           child: GestureDetector(
             onTap: onTap,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: _hoveredButtons['footer_$title'] == true
+                color: _hoveredButtons?['footer_$title'] == true
                     ? Colors.white.withOpacity(0.1)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
@@ -2035,7 +2026,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: _hoveredButtons['footer_$title'] == true
+                  color: _hoveredButtons?['footer_$title'] == true
                       ? Colors.white.withOpacity(0.9)
                       : const Color(0xFF9CA3AF),
                   decoration: TextDecoration.none,
