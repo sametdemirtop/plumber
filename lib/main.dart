@@ -444,23 +444,26 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               context.read<HoverState>().setHoveredButton('nav_$title', false),
           child: GestureDetector(
             onTap: onTap,
-            child: Container(
-              // Removed AnimatedContainer for performance
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: context.watch<HoverState>().isHoveredButton('nav_$title')
-                    ? const Color(0xFF2B4B80).withOpacity(0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: customText(
-                title,
-                fontSize: 16,
-                fontWeight:
-                    context.watch<HoverState>().isHoveredButton('nav_$title')
-                        ? FontWeight.w600
-                        : FontWeight.w500,
-                color: const Color(0xFF1F2937),
+            child: HoverAnimatedWidget(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color:
+                      context.watch<HoverState>().isHoveredButton('nav_$title')
+                          ? const Color(0xFF2B4B80).withOpacity(0.1)
+                          : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: customText(
+                  title,
+                  fontSize: 16,
+                  fontWeight:
+                      context.watch<HoverState>().isHoveredButton('nav_$title')
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                  color: const Color(0xFF1F2937),
+                ),
               ),
             ),
           ),
@@ -477,88 +480,74 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     Color hoverBackgroundColor = const Color(0xFFFF6B2B),
     EdgeInsetsGeometry? padding,
   }) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) =>
-              context.read<HoverState>().setHoveredButton(buttonId, true),
-          onExit: (_) =>
-              context.read<HoverState>().setHoveredButton(buttonId, false),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            child: ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    context.watch<HoverState>().isHoveredButton(buttonId)
-                        ? hoverBackgroundColor
-                        : backgroundColor,
-                foregroundColor: Colors.white,
-                padding: padding ??
-                    const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 16,
-                    ),
-                elevation: context.watch<HoverState>().isHoveredButton(buttonId)
-                    ? 8
-                    : 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+    return HoverAnimatedWidget(
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: Colors.white,
+          padding: padding ??
+              const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 16,
               ),
-              child: child,
-            ),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-        );
-      },
+        ),
+        child: child,
+      ),
     );
   }
 
   Widget _buildServiceCard(IconData icon, String title, String description) {
     final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(isMobile ? 20 : 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2B4B80).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(28),
+    return HoverAnimatedWidget(
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(isMobile ? 20 : 24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2B4B80).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 28,
+                    color: const Color(0xFF2B4B80),
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  size: 28,
-                  color: const Color(0xFF2B4B80),
+                const SizedBox(width: 16),
+                customText(
+                  title,
+                  fontSize: isMobile ? 18 : 20,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1F2937),
                 ),
-              ),
-              const SizedBox(width: 16),
-              customText(
-                title,
-                fontSize: isMobile ? 18 : 20,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F2937),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          customText(
-            description,
-            fontSize: 14,
-            color: const Color(0xFF6B7280),
-            height: 1.6,
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 8),
+            customText(
+              description,
+              fontSize: 14,
+              color: const Color(0xFF6B7280),
+              height: 1.6,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -698,70 +687,74 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildDetailedServiceCard(
       String imageUrl, String title, String description) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 200
-                  : 300,
-              width: double.infinity,
-              child: customImage(
-                imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey.shade200,
-                    child: const Icon(
-                      Icons.plumbing,
-                      size: 64,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
+    return HoverAnimatedWidget(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: SizedBox(
+                height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 200
+                    : 300,
+                width: double.infinity,
+                child: customImage(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey.shade200,
+                      child: const Icon(
+                        Icons.plumbing,
+                        size: 64,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 16
-                  : 24,
-              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 16
-                  : 20,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                        ? 16
+                        : 24,
+                vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 16
+                    : 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customText(
+                    title,
+                    fontSize:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? 18
+                            : 20,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1F2937),
+                  ),
+                  const SizedBox(height: 8),
+                  customText(
+                    description,
+                    fontSize: 14,
+                    color: const Color(0xFF6B7280),
+                    height: 1.6,
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customText(
-                  title,
-                  fontSize:
-                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                          ? 18
-                          : 20,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F2937),
-                ),
-                const SizedBox(height: 8),
-                customText(
-                  description,
-                  fontSize: 14,
-                  color: const Color(0xFF6B7280),
-                  height: 1.6,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1337,78 +1330,80 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
 
   Widget _buildReviewCard(
       String initials, String name, int rating, String review) {
-    return RepaintBoundary(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
-        ),
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2B4B80).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Center(
-                    child: customText(
-                      initials,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF2B4B80),
+    return HoverAnimatedWidget(
+      child: RepaintBoundary(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2B4B80).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Center(
+                      child: customText(
+                        initials,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF2B4B80),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      customText(
-                        name,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF1F2937),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: List.generate(5, (index) {
-                          if (index < rating) {
-                            return const Icon(
-                              Icons.star,
-                              size: 16,
-                              color: Color(0xFFFBBF24),
-                            );
-                          } else {
-                            return const Icon(
-                              Icons.star_border,
-                              size: 16,
-                              color: Color(0xFFFBBF24),
-                            );
-                          }
-                        }),
-                      ),
-                    ],
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        customText(
+                          name,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF1F2937),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: List.generate(5, (index) {
+                            if (index < rating) {
+                              return const Icon(
+                                Icons.star,
+                                size: 16,
+                                color: Color(0xFFFBBF24),
+                              );
+                            } else {
+                              return const Icon(
+                                Icons.star_border,
+                                size: 16,
+                                color: Color(0xFFFBBF24),
+                              );
+                            }
+                          }),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            customText(
-              '"$review"',
-              fontSize: 14,
-              color: const Color(0xFF6B7280),
-              height: 1.6,
-              fontStyle: FontStyle.italic,
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 16),
+              customText(
+                '"$review"',
+                fontSize: 14,
+                color: const Color(0xFF6B7280),
+                height: 1.6,
+                fontStyle: FontStyle.italic,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -2043,5 +2038,66 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
         ],
       ),
     );
+  }
+}
+
+class HoverAnimatedWidget extends StatefulWidget {
+  final Widget child;
+  final double scale;
+  final Duration duration;
+
+  const HoverAnimatedWidget({
+    super.key,
+    required this.child,
+    this.scale = 1.05,
+    this.duration = const Duration(milliseconds: 200),
+  });
+
+  @override
+  State<HoverAnimatedWidget> createState() => _HoverAnimatedWidgetState();
+}
+
+class _HoverAnimatedWidgetState extends State<HoverAnimatedWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+    _scale = Tween<double>(begin: 1.0, end: widget.scale).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOut,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _controller.forward(),
+      onExit: (_) => _controller.reverse(),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scale.value,
+            child: child,
+          );
+        },
+        child: widget.child,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
