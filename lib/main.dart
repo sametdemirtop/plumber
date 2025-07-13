@@ -1208,7 +1208,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   void _launchMap() async {
     final Uri googleMapsUri = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=41.030057,28.896884');
+        'https://www.google.com/maps/place/%C3%96z+%C4%B0nan+Yap%C4%B1+Dekorasyon/@41.03001,28.896853,20.89z/data=!4m12!1m5!3m4!2zNDHCsDAxJzQ4LjIiTiAyOMKwNTMnNDguOCJF!8m2!3d41.030057!4d28.896884!3m5!1s0x14cabaf185395f1b:0xea8540998f9db1a3!8m2!3d41.0300617!4d28.8969458!16s%2Fg%2F11c72k6z6b?entry=ttu&g_ep=EgoyMDI1MDcwOS4wIKXMDSoASAFQAw%3D%3D');
     if (await canLaunchUrl(googleMapsUri)) {
       await launchUrl(googleMapsUri);
     }
@@ -1827,7 +1827,6 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                                       Uri.parse(
                                           'https://www.facebook.com/ozinanyapi/?locale=tr_TR'));
                                 }),
-                                _buildSocialButton(Icons.camera_alt, () {}),
                                 _buildSocialButton(Icons.alternate_email, () {
                                   _launchMail();
                                 }),
