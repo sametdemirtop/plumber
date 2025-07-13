@@ -254,6 +254,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
+      floatingActionButton: _buildWhatsAppButton(),
       body: SingleChildScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
@@ -272,6 +273,62 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         ),
       ),
     );
+  }
+
+  Widget _buildWhatsAppButton() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF25D366),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF25D366).withOpacity(0.25),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: _launchWhatsApp,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.phone,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 6),
+                customText(
+                  'WhatsApp',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _launchWhatsApp() async {
+    final phoneNumber = '905324533802';
+    final message = 'Merhaba! Tesisat hizmeti hakkında bilgi almak istiyorum.';
+    final whatsappUrl =
+        'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+    final Uri whatsappUri = Uri.parse(whatsappUrl);
+    if (await canLaunchUrl(whatsappUri)) {
+      await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
+    }
   }
 
   Widget _buildNavigation() {
