@@ -1563,10 +1563,6 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
     }
   }
 
-  String _getServiceName(String serviceValue) {
-    return context.read<ServiceState>().getServiceName(serviceValue);
-  }
-
   Widget _buildReviewsSection() {
     return Container(
       key: _reviewsKey,
