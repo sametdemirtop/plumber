@@ -121,6 +121,13 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   final TextEditingController _notesController = TextEditingController();
   final GlobalKey _heroKey = GlobalKey();
 
+  // Service specific keys
+  final GlobalKey _plumbingKey = GlobalKey();
+  final GlobalKey _bathroomRenovationKey = GlobalKey();
+  final GlobalKey _kitchenRenovationKey = GlobalKey();
+  final GlobalKey _waterLeakageKey = GlobalKey();
+  final GlobalKey _waterLeakageRepairKey = GlobalKey();
+
   // Reusable Text Component
   Widget customText(String text,
       {double? fontSize,
@@ -215,6 +222,22 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         break;
       case 'reviews':
         targetKey = _reviewsKey;
+        break;
+      // Service specific sections
+      case 'plumbing':
+        targetKey = _plumbingKey;
+        break;
+      case 'bathroomRenovation':
+        targetKey = _bathroomRenovationKey;
+        break;
+      case 'kitchenRenovation':
+        targetKey = _kitchenRenovationKey;
+        break;
+      case 'waterLeakage':
+        targetKey = _waterLeakageKey;
+        break;
+      case 'waterLeakageRepair':
+        targetKey = _waterLeakageRepairKey;
         break;
     }
 
@@ -604,46 +627,24 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     children: [
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/gider.png',
-                          AppLocalizations.of(context).service1Title,
-                          AppLocalizations.of(context).service1Desc,
+                        child: Container(
+                          key: _plumbingKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/gider.png',
+                            AppLocalizations.of(context).service1Title,
+                            AppLocalizations.of(context).service1Desc,
+                          ),
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/banyo.png',
-                          AppLocalizations.of(context).service2Title,
-                          AppLocalizations.of(context).service2Desc,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
-                    rowSpacing: 24,
-                    columnSpacing: 16,
-                    children: [
-                      ResponsiveRowColumnItem(
-                        rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/mutfak.png',
-                          AppLocalizations.of(context).service3Title,
-                          AppLocalizations.of(context).service3Desc,
-                        ),
-                      ),
-                      ResponsiveRowColumnItem(
-                        rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/acil.png',
-                          AppLocalizations.of(context).service4Title,
-                          AppLocalizations.of(context).service4Desc,
+                        child: Container(
+                          key: _bathroomRenovationKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/banyo.png',
+                            AppLocalizations.of(context).service2Title,
+                            AppLocalizations.of(context).service2Desc,
+                          ),
                         ),
                       ),
                     ],
@@ -660,18 +661,58 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                     children: [
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/banyoyenileme.png',
-                          AppLocalizations.of(context).service5Title,
-                          AppLocalizations.of(context).service5Desc,
+                        child: Container(
+                          key: _kitchenRenovationKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/mutfak.png',
+                            AppLocalizations.of(context).service3Title,
+                            AppLocalizations.of(context).service3Desc,
+                          ),
                         ),
                       ),
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
-                        child: _buildDetailedServiceCard(
-                          'assets/images/bakım.png',
-                          AppLocalizations.of(context).service6Title,
-                          AppLocalizations.of(context).service6Desc,
+                        child: Container(
+                          key: _waterLeakageKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/acil.png',
+                            AppLocalizations.of(context).service4Title,
+                            AppLocalizations.of(context).service4Desc,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  child: ResponsiveRowColumn(
+                    layout:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? ResponsiveRowColumnType.COLUMN
+                            : ResponsiveRowColumnType.ROW,
+                    rowSpacing: 24,
+                    columnSpacing: 16,
+                    children: [
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Container(
+                          key: _bathroomRenovationKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/banyoyenileme.png',
+                            AppLocalizations.of(context).service5Title,
+                            AppLocalizations.of(context).service5Desc,
+                          ),
+                        ),
+                      ),
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Container(
+                          key: _waterLeakageRepairKey,
+                          child: _buildDetailedServiceCard(
+                            'assets/images/bakım.png',
+                            AppLocalizations.of(context).service6Title,
+                            AppLocalizations.of(context).service6Desc,
+                          ),
                         ),
                       ),
                     ],
@@ -1525,19 +1566,20 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                             ),
                             const SizedBox(height: 12),
                             _buildFooterLink(
-                                AppLocalizations.of(context).plumbing, () {}),
+                                AppLocalizations.of(context).plumbing,
+                                () => _scrollToSection('plumbing')),
                             _buildFooterLink(
                                 AppLocalizations.of(context).bathroomRenovation,
-                                () {}),
+                                () => _scrollToSection('bathroomRenovation')),
                             _buildFooterLink(
                                 AppLocalizations.of(context).kitchenRenovation,
-                                () {}),
+                                () => _scrollToSection('kitchenRenovation')),
                             _buildFooterLink(
                                 AppLocalizations.of(context).waterLeakage,
-                                () {}),
+                                () => _scrollToSection('waterLeakage')),
                             _buildFooterLink(
                                 AppLocalizations.of(context).waterLeakageRepair,
-                                () {}),
+                                () => _scrollToSection('waterLeakageRepair')),
                           ],
                         ),
                       ),
