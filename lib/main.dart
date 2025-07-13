@@ -233,6 +233,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       backgroundColor: const Color(0xFFF9FAFB),
       body: SingleChildScrollView(
         controller: _scrollController,
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             _buildNavigation(),
@@ -443,8 +444,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               context.read<HoverState>().setHoveredButton('nav_$title', false),
           child: GestureDetector(
             onTap: onTap,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+            child: Container(
+              // Removed AnimatedContainer for performance
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: context.watch<HoverState>().isHoveredButton('nav_$title')
@@ -513,429 +514,51 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     );
   }
 
-  Widget _buildHoverCard({
-    required Widget child,
-    required String cardId,
-    Color backgroundColor = Colors.white,
-    Color hoverBackgroundColor = const Color(0xFFF8FAFC),
-  }) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) =>
-              context.read<HoverState>().setHoveredCard(cardId, true),
-          onExit: (_) =>
-              context.read<HoverState>().setHoveredCard(cardId, false),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            transform: Matrix4.identity()
-              ..translate(
-                0.0,
-                context.watch<HoverState>().isHoveredCard(cardId) ? -4.0 : 0.0,
-                0.0,
-              ),
-            decoration: BoxDecoration(
-              color: context.watch<HoverState>().isHoveredCard(cardId)
-                  ? hoverBackgroundColor
-                  : backgroundColor,
-              borderRadius: BorderRadius.circular(12),
-              border: backgroundColor != Colors.transparent
-                  ? Border.all(
-                      color: Colors.grey.shade200,
-                      width: context.watch<HoverState>().isHoveredCard(cardId)
-                          ? 2
-                          : 1,
-                    )
-                  : null,
-              boxShadow: backgroundColor != Colors.transparent
-                  ? [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(
-                          context.watch<HoverState>().isHoveredCard(cardId)
-                              ? 0.1
-                              : 0.05,
-                        ),
-                        blurRadius:
-                            context.watch<HoverState>().isHoveredCard(cardId)
-                                ? 20
-                                : 10,
-                        offset: Offset(
-                            0,
-                            context.watch<HoverState>().isHoveredCard(cardId)
-                                ? 4
-                                : 2),
-                      ),
-                    ]
-                  : null,
-            ),
-            child: child,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildHeroSection() {
-    return Container(
-      key: _heroKey,
-      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 850,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://readdy.ai/api/search-image?query=A%20professional%20handyman%20in%20work%20clothes%20fixing%20a%20sink%20in%20a%20modern%20kitchen.%20The%20image%20shows%20the%20handyman%20from%20the%20side%2C%20focused%20on%20his%20work.%20The%20left%20side%20of%20the%20image%20has%20a%20clean%2C%20simple%20background%20that%20gradually%20transitions%20to%20the%20detailed%20scene%20on%20the%20right.%20The%20lighting%20is%20bright%20and%20natural%2C%20creating%20a%20friendly%20and%20trustworthy%20atmosphere.%20The%20color%20palette%20is%20professional%20with%20blues%20and%20whites.&width=1600&height=800&seq=hero1&orientation=landscape',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(43, 75, 128, 0.85),
-              Color.fromRGBO(43, 75, 128, 0.6),
-              Color.fromRGBO(43, 75, 128, 0),
-            ],
-            stops: [0.0, 0.5, 1.0],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal:
-              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 12,
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customText(
-                  AppLocalizations.of(context).heroTitle,
-                  fontSize:
-                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                          ? 28
-                          : 48,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  height: 1.2,
-                ),
-                const SizedBox(height: 16),
-                customText(
-                  AppLocalizations.of(context).heroSubtitle,
-                  fontSize:
-                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                          ? 16
-                          : 20,
-                  color: Colors.white,
-                  height: 1.5,
-                ),
-                const SizedBox(height: 32),
-                _buildHoverButton(
-                  onPressed: () => _scrollToSection('request'),
-                  buttonId: 'hero_request',
-                  child: customText(
-                    AppLocalizations.of(context).requestTechnician,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIntroSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
-      ),
-      color: Colors.white,
-      child: MaxWidthBox(
-        maxWidth: 1200,
-        child: ResponsiveRowColumn(
-          layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-              ? ResponsiveRowColumnType.COLUMN
-              : ResponsiveRowColumnType.ROW,
-          rowSpacing: 48,
-          columnSpacing: 32,
-          children: [
-            ResponsiveRowColumnItem(
-              rowFlex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customText(
-                    AppLocalizations.of(context).trustedExpertsTitle,
-                    fontSize:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? 24
-                            : 32,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
-                  const SizedBox(height: 24),
-                  customText(
-                    AppLocalizations.of(context).trustedExpertsDesc1,
-                    fontSize: 16,
-                    color: const Color(0xFF6B7280),
-                    height: 1.6,
-                  ),
-                  const SizedBox(height: 16),
-                  customText(
-                    AppLocalizations.of(context).trustedExpertsDesc2,
-                    fontSize: 16,
-                    color: const Color(0xFF6B7280),
-                    height: 1.6,
-                  ),
-                  const SizedBox(height: 16),
-                  customText(
-                    AppLocalizations.of(context).trustedExpertsDesc3,
-                    fontSize: 16,
-                    color: const Color(0xFF6B7280),
-                    height: 1.6,
-                  ),
-                ],
-              ),
-            ),
-            ResponsiveRowColumnItem(
-              rowFlex: 1,
-              child: Container(
-                padding: EdgeInsets.all(
-                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                      ? 24
-                      : 32,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF9FAFB),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    _buildStatItem(
-                        '30+', AppLocalizations.of(context).yearsExperience),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildStatItem('5,000+',
-                        AppLocalizations.of(context).projectsCompleted),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildStatItem('98%',
-                        AppLocalizations.of(context).customerSatisfaction),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildStatItem('8.30-20.00',
-                        AppLocalizations.of(context).emergencyService),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label) {
+  Widget _buildServiceCard(IconData icon, String title, String description) {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 24,
-      ),
+      padding: EdgeInsets.all(isMobile ? 20 : 24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFFE5E7EB),
-          width: 1,
-        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          customText(
-            value,
-            fontSize:
-                ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 28 : 36,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2B4B80),
+          Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2B4B80).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Icon(
+                  icon,
+                  size: 28,
+                  color: const Color(0xFF2B4B80),
+                ),
+              ),
+              const SizedBox(width: 16),
+              customText(
+                title,
+                fontSize: isMobile ? 18 : 20,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1F2937),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           customText(
-            label,
+            description,
             fontSize: 14,
             color: const Color(0xFF6B7280),
+            height: 1.6,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildServicesPreview() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
-      ),
-      color: const Color(0xFFF9FAFB),
-      child: MaxWidthBox(
-        maxWidth: 1200,
-        child: Column(
-          children: [
-            customText(
-              AppLocalizations.of(context).ourServices,
-              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 24
-                  : 32,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
-            const SizedBox(height: 16),
-            customText(
-              AppLocalizations.of(context).servicesSubtitle,
-              fontSize: 16,
-              color: const Color(0xFF6B7280),
-              height: 1.6,
-            ),
-            SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 32
-                  : 48,
-            ),
-            ResponsiveRowColumn(
-              layout: ResponsiveRowColumnType.COLUMN,
-              rowSpacing: 24,
-              columnSpacing: 24,
-              children: [
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: _buildServiceCard(
-                    Icons.plumbing,
-                    AppLocalizations.of(context).service1Title,
-                    AppLocalizations.of(context).service1Desc,
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: _buildServiceCard(
-                    Icons.bathroom,
-                    AppLocalizations.of(context).service2Title,
-                    AppLocalizations.of(context).service2Desc,
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: _buildServiceCard(
-                    Icons.kitchen,
-                    AppLocalizations.of(context).service3Title,
-                    AppLocalizations.of(context).service3Desc,
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 1,
-                  child: _buildServiceCard(
-                    Icons.emergency,
-                    AppLocalizations.of(context).service4Title,
-                    AppLocalizations.of(context).service4Desc,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            GestureDetector(
-              onTap: () => _scrollToSection('services'),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  customText(
-                    AppLocalizations.of(context).viewAllServices,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF2B4B80),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward,
-                    size: 16,
-                    color: Color(0xFF2B4B80),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildServiceCard(IconData icon, String title, String description) {
-    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    return _buildHoverCard(
-      cardId: title,
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(isMobile ? 20 : 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2B4B80).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 28,
-                    color: const Color(0xFF2B4B80),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                customText(
-                  title,
-                  fontSize: isMobile ? 18 : 20,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F2937),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            customText(
-              description,
-              fontSize: 14,
-              color: const Color(0xFF6B7280),
-              height: 1.6,
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -1075,8 +698,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildDetailedServiceCard(
       String imageUrl, String title, String description) {
-    return _buildHoverCard(
-      cardId: title,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1710,9 +1337,13 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
 
   Widget _buildReviewCard(
       String initials, String name, int rating, String review) {
-    return _buildHoverCard(
-      cardId: name,
+    return RepaintBoundary(
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2083,6 +1714,333 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeroSection() {
+    return Container(
+      key: _heroKey,
+      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 850,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+            'https://readdy.ai/api/search-image?query=A%20professional%20handyman%20in%20work%20clothes%20fixing%20a%20sink%20in%20a%20modern%20kitchen.%20The%20image%20shows%20the%20handyman%20from%20the%20side%2C%20focused%20on%20his%20work.%20The%20left%20side%20of%20the%20image%20has%20a%20clean%2C%20simple%20background%20that%20gradually%20transitions%20to%20the%20detailed%20scene%20on%20the%20right.%20The%20lighting%20is%20bright%20and%20natural%2C%20creating%20a%20friendly%20and%20trustworthy%20atmosphere.%20The%20color%20palette%20is%20professional%20with%20blues%20and%20whites.&width=1600&height=800&seq=hero1&orientation=landscape',
+          ),
+          fit: BoxFit.cover,
+        ),
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF2B4B80),
+            Color(0xFF1E3A5F),
+            Color(0xFF0F1F2F),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(43, 75, 128, 0.85),
+              Color.fromRGBO(43, 75, 128, 0.6),
+              Color.fromRGBO(43, 75, 128, 0),
+            ],
+            stops: [0.0, 0.5, 1.0],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal:
+              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 12,
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customText(
+                  AppLocalizations.of(context).heroTitle,
+                  fontSize:
+                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                          ? 28
+                          : 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.2,
+                ),
+                const SizedBox(height: 16),
+                customText(
+                  AppLocalizations.of(context).heroSubtitle,
+                  fontSize:
+                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                          ? 16
+                          : 20,
+                  color: Colors.white,
+                  height: 1.5,
+                ),
+                const SizedBox(height: 32),
+                _buildHoverButton(
+                  onPressed: () => _scrollToSection('request'),
+                  buttonId: 'hero_request',
+                  child: customText(
+                    AppLocalizations.of(context).requestTechnician,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIntroSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
+      color: Colors.white,
+      child: MaxWidthBox(
+        maxWidth: 1200,
+        child: ResponsiveRowColumn(
+          layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+              ? ResponsiveRowColumnType.COLUMN
+              : ResponsiveRowColumnType.ROW,
+          rowSpacing: 48,
+          columnSpacing: 32,
+          children: [
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customText(
+                    AppLocalizations.of(context).trustedExpertsTitle,
+                    fontSize:
+                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                            ? 24
+                            : 32,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1F2937),
+                  ),
+                  const SizedBox(height: 24),
+                  customText(
+                    AppLocalizations.of(context).trustedExpertsDesc1,
+                    fontSize: 16,
+                    color: const Color(0xFF6B7280),
+                    height: 1.6,
+                  ),
+                  const SizedBox(height: 16),
+                  customText(
+                    AppLocalizations.of(context).trustedExpertsDesc2,
+                    fontSize: 16,
+                    color: const Color(0xFF6B7280),
+                    height: 1.6,
+                  ),
+                  const SizedBox(height: 16),
+                  customText(
+                    AppLocalizations.of(context).trustedExpertsDesc3,
+                    fontSize: 16,
+                    color: const Color(0xFF6B7280),
+                    height: 1.6,
+                  ),
+                ],
+              ),
+            ),
+            ResponsiveRowColumnItem(
+              rowFlex: 1,
+              child: Container(
+                padding: EdgeInsets.all(
+                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                      ? 24
+                      : 32,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9FAFB),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    _buildStatItem(
+                        '30+', AppLocalizations.of(context).yearsExperience),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
+                    _buildStatItem('5,000+',
+                        AppLocalizations.of(context).projectsCompleted),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
+                    _buildStatItem('98%',
+                        AppLocalizations.of(context).customerSatisfaction),
+                    SizedBox(
+                      height:
+                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                              ? 16
+                              : 24,
+                    ),
+                    _buildStatItem('8.30-20.00',
+                        AppLocalizations.of(context).emergencyService),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildServicesPreview() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+      ),
+      color: const Color(0xFFF9FAFB),
+      child: MaxWidthBox(
+        maxWidth: 1200,
+        child: Column(
+          children: [
+            customText(
+              AppLocalizations.of(context).ourServices,
+              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 24
+                  : 32,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF1F2937),
+            ),
+            const SizedBox(height: 16),
+            customText(
+              AppLocalizations.of(context).servicesSubtitle,
+              fontSize: 16,
+              color: const Color(0xFF6B7280),
+              height: 1.6,
+            ),
+            SizedBox(
+              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? 32
+                  : 48,
+            ),
+            ResponsiveRowColumn(
+              layout: ResponsiveRowColumnType.COLUMN,
+              rowSpacing: 24,
+              columnSpacing: 24,
+              children: [
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: _buildServiceCard(
+                    Icons.plumbing,
+                    AppLocalizations.of(context).service1Title,
+                    AppLocalizations.of(context).service1Desc,
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: _buildServiceCard(
+                    Icons.bathroom,
+                    AppLocalizations.of(context).service2Title,
+                    AppLocalizations.of(context).service2Desc,
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: _buildServiceCard(
+                    Icons.kitchen,
+                    AppLocalizations.of(context).service3Title,
+                    AppLocalizations.of(context).service3Desc,
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: _buildServiceCard(
+                    Icons.emergency,
+                    AppLocalizations.of(context).service4Title,
+                    AppLocalizations.of(context).service4Desc,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+            GestureDetector(
+              onTap: () => _scrollToSection('services'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  customText(
+                    AppLocalizations.of(context).viewAllServices,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF2B4B80),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward,
+                    size: 16,
+                    color: Color(0xFF2B4B80),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String value, String label) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        vertical:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        horizontal:
+            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 24,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: const Color(0xFFE5E7EB),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          customText(
+            value,
+            fontSize:
+                ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 28 : 36,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF2B4B80),
+          ),
+          const SizedBox(height: 8),
+          customText(
+            label,
+            fontSize: 14,
+            color: const Color(0xFF6B7280),
+          ),
+        ],
       ),
     );
   }
