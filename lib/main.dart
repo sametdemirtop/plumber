@@ -1716,28 +1716,17 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildHeroSection() {
-    return Container(
-      key: _heroKey,
-      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 850,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://readdy.ai/api/search-image?query=A%20professional%20handyman%20in%20work%20clothes%20fixing%20a%20sink%20in%20a%20modern%20kitchen.%20The%20image%20shows%20the%20handyman%20from%20the%20side%2C%20focused%20on%20his%20work.%20The%20left%20side%20of%20the%20image%20has%20a%20clean%2C%20simple%20background%20that%20gradually%20transitions%20to%20the%20detailed%20scene%20on%20the%20right.%20The%20lighting%20is%20bright%20and%20natural%2C%20creating%20a%20friendly%20and%20trustworthy%20atmosphere.%20The%20color%20palette%20is%20professional%20with%20blues%20and%20whites.&width=1600&height=800&seq=hero1&orientation=landscape',
-          ),
-          fit: BoxFit.cover,
-        ),
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF2B4B80),
-            Color(0xFF1E3A5F),
-            Color(0xFF0F1F2F),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+
+    return RepaintBoundary(
       child: Container(
+        key: _heroKey,
+        height: isMobile ? 400 : 850,
         decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/intro.png'),
+            fit: BoxFit.cover,
+          ),
           gradient: LinearGradient(
             colors: [
               Color.fromRGBO(43, 75, 128, 0.85),
@@ -1750,8 +1739,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
           ),
         ),
         padding: EdgeInsets.symmetric(
-          horizontal:
-              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 12,
+          horizontal: isMobile ? 16 : 12,
         ),
         child: Align(
           alignment: Alignment.centerLeft,
@@ -1763,10 +1751,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               children: [
                 customText(
                   AppLocalizations.of(context).heroTitle,
-                  fontSize:
-                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                          ? 28
-                          : 48,
+                  fontSize: isMobile ? 28 : 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   height: 1.2,
@@ -1774,10 +1759,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 const SizedBox(height: 16),
                 customText(
                   AppLocalizations.of(context).heroSubtitle,
-                  fontSize:
-                      ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                          ? 16
-                          : 20,
+                  fontSize: isMobile ? 16 : 20,
                   color: Colors.white,
                   height: 1.5,
                 ),
