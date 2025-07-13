@@ -88,6 +88,13 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   bool _isMobileMenuOpen = false;
 
   @override
+  void initState() {
+    _hoveredCards = {};
+    _hoveredButtons = {};
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _nameController.dispose();
@@ -465,7 +472,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   Widget _buildHeroSection() {
     return Container(
       key: _heroKey,
-      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 600,
+      height: ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 400 : 850,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
@@ -489,7 +496,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
         ),
         padding: EdgeInsets.symmetric(
           horizontal:
-              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+              ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 12,
         ),
         child: Align(
           alignment: Alignment.centerLeft,
