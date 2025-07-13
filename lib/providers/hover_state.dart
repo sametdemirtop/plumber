@@ -1,21 +1,34 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class HoverState with ChangeNotifier {
-  final Map<String, bool> hoveredButtons = {};
-  final Map<String, bool> hoveredCards = {};
+class HoverState extends ChangeNotifier {
+  final Map<String, bool> _hoveredButtons = {};
+  final Map<String, bool> _hoveredCards = {};
 
-  void setButtonHover(String key, bool value) {
-    hoveredButtons[key] = value;
-    notifyListeners();
+  bool isHoveredButton(String buttonId) {
+    return _hoveredButtons[buttonId] ?? false;
   }
 
-  void setCardHover(String key, bool value) {
-    hoveredCards[key] = value;
-    notifyListeners();
+  bool isHoveredCard(String cardId) {
+    return _hoveredCards[cardId] ?? false;
   }
 
-  bool isHoveredButton(String key) => hoveredButtons[key] == true;
-  bool isHoveredCard(String key) => hoveredCards[key] == true;
-  void setHoveredButton(String key, bool value) => setButtonHover(key, value);
-  void setHoveredCard(String key, bool value) => setCardHover(key, value);
+  void setHoveredButton(String buttonId, bool isHovered) {
+    if (_hoveredButtons[buttonId] != isHovered) {
+      _hoveredButtons[buttonId] = isHovered;
+      notifyListeners();
+    }
+  }
+
+  void setHoveredCard(String cardId, bool isHovered) {
+    if (_hoveredCards[cardId] != isHovered) {
+      _hoveredCards[cardId] = isHovered;
+      notifyListeners();
+    }
+  }
+
+  void clearAllHoverStates() {
+    _hoveredButtons.clear();
+    _hoveredCards.clear();
+    notifyListeners();
+  }
 }

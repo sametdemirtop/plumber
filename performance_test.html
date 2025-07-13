@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Performance Test - HandyFix Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .metric:last-child {
+            border-bottom: none;
+        }
+        .value {
+            font-weight: bold;
+            color: #2B4B80;
+        }
+        .good { color: #22c55e; }
+        .warning { color: #f59e0b; }
+        .poor { color: #ef4444; }
+        button {
+            background: #2B4B80;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #1e3a5f;
+        }
+    </style>
+</head>
+<body>
+    <h1>HandyFix Web Performance Test</h1>
+    
+    <div class="test-section">
+        <h2>Load Time Metrics</h2>
+        <div class="metric">
+            <span>DOM Content Loaded:</span>
+            <span id="domLoaded" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>Page Load Complete:</span>
+            <span id="pageLoaded" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>First Contentful Paint:</span>
+            <span id="fcp" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>Largest Contentful Paint:</span>
+            <span id="lcp" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>First Input Delay:</span>
+            <span id="fid" class="value">-</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Resource Loading</h2>
+        <div class="metric">
+            <span>Total Resources:</span>
+            <span id="totalResources" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>Total Size:</span>
+            <span id="totalSize" class="value">-</span>
+        </div>
+        <div class="metric">
+            <span>Images Loaded:</span>
+            <span id="imagesLoaded" class="value">-</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Actions</h2>
+        <button onclick="runPerformanceTest()">Run Performance Test</button>
+        <button onclick="clearResults()">Clear Results</button>
+        <button onclick="openFlutterApp()">Open Flutter App</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Performance Tips</h2>
+        <ul>
+            <li><strong>Good:</strong> DOM Content Loaded < 1.5s</li>
+            <li><strong>Good:</strong> Page Load Complete < 3s</li>
+            <li><strong>Good:</strong> First Contentful Paint < 1.8s</li>
+            <li><strong>Good:</strong> Largest Contentful Paint < 2.5s</li>
+            <li><strong>Good:</strong> First Input Delay < 100ms</li>
+        </ul>
+    </div>
+
+    <script>
+        let startTime = performance.now();
+        
+        function formatTime(ms) {
+            if (ms < 1000) return ms.toFixed(0) + 'ms';
+            return (ms / 1000).toFixed(2) + 's';
+        }
+        
+        function getPerformanceClass(value, good, warning) {
+            if (value <= good) return 'good';
+            if (value <= warning) return 'warning';
+            return 'poor';
+        }
+        
+        function updateMetric(id, value, unit = 'ms') {
+            const element = document.getElementById(id);
+            element.textContent = formatTime(value);
+            element.className = 'value ' + getPerformanceClass(value, 1500, 3000);
+        }
+        
+        function runPerformanceTest() {
+            // DOM Content Loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    const domLoaded = performance.now() - startTime;
+                    updateMetric('domLoaded', domLoaded);
+                });
+            } else {
+                updateMetric('domLoaded', 0);
+            }
+            
+            // Page Load Complete
+            if (document.readyState === 'complete') {
+                const pageLoaded = performance.now() - startTime;
+                updateMetric('pageLoaded', pageLoaded);
+            } else {
+                window.addEventListener('load', () => {
+                    const pageLoaded = performance.now() - startTime;
+                    updateMetric('pageLoaded', pageLoaded);
+                });
+            }
+            
+            // Resource counting
+            const resources = performance.getEntriesByType('resource');
+            document.getElementById('totalResources').textContent = resources.length;
+            
+            const totalSize = resources.reduce((sum, resource) => sum + (resource.transferSize || 0), 0);
+            document.getElementById('totalSize').textContent = (totalSize / 1024 / 1024).toFixed(2) + ' MB';
+            
+            const images = resources.filter(r => r.initiatorType === 'img');
+            document.getElementById('imagesLoaded').textContent = images.length;
+            
+            // Web Vitals (if available)
+            if ('PerformanceObserver' in window) {
+                // First Contentful Paint
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const fcp = entries[entries.length - 1];
+                    updateMetric('fcp', fcp.startTime);
+                }).observe({entryTypes: ['paint']});
+                
+                // Largest Contentful Paint
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const lcp = entries[entries.length - 1];
+                    updateMetric('lcp', lcp.startTime);
+                }).observe({entryTypes: ['largest-contentful-paint']});
+                
+                // First Input Delay
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const fid = entries[entries.length - 1];
+                    updateMetric('fid', fid.processingStart - fid.startTime);
+                }).observe({entryTypes: ['first-input']});
+            }
+        }
+        
+        function clearResults() {
+            document.querySelectorAll('.value').forEach(el => {
+                el.textContent = '-';
+                el.className = 'value';
+            });
+        }
+        
+        function openFlutterApp() {
+            window.open('http://localhost:8080', '_blank');
+        }
+        
+        // Auto-run test after page load
+        window.addEventListener('load', () => {
+            setTimeout(runPerformanceTest, 100);
+        });
+    </script>
+</body>
+</html> 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +53,38 @@ class HandyFixApp extends StatelessWidget {
               secondary: const Color(0xFFFF7A3D),
             ),
             useMaterial3: true,
-            textTheme: GoogleFonts.interTextTheme(),
+            textTheme: const TextTheme(
+              displayLarge:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+              displayMedium:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+              displaySmall:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+              headlineLarge:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+              headlineMedium:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+              headlineSmall:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+              titleLarge:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+              titleMedium:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+              titleSmall:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+              bodyLarge:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+              bodyMedium:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+              bodySmall:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+              labelLarge:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+              labelMedium:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+              labelSmall:
+                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+            ),
           ),
           builder: (context, child) => ResponsiveBreakpoints.builder(
             child: child!,
@@ -114,7 +144,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     );
   }
 
-  // Reusable Image Component
+  // Reusable Image Component with caching
   Widget customImage(String assetPath,
       {double? width,
       double? height,
@@ -126,6 +156,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       height: height,
       fit: fit,
       errorBuilder: errorBuilder,
+      cacheWidth: width?.toInt(),
+      cacheHeight: height?.toInt(),
     );
   }
 

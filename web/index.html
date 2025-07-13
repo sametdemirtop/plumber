@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Tesisat problemleriniz için profesyonel ve hızlı çözümler. İstanbul'da 7/24 hizmet.">
   <meta name="keywords" content="tesisatçı, su tesisatı, kalorifer, kombi, lavabo, tıkanıklık açma">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="assets/images/logo1.png" as="image">
+  <link rel="preload" href="assets/images/acil.png" as="image">
+  <link rel="preload" href="assets/images/bakım.png" as="image">
+  <link rel="preload" href="assets/images/banyo.png" as="image">
+  <link rel="preload" href="assets/images/banyoyenileme.png" as="image">
+  <link rel="preload" href="assets/images/gider.png" as="image">
+  <link rel="preload" href="assets/images/mutfak.png" as="image">
+
+  <!-- Font optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,8 +34,59 @@
 
   <title>İstanbul Tesisatçı | Uygun Fiyat & Hızlı Servis</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Performance optimization -->
+  <style>
+    /* Critical CSS for faster rendering */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #F9FAFB;
+    }
+    
+    /* Loading indicator */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #F9FAFB;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #E5E7EB;
+      border-top: 4px solid #2B4B80;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading indicator -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+  </div>
+  
+  <script>
+    // Hide loading indicator when Flutter is ready
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          loading.style.display = 'none';
+        }
+      }, 1000);
+    });
+  </script>
+  
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
