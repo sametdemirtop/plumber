@@ -1729,50 +1729,63 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
           ),
           gradient: LinearGradient(
             colors: [
-              Color.fromRGBO(43, 75, 128, 0.85),
-              Color.fromRGBO(43, 75, 128, 0.6),
-              Color.fromRGBO(43, 75, 128, 0),
+              Color(0xFF2B4B80),
+              Color(0xFF1E3A5F),
+              Color(0xFF0F1F2F),
             ],
-            stops: [0.0, 0.5, 1.0],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: isMobile ? 16 : 12,
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customText(
-                  AppLocalizations.of(context).heroTitle,
-                  fontSize: isMobile ? 28 : 48,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  height: 1.2,
-                ),
-                const SizedBox(height: 16),
-                customText(
-                  AppLocalizations.of(context).heroSubtitle,
-                  fontSize: isMobile ? 16 : 20,
-                  color: Colors.white,
-                  height: 1.5,
-                ),
-                const SizedBox(height: 32),
-                _buildHoverButton(
-                  onPressed: () => _scrollToSection('request'),
-                  buttonId: 'hero_request',
-                  child: customText(
-                    AppLocalizations.of(context).requestTechnician,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(43, 75, 128, 0.85),
+                Color.fromRGBO(43, 75, 128, 0.6),
+                Color.fromRGBO(43, 75, 128, 0),
               ],
+              stops: [0.0, 0.5, 1.0],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 16 : 12,
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customText(
+                    AppLocalizations.of(context).heroTitle,
+                    fontSize: isMobile ? 28 : 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    height: 1.2,
+                  ),
+                  const SizedBox(height: 16),
+                  customText(
+                    AppLocalizations.of(context).heroSubtitle,
+                    fontSize: isMobile ? 16 : 20,
+                    color: Colors.white,
+                    height: 1.5,
+                  ),
+                  const SizedBox(height: 32),
+                  _buildHoverButton(
+                    onPressed: () => _scrollToSection('request'),
+                    buttonId: 'hero_request',
+                    child: customText(
+                      AppLocalizations.of(context).requestTechnician,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
