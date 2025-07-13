@@ -760,111 +760,113 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildCTASection() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
-      color: const Color(0xFF2B4B80).withOpacity(0.05),
-      child: MaxWidthBox(
-        maxWidth: 1000,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: ResponsiveRowColumn(
-            layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                ? ResponsiveRowColumnType.COLUMN
-                : ResponsiveRowColumnType.ROW,
-            rowSpacing: 32,
-            columnSpacing: 32,
-            children: [
-              ResponsiveRowColumnItem(
-                rowFlex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customText(
-                      AppLocalizations.of(context).readyToRepair,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1F2937),
-                    ),
-                    const SizedBox(height: 16),
-                    customText(
-                      AppLocalizations.of(context).readyToRepairSubtitle,
-                      fontSize: 16,
-                      color: const Color(0xFF6B7280),
-                      height: 1.6,
-                    ),
-                    const SizedBox(height: 24),
-                    ResponsiveRowColumn(
-                      layout: ResponsiveRowColumnType.ROW,
-                      rowSpacing: 16,
-                      columnSpacing: 16,
-                      children: [
-                        ResponsiveRowColumnItem(
-                          child: _buildHoverButton(
-                            onPressed: () => _scrollToSection('request'),
-                            buttonId: 'cta_request',
-                            child: customText(
-                              AppLocalizations.of(context).requestTechnician,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        ResponsiveRowColumnItem(
-                          child: _buildHoverButton(
-                            onPressed: () => _launchPhone(),
-                            buttonId: 'cta_call',
-                            backgroundColor: Colors.white,
-                            hoverBackgroundColor: const Color(0xFFF8FAFC),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.phone,
-                                    size: 19, color: Color(0xFF2B4B80)),
-                                const SizedBox(width: 8),
-                                customText(
-                                  AppLocalizations.of(context).callUsNow,
-                                  textAlign: TextAlign.center,
-                                  color: const Color(0xFF2B4B80),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+    return RepaintBoundary(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
+        color: const Color(0xFF2B4B80).withOpacity(0.05),
+        child: MaxWidthBox(
+          maxWidth: 1000,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
                 ),
-              ),
-              ResponsiveRowColumnItem(
-                rowFlex: 1,
-                child: Center(
-                  child: Container(
-                    width: 160,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2B4B80).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(80),
-                    ),
-                    child: const Icon(
-                      Icons.build,
-                      size: 64,
-                      color: Color(0xFF2B4B80),
+              ],
+            ),
+            child: ResponsiveRowColumn(
+              layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                  ? ResponsiveRowColumnType.COLUMN
+                  : ResponsiveRowColumnType.ROW,
+              rowSpacing: 32,
+              columnSpacing: 32,
+              children: [
+                ResponsiveRowColumnItem(
+                  rowFlex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customText(
+                        AppLocalizations.of(context).readyToRepair,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1F2937),
+                      ),
+                      const SizedBox(height: 16),
+                      customText(
+                        AppLocalizations.of(context).readyToRepairSubtitle,
+                        fontSize: 16,
+                        color: const Color(0xFF6B7280),
+                        height: 1.6,
+                      ),
+                      const SizedBox(height: 24),
+                      ResponsiveRowColumn(
+                        layout: ResponsiveRowColumnType.ROW,
+                        rowSpacing: 16,
+                        columnSpacing: 16,
+                        children: [
+                          ResponsiveRowColumnItem(
+                            child: _buildHoverButton(
+                              onPressed: () => _scrollToSection('request'),
+                              buttonId: 'cta_request',
+                              child: customText(
+                                AppLocalizations.of(context).requestTechnician,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          ResponsiveRowColumnItem(
+                            child: _buildHoverButton(
+                              onPressed: () => _launchPhone(),
+                              buttonId: 'cta_call',
+                              backgroundColor: Colors.white,
+                              hoverBackgroundColor: const Color(0xFFF8FAFC),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.phone,
+                                      size: 19, color: Color(0xFF2B4B80)),
+                                  const SizedBox(width: 8),
+                                  customText(
+                                    AppLocalizations.of(context).callUsNow,
+                                    textAlign: TextAlign.center,
+                                    color: const Color(0xFF2B4B80),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                ResponsiveRowColumnItem(
+                  rowFlex: 1,
+                  child: Center(
+                    child: Container(
+                      width: 160,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2B4B80).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(80),
+                      ),
+                      child: const Icon(
+                        Icons.build,
+                        size: 64,
+                        color: Color(0xFF2B4B80),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
