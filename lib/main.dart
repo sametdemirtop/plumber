@@ -283,11 +283,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       decoration: BoxDecoration(
         color: const Color(0xFF25D366),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: const Color(0xFF25D366).withOpacity(0.25),
+            color: Color(0x4025D366), // 0.25 opacity = 40 in hex
             blurRadius: 8,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
@@ -323,8 +323,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   void _launchWhatsApp() async {
-    final phoneNumber = '905324533802';
-    final message = 'Merhaba! Tesisat hizmeti hakkında bilgi almak istiyorum.';
+    const phoneNumber = '905324533802';
+    const message = 'Merhaba! Tesisat hizmeti hakkında bilgi almak istiyorum.';
     final whatsappUrl =
         'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
 
@@ -434,12 +434,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               context.watch<MenuState>().isMobileMenuOpen)
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    offset: const Offset(0, 4),
+                    color: Color(0x0D000000), // 0.05 opacity = 0D in hex
+                    offset: Offset(0, 4),
                     blurRadius: 8,
                   ),
                 ],
@@ -534,7 +534,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 decoration: BoxDecoration(
                   color:
                       context.watch<HoverState>().isHoveredButton('nav_$title')
-                          ? const Color(0xFF2B4B80).withOpacity(0.1)
+                          ? const Color(0x1A2B4B80) // 0.1 opacity = 1A in hex
                           : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -604,7 +604,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2B4B80).withOpacity(0.1),
+                    color: const Color(0x1A2B4B80), // 0.1 opacity = 1A in hex
                     borderRadius: BorderRadius.circular(28),
                   ),
                   child: Icon(
@@ -864,7 +864,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return RepaintBoundary(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
-        color: const Color(0xFF2B4B80).withOpacity(0.05),
+        color: const Color(0x0D2B4B80), // 0.05 opacity = 0D in hex
         child: MaxWidthBox(
           maxWidth: 1000,
           child: Container(
@@ -872,11 +872,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Color(0x14000000), // 0.08 opacity = 14 in hex
                   blurRadius: 12,
-                  offset: const Offset(0, 6),
+                  offset: Offset(0, 6),
                 ),
               ],
             ),
@@ -955,7 +955,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                       width: 160,
                       height: 160,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2B4B80).withOpacity(0.1),
+                        color:
+                            const Color(0x1A2B4B80), // 0.1 opacity = 1A in hex
                         borderRadius: BorderRadius.circular(80),
                       ),
                       child: const Icon(
@@ -1037,11 +1038,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Color(0x1A000000), // 0.1 opacity = 1A in hex
                     blurRadius: 20,
-                    offset: const Offset(0, 10),
+                    offset: Offset(0, 10),
                   ),
                 ],
               ),
@@ -1451,7 +1452,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2B4B80).withOpacity(0.1),
+                      color: const Color(0x1A2B4B80), // 0.1 opacity = 1A in hex
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Center(
@@ -1759,7 +1760,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               decoration: BoxDecoration(
                 color:
                     context.watch<HoverState>().isHoveredButton('footer_$title')
-                        ? Colors.white.withOpacity(0.1)
+                        ? const Color(0x1AFFFFFF) // 0.1 opacity = 1A in hex
                         : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
               ),
@@ -1769,7 +1770,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 fontSize: 14,
                 color:
                     context.watch<HoverState>().isHoveredButton('footer_$title')
-                        ? Colors.white.withOpacity(0.9)
+                        ? const Color(0xE6FFFFFF) // 0.9 opacity = E6 in hex
                         : const Color(0xFF9CA3AF),
                 decoration: TextDecoration.none,
               ),
