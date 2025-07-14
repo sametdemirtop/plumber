@@ -1,205 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Performance Test - HandyFix Web</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performans Testi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
         }
-        .test-section {
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
             background: white;
             padding: 20px;
-            margin: 20px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .metric:last-child {
-            border-bottom: none;
-        }
-        .value {
+        .result {
             font-weight: bold;
-            color: #2B4B80;
+            margin-top: 5px;
         }
-        .good { color: #22c55e; }
-        .warning { color: #f59e0b; }
-        .poor { color: #ef4444; }
+        .good { color: green; }
+        .warning { color: orange; }
+        .bad { color: red; }
         button {
-            background: #2B4B80;
+            background: #007bff;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            margin: 10px 5px;
+            margin: 5px;
         }
         button:hover {
-            background: #1e3a5f;
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>HandyFix Web Performance Test</h1>
-    
-    <div class="test-section">
-        <h2>Load Time Metrics</h2>
-        <div class="metric">
-            <span>DOM Content Loaded:</span>
-            <span id="domLoaded" class="value">-</span>
+    <div class="test-container">
+        <h1>📱 Mobil Performans Testi</h1>
+        <p>Bu test, cihazınızın web performansını ölçer ve Flutter web uygulaması için uygunluğunu değerlendirir.</p>
+        
+        <div class="test-item">
+            <h3>1. Cihaz Bilgileri</h3>
+            <div id="device-info"></div>
         </div>
-        <div class="metric">
-            <span>Page Load Complete:</span>
-            <span id="pageLoaded" class="value">-</span>
+        
+        <div class="test-item">
+            <h3>2. Scroll Performans Testi</h3>
+            <button onclick="testScroll()">Scroll Testini Başlat</button>
+            <div id="scroll-result"></div>
         </div>
-        <div class="metric">
-            <span>First Contentful Paint:</span>
-            <span id="fcp" class="value">-</span>
+        
+        <div class="test-item">
+            <h3>3. Animasyon Performans Testi</h3>
+            <button onclick="testAnimation()">Animasyon Testini Başlat</button>
+            <div id="animation-result"></div>
         </div>
-        <div class="metric">
-            <span>Largest Contentful Paint:</span>
-            <span id="lcp" class="value">-</span>
+        
+        <div class="test-item">
+            <h3>4. Bellek Kullanımı</h3>
+            <button onclick="testMemory()">Bellek Testini Başlat</button>
+            <div id="memory-result"></div>
         </div>
-        <div class="metric">
-            <span>First Input Delay:</span>
-            <span id="fid" class="value">-</span>
+        
+        <div class="test-item">
+            <h3>5. Genel Öneriler</h3>
+            <div id="recommendations"></div>
         </div>
-    </div>
-
-    <div class="test-section">
-        <h2>Resource Loading</h2>
-        <div class="metric">
-            <span>Total Resources:</span>
-            <span id="totalResources" class="value">-</span>
-        </div>
-        <div class="metric">
-            <span>Total Size:</span>
-            <span id="totalSize" class="value">-</span>
-        </div>
-        <div class="metric">
-            <span>Images Loaded:</span>
-            <span id="imagesLoaded" class="value">-</span>
-        </div>
-    </div>
-
-    <div class="test-section">
-        <h2>Actions</h2>
-        <button onclick="runPerformanceTest()">Run Performance Test</button>
-        <button onclick="clearResults()">Clear Results</button>
-        <button onclick="openFlutterApp()">Open Flutter App</button>
-    </div>
-
-    <div class="test-section">
-        <h2>Performance Tips</h2>
-        <ul>
-            <li><strong>Good:</strong> DOM Content Loaded < 1.5s</li>
-            <li><strong>Good:</strong> Page Load Complete < 3s</li>
-            <li><strong>Good:</strong> First Contentful Paint < 1.8s</li>
-            <li><strong>Good:</strong> Largest Contentful Paint < 2.5s</li>
-            <li><strong>Good:</strong> First Input Delay < 100ms</li>
-        </ul>
     </div>
 
     <script>
-        let startTime = performance.now();
-        
-        function formatTime(ms) {
-            if (ms < 1000) return ms.toFixed(0) + 'ms';
-            return (ms / 1000).toFixed(2) + 's';
+        // Cihaz bilgilerini göster
+        function showDeviceInfo() {
+            const info = document.getElementById('device-info');
+            const userAgent = navigator.userAgent;
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+            const isAndroid = /Android/i.test(userAgent);
+            const isOldAndroid = /Android [4-7]\./i.test(userAgent);
+            
+            info.innerHTML = `
+                <p><strong>User Agent:</strong> ${userAgent}</p>
+                <p><strong>Mobil Cihaz:</strong> ${isMobile ? 'Evet' : 'Hayır'}</p>
+                <p><strong>Android:</strong> ${isAndroid ? 'Evet' : 'Hayır'}</p>
+                <p><strong>Eski Android (4-7):</strong> ${isOldAndroid ? 'Evet' : 'Hayır'}</p>
+                <p><strong>Ekran Çözünürlüğü:</strong> ${screen.width}x${screen.height}</p>
+                <p><strong>Piksel Oranı:</strong> ${window.devicePixelRatio}</p>
+            `;
         }
-        
-        function getPerformanceClass(value, good, warning) {
-            if (value <= good) return 'good';
-            if (value <= warning) return 'warning';
-            return 'poor';
-        }
-        
-        function updateMetric(id, value, unit = 'ms') {
-            const element = document.getElementById(id);
-            element.textContent = formatTime(value);
-            element.className = 'value ' + getPerformanceClass(value, 1500, 3000);
-        }
-        
-        function runPerformanceTest() {
-            // DOM Content Loaded
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => {
-                    const domLoaded = performance.now() - startTime;
-                    updateMetric('domLoaded', domLoaded);
-                });
-            } else {
-                updateMetric('domLoaded', 0);
-            }
+
+        // Scroll performans testi
+        function testScroll() {
+            const result = document.getElementById('scroll-result');
+            result.innerHTML = '<p>Test başlatılıyor...</p>';
             
-            // Page Load Complete
-            if (document.readyState === 'complete') {
-                const pageLoaded = performance.now() - startTime;
-                updateMetric('pageLoaded', pageLoaded);
-            } else {
-                window.addEventListener('load', () => {
-                    const pageLoaded = performance.now() - startTime;
-                    updateMetric('pageLoaded', pageLoaded);
-                });
-            }
+            let startTime = performance.now();
+            let frameCount = 0;
+            let lastTime = startTime;
             
-            // Resource counting
-            const resources = performance.getEntriesByType('resource');
-            document.getElementById('totalResources').textContent = resources.length;
-            
-            const totalSize = resources.reduce((sum, resource) => sum + (resource.transferSize || 0), 0);
-            document.getElementById('totalSize').textContent = (totalSize / 1024 / 1024).toFixed(2) + ' MB';
-            
-            const images = resources.filter(r => r.initiatorType === 'img');
-            document.getElementById('imagesLoaded').textContent = images.length;
-            
-            // Web Vitals (if available)
-            if ('PerformanceObserver' in window) {
-                // First Contentful Paint
-                new PerformanceObserver((list) => {
-                    const entries = list.getEntries();
-                    const fcp = entries[entries.length - 1];
-                    updateMetric('fcp', fcp.startTime);
-                }).observe({entryTypes: ['paint']});
+            function scrollTest() {
+                frameCount++;
+                const currentTime = performance.now();
                 
-                // Largest Contentful Paint
-                new PerformanceObserver((list) => {
-                    const entries = list.getEntries();
-                    const lcp = entries[entries.length - 1];
-                    updateMetric('lcp', lcp.startTime);
-                }).observe({entryTypes: ['largest-contentful-paint']});
+                if (currentTime - startTime < 1000) {
+                    window.scrollBy(0, 1);
+                    requestAnimationFrame(scrollTest);
+                } else {
+                    const fps = frameCount / ((currentTime - startTime) / 1000);
+                    const performance = fps > 30 ? 'good' : fps > 15 ? 'warning' : 'bad';
+                    const performanceText = fps > 30 ? 'İyi' : fps > 15 ? 'Orta' : 'Kötü';
+                    
+                    result.innerHTML = `
+                        <div class="result ${performance}">
+                            <p>FPS: ${fps.toFixed(1)} (${performanceText})</p>
+                            <p>Toplam frame: ${frameCount}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            requestAnimationFrame(scrollTest);
+        }
+
+        // Animasyon performans testi
+        function testAnimation() {
+            const result = document.getElementById('animation-result');
+            result.innerHTML = '<p>Test başlatılıyor...</p>';
+            
+            const testElement = document.createElement('div');
+            testElement.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 50px;
+                height: 50px;
+                background: red;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.1s ease;
+            `;
+            document.body.appendChild(testElement);
+            
+            let startTime = performance.now();
+            let frameCount = 0;
+            
+            function animate() {
+                frameCount++;
+                const currentTime = performance.now();
                 
-                // First Input Delay
-                new PerformanceObserver((list) => {
-                    const entries = list.getEntries();
-                    const fid = entries[entries.length - 1];
-                    updateMetric('fid', fid.processingStart - fid.startTime);
-                }).observe({entryTypes: ['first-input']});
+                if (currentTime - startTime < 1000) {
+                    testElement.style.transform = `translate(-50%, -50%) rotate(${frameCount * 10}deg)`;
+                    requestAnimationFrame(animate);
+                } else {
+                    const fps = frameCount / ((currentTime - startTime) / 1000);
+                    const performance = fps > 30 ? 'good' : fps > 15 ? 'warning' : 'bad';
+                    const performanceText = fps > 30 ? 'İyi' : fps > 15 ? 'Orta' : 'Kötü';
+                    
+                    result.innerHTML = `
+                        <div class="result ${performance}">
+                            <p>Animasyon FPS: ${fps.toFixed(1)} (${performanceText})</p>
+                        </div>
+                    `;
+                    
+                    document.body.removeChild(testElement);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Bellek testi
+        function testMemory() {
+            const result = document.getElementById('memory-result');
+            
+            if ('memory' in performance) {
+                const memory = performance.memory;
+                const usedMB = (memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+                const totalMB = (memory.totalJSHeapSize / 1024 / 1024).toFixed(1);
+                const limitMB = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(1);
+                
+                const usagePercent = (memory.usedJSHeapSize / memory.jsHeapSizeLimit * 100).toFixed(1);
+                const performance = usagePercent < 50 ? 'good' : usagePercent < 80 ? 'warning' : 'bad';
+                
+                result.innerHTML = `
+                    <div class="result ${performance}">
+                        <p>Kullanılan Bellek: ${usedMB} MB</p>
+                        <p>Toplam Bellek: ${totalMB} MB</p>
+                        <p>Bellek Limiti: ${limitMB} MB</p>
+                        <p>Kullanım Oranı: %${usagePercent}</p>
+                    </div>
+                `;
+            } else {
+                result.innerHTML = '<p>Bellek bilgisi mevcut değil</p>';
             }
         }
-        
-        function clearResults() {
-            document.querySelectorAll('.value').forEach(el => {
-                el.textContent = '-';
-                el.className = 'value';
-            });
+
+        // Öneriler
+        function showRecommendations() {
+            const recommendations = document.getElementById('recommendations');
+            const userAgent = navigator.userAgent;
+            const isOldAndroid = /Android [4-7]\./i.test(userAgent);
+            
+            let recommendationsList = '<ul>';
+            
+            if (isOldAndroid) {
+                recommendationsList += `
+                    <li>HTML renderer kullanın (CanvasKit yerine)</li>
+                    <li>Animasyonları azaltın</li>
+                    <li>Görsel kalitesini düşürün</li>
+                    <li>Scroll physics'i ClampingScrollPhysics yapın</li>
+                `;
+            } else {
+                recommendationsList += `
+                    <li>Standart Flutter web optimizasyonları yeterli</li>
+                    <li>CanvasKit renderer kullanabilirsiniz</li>
+                `;
+            }
+            
+            recommendationsList += '</ul>';
+            recommendations.innerHTML = recommendationsList;
         }
-        
-        function openFlutterApp() {
-            window.open('http://localhost:8080', '_blank');
-        }
-        
-        // Auto-run test after page load
-        window.addEventListener('load', () => {
-            setTimeout(runPerformanceTest, 100);
-        });
+
+        // Sayfa yüklendiğinde testleri başlat
+        window.onload = function() {
+            showDeviceInfo();
+            showRecommendations();
+        };
     </script>
 </body>
 </html> 

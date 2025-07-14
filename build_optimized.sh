@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Building optimized Flutter web application..."
+echo "Building optimized Flutter web app for older devices..."
 
 # Clean previous build
 flutter clean
@@ -8,21 +8,13 @@ flutter clean
 # Get dependencies
 flutter pub get
 
-# Build with optimization flags
+# Build with HTML renderer and optimizations for older devices
 flutter build web \
+  --web-renderer html \
+  --dart-define=FLUTTER_WEB_USE_SKIA=false \
+  --dart-define=FLUTTER_WEB_USE_CANVASKIT=false \
   --release \
-  --dart-define=FLUTTER_WEB_USE_SKIA=true \
-  --dart-define=FLUTTER_WEB_USE_SKIA_RENDERER=true \
-  --web-renderer canvaskit \
-  --tree-shake-icons \
-  --no-sound-null-safety
+  --tree-shake-icons
 
-echo "Build completed! Optimized files are in build/web/"
-echo ""
-echo "Performance optimizations applied:"
-echo "- Removed Google Fonts dependency"
-echo "- Optimized image loading with preload"
-echo "- Added critical CSS"
-echo "- Optimized provider state management"
-echo "- Used CanvasKit renderer for better performance"
-echo "- Enabled tree shaking for icons" 
+echo "Build completed! Optimized for older Android devices."
+echo "Files are in build/web/" 

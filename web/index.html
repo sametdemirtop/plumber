@@ -43,6 +43,9 @@
       padding: 0;
       font-family: 'Inter', sans-serif;
       background-color: #F9FAFB;
+      /* Disable hardware acceleration for better compatibility */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
     
     /* Loading indicator */
@@ -67,6 +70,20 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Optimize scrolling for older devices */
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Reduce motion for better performance */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -76,6 +93,14 @@
   </div>
   
   <script>
+    // Performance optimizations for older devices
+    if (navigator.userAgent.includes('Android') || navigator.userAgent.includes('Mobile')) {
+      // Force HTML renderer for better compatibility
+      window.flutterConfiguration = {
+        renderer: "html"
+      };
+    }
+
     // Hide loading indicator when Flutter is ready
     window.addEventListener('load', function() {
       setTimeout(function() {
@@ -85,6 +110,21 @@
         }
       }, 1000);
     });
+
+    // Optimize scroll performance
+    let ticking = false;
+    function updateScroll() {
+      ticking = false;
+    }
+    
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', requestTick, { passive: true });
   </script>
   
   <script src="flutter_bootstrap.js" async></script>

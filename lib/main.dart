@@ -10,6 +10,7 @@ import 'providers/hover_state.dart';
 import 'providers/service_state.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
@@ -151,7 +152,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     );
   }
 
-  // Reusable Image Component with caching
+  // Reusable Image Component with caching and performance optimization
   Widget customImage(String assetPath,
       {double? width,
       double? height,
@@ -165,6 +166,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       errorBuilder: errorBuilder,
       cacheWidth: width?.toInt(),
       cacheHeight: height?.toInt(),
+      filterQuality: FilterQuality.medium,
+      isAntiAlias: false,
     );
   }
 
@@ -244,8 +247,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     if (targetKey?.currentContext != null) {
       Scrollable.ensureVisible(
         targetKey!.currentContext!,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
       );
     }
   }
@@ -257,7 +260,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
       floatingActionButton: _buildWhatsAppButton(),
       body: SingleChildScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
             _buildNavigation(),
