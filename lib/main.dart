@@ -29,76 +29,72 @@ class HandyFixApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocaleProvider>(
-      builder: (context, localeProvider, child) {
+    // Use Selector instead of Consumer for better performance
+    return Selector<LocaleProvider, Locale>(
+      selector: (context, localeProvider) => localeProvider.locale,
+      builder: (context, locale, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: localeProvider.locale.languageCode == 'tr'
+          title: locale.languageCode == 'tr'
               ? 'Özinan Yapı Malzemeleri - Tamir ve Tadilat Hizmetleri'
               : 'Özinan Yapı Malzemeleri - Repair and Renovation Services',
-          locale: localeProvider.locale,
-          supportedLocales: const [
-            Locale('en'),
-            Locale('tr'),
-          ],
+          locale: locale,
+          supportedLocales: const [Locale('en'), Locale('tr')],
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF2B4B80),
-              primary: const Color(0xFF2B4B80),
-              secondary: const Color(0xFFFF7A3D),
-            ),
-            useMaterial3: true,
-            textTheme: const TextTheme(
-              displayLarge:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
-              displayMedium:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
-              displaySmall:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
-              headlineLarge:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
-              headlineMedium:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
-              headlineSmall:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
-              titleLarge:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
-              titleMedium:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
-              titleSmall:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
-              bodyLarge:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
-              bodyMedium:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
-              bodySmall:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
-              labelLarge:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
-              labelMedium:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
-              labelSmall:
-                  TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
-            ),
-          ),
+          theme: _buildTheme(),
           builder: (context, child) => ResponsiveBreakpoints.builder(
             child: child!,
-            breakpoints: [
-              const Breakpoint(start: 0, end: 450, name: MOBILE),
-              const Breakpoint(start: 451, end: 800, name: TABLET),
-              const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+            breakpoints: const [
+              Breakpoint(start: 0, end: 450, name: MOBILE),
+              Breakpoint(start: 451, end: 800, name: TABLET),
+              Breakpoint(start: 801, end: 1920, name: DESKTOP),
+              Breakpoint(start: 1921, end: double.infinity, name: '4K'),
             ],
           ),
           home: const HandyFixHomePage(),
         );
       },
+    );
+  }
+
+  ThemeData _buildTheme() {
+    return ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF2B4B80),
+        primary: const Color(0xFF2B4B80),
+        secondary: const Color(0xFFFF7A3D),
+      ),
+      useMaterial3: true,
+      textTheme: _buildTextTheme(),
+    );
+  }
+
+  TextTheme _buildTextTheme() {
+    return const TextTheme(
+      displayLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+      displayMedium:
+          TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+      displaySmall: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.bold),
+      headlineLarge:
+          TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+      headlineMedium:
+          TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+      headlineSmall:
+          TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+      titleLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+      titleMedium: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+      titleSmall: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+      bodyLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+      bodyMedium: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+      bodySmall: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.normal),
+      labelLarge: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+      labelMedium: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
+      labelSmall: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
     );
   }
 }
@@ -152,26 +148,85 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     );
   }
 
-  // Reusable Image Component with caching and performance optimization
+  // Optimized Image Component with RepaintBoundary
   Widget customImage(String assetPath,
       {double? width,
       double? height,
       BoxFit fit = BoxFit.cover,
       ImageErrorWidgetBuilder? errorBuilder}) {
-    return Image.asset(
-      assetPath,
-      width: width,
-      height: height,
-      fit: fit,
-      errorBuilder: errorBuilder,
-      cacheWidth: width?.toInt(),
-      cacheHeight: height?.toInt(),
-      filterQuality: FilterQuality.medium,
-      isAntiAlias: false,
+    return RepaintBoundary(
+      child: Image.asset(
+        assetPath,
+        width: width,
+        height: height,
+        fit: fit,
+        errorBuilder: errorBuilder ??
+            (context, error, stackTrace) {
+              return Container(
+                width: width,
+                height: height,
+                color: Colors.grey.shade200,
+                child: const Icon(Icons.error, color: Colors.grey),
+              );
+            },
+        cacheWidth: width?.toInt(),
+        cacheHeight: height?.toInt(),
+        filterQuality: FilterQuality.medium,
+        isAntiAlias: false,
+      ),
     );
   }
 
-  // Reusable TextField Component
+  // Optimized Form Field Component
+  Widget _buildOptimizedFormField({
+    required TextEditingController controller,
+    required String label,
+    required String hintText,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
+    return RepaintBoundary(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            validator: validator,
+            decoration: InputDecoration(
+              hintText: hintText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide:
+                    const BorderSide(color: Color(0xFF2B4B80), width: 2),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+                    ? 12
+                    : 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Reusable TextField Component (kept for backward compatibility)
   Widget customTextField(
       {required String hintText,
       required TextEditingController controller,
@@ -335,170 +390,207 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildNavigation() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+
+    return RepaintBoundary(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            _buildNavigationHeader(isMobile),
+            if (isMobile) _buildMobileMenu(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationHeader(bool isMobile) {
     return Container(
-      color: Colors.white,
-      child: Column(
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 16 : 20,
+        vertical: isMobile ? 12 : 16,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 16
-                  : 20,
-              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 12
-                  : 16,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: SizedBox(
-                    height:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? 60
-                            : 100,
-                    child: customImage(
-                      'assets/images/logo1.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                if (ResponsiveBreakpoints.of(context).smallerThan(TABLET))
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: Icon(
-                      context.watch<MenuState>().isMobileMenuOpen
-                          ? Icons.close
-                          : Icons.menu,
-                      size: 28,
-                      color: const Color(0xFF2B4B80),
-                    ),
-                    onPressed: () {
-                      context.read<MenuState>().toggleMobileMenu();
-                    },
-                  )
-                else
-                  Flexible(
-                    flex: 2,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          _buildNavItem(AppLocalizations.of(context).home,
-                              () => _scrollToSection('home')),
-                          _buildNavItem(AppLocalizations.of(context).services,
-                              () => _scrollToSection('services')),
-                          _buildNavItem(
-                              AppLocalizations.of(context).requestService,
-                              () => _scrollToSection('request')),
-                          _buildNavItem(AppLocalizations.of(context).reviews,
-                              () => _scrollToSection('reviews')),
-                          const SizedBox(width: 20),
-                          _buildHoverButton(
-                            onPressed: () => _scrollToSection('request'),
-                            buttonId: 'nav_request',
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: customText(
-                              AppLocalizations.of(context).requestTechnician,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          IconButton(
-                            onPressed: () {
-                              context.read<LocaleProvider>().toggleLocale();
-                            },
-                            icon: customText(
-                              context
-                                  .watch<LocaleProvider>()
-                                  .locale
-                                  .languageCode
-                                  .toUpperCase(),
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF2B4B80),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
+          Flexible(
+            child: SizedBox(
+              height: isMobile ? 60 : 100,
+              child: customImage(
+                'assets/images/logo1.png',
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-          if (ResponsiveBreakpoints.of(context).smallerThan(TABLET) &&
-              context.watch<MenuState>().isMobileMenuOpen)
-            Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x0D000000), // 0.05 opacity = 0D in hex
-                    offset: Offset(0, 4),
-                    blurRadius: 8,
+          if (isMobile)
+            Selector<MenuState, bool>(
+              selector: (context, menuState) => menuState.isMobileMenuOpen,
+              builder: (context, isMobileMenuOpen, child) {
+                return IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    isMobileMenuOpen ? Icons.close : Icons.menu,
+                    size: 28,
+                    color: const Color(0xFF2B4B80),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildMobileNavItem(AppLocalizations.of(context).home,
-                      () => _scrollToSection('home')),
-                  _buildMobileNavItem(AppLocalizations.of(context).services,
-                      () => _scrollToSection('services')),
-                  _buildMobileNavItem(
-                      AppLocalizations.of(context).requestService,
-                      () => _scrollToSection('request')),
-                  _buildMobileNavItem(AppLocalizations.of(context).reviews,
-                      () => _scrollToSection('reviews')),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    child: _buildHoverButton(
-                      onPressed: () => _scrollToSection('request'),
-                      buttonId: 'mobile_request',
-                      child: customText(
-                        AppLocalizations.of(context).requestTechnician,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: IconButton(
-                      onPressed: () {
-                        context.read<LocaleProvider>().toggleLocale();
-                      },
-                      icon: customText(
-                        context
-                            .watch<LocaleProvider>()
-                            .locale
-                            .languageCode
-                            .toUpperCase(),
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF2B4B80),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                  onPressed: () {
+                    context.read<MenuState>().toggleMobileMenu();
+                  },
+                );
+              },
+            )
+          else
+            _buildDesktopNavigation(),
         ],
       ),
     );
   }
 
-  Widget _buildMobileNavItem(String title, VoidCallback onTap) {
+  Widget _buildDesktopNavigation() {
+    return Flexible(
+      flex: 2,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildOptimizedNavItem(AppLocalizations.of(context).home, 'home'),
+            _buildOptimizedNavItem(
+                AppLocalizations.of(context).services, 'services'),
+            _buildOptimizedNavItem(
+                AppLocalizations.of(context).requestService, 'request'),
+            _buildOptimizedNavItem(
+                AppLocalizations.of(context).reviews, 'reviews'),
+            const SizedBox(width: 20),
+            _buildRequestButton(),
+            const SizedBox(width: 12),
+            _buildLanguageButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOptimizedNavItem(String title, String section) {
+    return Selector<HoverState, bool>(
+      selector: (context, hoverState) =>
+          hoverState.isHoveredButton('nav_$title'),
+      builder: (context, isHovered, child) {
+        return MouseRegion(
+          onEnter: (_) =>
+              context.read<HoverState>().setHoveredButton('nav_$title', true),
+          onExit: (_) =>
+              context.read<HoverState>().setHoveredButton('nav_$title', false),
+          child: GestureDetector(
+            onTap: () => _scrollToSection(section),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: isHovered ? const Color(0x1A2B4B80) : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: isHovered ? FontWeight.w600 : FontWeight.w500,
+                  color: const Color(0xFF1F2937),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildRequestButton() {
+    return ElevatedButton(
+      onPressed: () => _scrollToSection('request'),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFFF7A3D),
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      child: Text(
+        AppLocalizations.of(context).requestTechnician,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget _buildLanguageButton() {
+    return Selector<LocaleProvider, String>(
+      selector: (context, localeProvider) => localeProvider.locale.languageCode,
+      builder: (context, languageCode, child) {
+        return IconButton(
+          onPressed: () => context.read<LocaleProvider>().toggleLocale(),
+          icon: Text(
+            languageCode.toUpperCase(),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2B4B80),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileMenu() {
+    return Selector<MenuState, bool>(
+      selector: (context, menuState) => menuState.isMobileMenuOpen,
+      builder: (context, isMobileMenuOpen, child) {
+        if (!isMobileMenuOpen) return const SizedBox.shrink();
+
+        return RepaintBoundary(
+          child: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x0D000000),
+                  offset: Offset(0, 4),
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildMobileNavItem(AppLocalizations.of(context).home, 'home'),
+                _buildMobileNavItem(
+                    AppLocalizations.of(context).services, 'services'),
+                _buildMobileNavItem(
+                    AppLocalizations.of(context).requestService, 'request'),
+                _buildMobileNavItem(
+                    AppLocalizations.of(context).reviews, 'reviews'),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: _buildRequestButton(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _buildLanguageButton(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileNavItem(String title, String section) {
     return InkWell(
       onTap: () {
-        onTap();
+        _scrollToSection(section);
         context.read<MenuState>().closeMobileMenu();
       },
       child: Container(
@@ -514,44 +606,6 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           color: const Color(0xFF1F2937),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavItem(String title, VoidCallback onTap) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) =>
-              context.read<HoverState>().setHoveredButton('nav_$title', true),
-          onExit: (_) =>
-              context.read<HoverState>().setHoveredButton('nav_$title', false),
-          child: GestureDetector(
-            onTap: onTap,
-            child: HoverAnimatedWidget(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color:
-                      context.watch<HoverState>().isHoveredButton('nav_$title')
-                          ? const Color(0x1A2B4B80) // 0.1 opacity = 1A in hex
-                          : Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: customText(
-                  title,
-                  fontSize: 16,
-                  fontWeight:
-                      context.watch<HoverState>().isHoveredButton('nav_$title')
-                          ? FontWeight.w600
-                          : FontWeight.w500,
-                  color: const Color(0xFF1F2937),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -636,6 +690,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildServicesSection() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       key: _servicesKey,
       padding: EdgeInsets.symmetric(
@@ -665,23 +720,17 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               height: 1.6,
             ),
             SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 32
-                  : 48,
+              height: isMobile ? 32 : 48,
             ),
             ResponsiveRowColumn(
               layout: ResponsiveRowColumnType.COLUMN,
-              columnSpacing:
-                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                      ? 16
-                      : 24,
+              columnSpacing: isMobile ? 16 : 24,
               children: [
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
+                    layout: isMobile
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     rowSpacing: 24,
                     columnSpacing: 16,
                     children: [
@@ -746,10 +795,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 ),
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
+                    layout: isMobile
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     rowSpacing: 24,
                     columnSpacing: 16,
                     children: [
@@ -788,6 +836,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
 
   Widget _buildDetailedServiceCard(
       String imageUrl, String title, String description) {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return HoverAnimatedWidget(
       child: Container(
         decoration: BoxDecoration(
@@ -802,9 +851,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
               child: SizedBox(
-                height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                    ? 200
-                    : 300,
+                height: isMobile ? 200 : 300,
                 width: double.infinity,
                 child: customImage(
                   imageUrl,
@@ -824,23 +871,15 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal:
-                    ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                        ? 16
-                        : 24,
-                vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                    ? 16
-                    : 20,
+                horizontal: isMobile ? 16 : 24,
+                vertical: isMobile ? 16 : 20,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   customText(
                     title,
-                    fontSize:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? 18
-                            : 20,
+                    fontSize: isMobile ? 18 : 20,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF1F2937),
                   ),
@@ -1046,235 +1085,182 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                   ),
                 ],
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    _buildFormField(
-                      controller: _nameController,
-                      label: AppLocalizations.of(context).fullName,
-                      hintText: AppLocalizations.of(context).enterFullName,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your full name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildFormField(
-                      controller: _phoneController,
-                      label: AppLocalizations.of(context).phoneNumber,
-                      hintText: AppLocalizations.of(context).enterPhone,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildFormField(
-                      controller: _addressController,
-                      label: AppLocalizations.of(context).address,
-                      hintText: AppLocalizations.of(context).enterAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customText(
-                          AppLocalizations.of(context).typeOfNeed,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF1F2937),
-                        ),
-                        const SizedBox(height: 8),
-                        DropdownButtonFormField<String>(
-                          value: context
-                                  .watch<ServiceState>()
-                                  .selectedService
-                                  .isEmpty
-                              ? null
-                              : context.watch<ServiceState>().selectedService,
-                          hint: customText(
-                            AppLocalizations.of(context).selectServiceType,
-                            fontSize: 14,
-                            color: const Color(0xFF6B7280),
+              child: RepaintBoundary(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _buildOptimizedFormField(
+                        controller: _nameController,
+                        label: AppLocalizations.of(context).fullName,
+                        hintText: AppLocalizations.of(context).enterFullName,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: ResponsiveBreakpoints.of(context)
+                                .smallerThan(TABLET)
+                            ? 16
+                            : 24,
+                      ),
+                      _buildOptimizedFormField(
+                        controller: _phoneController,
+                        label: AppLocalizations.of(context).phoneNumber,
+                        hintText: AppLocalizations.of(context).enterPhone,
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: ResponsiveBreakpoints.of(context)
+                                .smallerThan(TABLET)
+                            ? 16
+                            : 24,
+                      ),
+                      _buildOptimizedFormField(
+                        controller: _addressController,
+                        label: AppLocalizations.of(context).address,
+                        hintText: AppLocalizations.of(context).enterAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: ResponsiveBreakpoints.of(context)
+                                .smallerThan(TABLET)
+                            ? 16
+                            : 24,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          customText(
+                            AppLocalizations.of(context).typeOfNeed,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xFF1F2937),
                           ),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFD1D5DB)),
+                          const SizedBox(height: 8),
+                          DropdownButtonFormField<String>(
+                            value: context
+                                    .watch<ServiceState>()
+                                    .selectedService
+                                    .isEmpty
+                                ? null
+                                : context.watch<ServiceState>().selectedService,
+                            hint: customText(
+                              AppLocalizations.of(context).selectServiceType,
+                              fontSize: 14,
+                              color: const Color(0xFF6B7280),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                  color: Color(0xFF2B4B80), width: 2),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide:
+                                    const BorderSide(color: Color(0xFFD1D5DB)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(
+                                    color: Color(0xFF2B4B80), width: 2),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: ResponsiveBreakpoints.of(context)
+                                        .smallerThan(TABLET)
+                                    ? 12
+                                    : 16,
+                              ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: ResponsiveBreakpoints.of(context)
-                                      .smallerThan(TABLET)
-                                  ? 12
-                                  : 16,
-                            ),
+                            items: [
+                              DropdownMenuItem(
+                                  value: 'drain_cleaning',
+                                  child: customText(AppLocalizations.of(context)
+                                      .drainCleaning)),
+                              DropdownMenuItem(
+                                  value: 'bathroom_repair',
+                                  child: customText(AppLocalizations.of(context)
+                                      .bathroomRepair)),
+                              DropdownMenuItem(
+                                  value: 'kitchen_plumbing',
+                                  child: customText(AppLocalizations.of(context)
+                                      .kitchenPlumbing)),
+                              DropdownMenuItem(
+                                  value: 'emergency_service',
+                                  child: customText(AppLocalizations.of(context)
+                                      .emergencyService)),
+                              DropdownMenuItem(
+                                  value: 'bathroom_renovation',
+                                  child: customText(AppLocalizations.of(context)
+                                      .bathroomRenovation)),
+                              DropdownMenuItem(
+                                  value: 'maintenance_service',
+                                  child: customText(AppLocalizations.of(context)
+                                      .maintenanceService)),
+                            ],
+                            onChanged: (value) {
+                              context
+                                  .read<ServiceState>()
+                                  .setSelectedService(value ?? '');
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .selectServiceType;
+                              }
+                              return null;
+                            },
                           ),
-                          items: [
-                            DropdownMenuItem(
-                                value: 'drain_cleaning',
-                                child: customText(AppLocalizations.of(context)
-                                    .drainCleaning)),
-                            DropdownMenuItem(
-                                value: 'bathroom_repair',
-                                child: customText(AppLocalizations.of(context)
-                                    .bathroomRepair)),
-                            DropdownMenuItem(
-                                value: 'kitchen_plumbing',
-                                child: customText(AppLocalizations.of(context)
-                                    .kitchenPlumbing)),
-                            DropdownMenuItem(
-                                value: 'emergency_service',
-                                child: customText(AppLocalizations.of(context)
-                                    .emergencyService)),
-                            DropdownMenuItem(
-                                value: 'bathroom_renovation',
-                                child: customText(AppLocalizations.of(context)
-                                    .bathroomRenovation)),
-                            DropdownMenuItem(
-                                value: 'maintenance_service',
-                                child: customText(AppLocalizations.of(context)
-                                    .maintenanceService)),
-                          ],
-                          onChanged: (value) {
-                            context
-                                .read<ServiceState>()
-                                .setSelectedService(value ?? '');
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return AppLocalizations.of(context)
-                                  .selectServiceType;
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
-                    ),
-                    _buildFormField(
-                      controller: _notesController,
-                      label: AppLocalizations.of(context).additionalNotes,
-                      hintText: AppLocalizations.of(context).describeNeeds,
-                      maxLines: 4,
-                    ),
-                    SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 24
-                              : 32,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: _buildHoverButton(
-                        onPressed: _submitForm,
-                        buttonId: 'submit_form',
-                        child: customText(
-                          AppLocalizations.of(context).submitRequest,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        ],
+                      ),
+                      SizedBox(
+                        height: ResponsiveBreakpoints.of(context)
+                                .smallerThan(TABLET)
+                            ? 16
+                            : 24,
+                      ),
+                      _buildOptimizedFormField(
+                        controller: _notesController,
+                        label: AppLocalizations.of(context).additionalNotes,
+                        hintText: AppLocalizations.of(context).describeNeeds,
+                      ),
+                      SizedBox(
+                        height: ResponsiveBreakpoints.of(context)
+                                .smallerThan(TABLET)
+                            ? 24
+                            : 32,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: _buildHoverButton(
+                          onPressed: _submitForm,
+                          buttonId: 'submit_form',
+                          child: customText(
+                            AppLocalizations.of(context).submitRequest,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildFormField({
-    required TextEditingController controller,
-    required String label,
-    required String hintText,
-    TextInputType keyboardType = TextInputType.text,
-    int maxLines = 1,
-    String? Function(String?)? validator,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        customText(
-          label,
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xFF1F2937),
-        ),
-        const SizedBox(height: 8),
-        customTextField(
-          hintText: hintText,
-          controller: controller,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          validator: validator,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Color(0xFF1F2937),
-          ),
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF6B7280),
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF2B4B80), width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 12
-                  : 16,
-            ),
-          ),
-        ),
-      ],
     );
   }
 

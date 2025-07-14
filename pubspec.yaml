@@ -99,7 +99,6 @@ flutter:
   # Add assets for images
   assets:
     - assets/images/
-    - assets/fonts/
 
 # Flutter Launcher Icons configuration
 flutter_launcher_icons:
