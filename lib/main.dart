@@ -694,10 +694,8 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
     return Container(
       key: _servicesKey,
       padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        vertical: isMobile ? 40 : 64,
+        horizontal: isMobile ? 16 : 20,
       ),
       color: Colors.white,
       child: MaxWidthBox(
@@ -706,9 +704,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           children: [
             customText(
               AppLocalizations.of(context).whatWeCanHelp,
-              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 24
-                  : 32,
+              fontSize: isMobile ? 24 : 32,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF1F2937),
             ),
@@ -761,10 +757,9 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                 ),
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
+                    layout: isMobile
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     rowSpacing: 24,
                     columnSpacing: 16,
                     children: [
@@ -900,6 +895,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildCTASection() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return RepaintBoundary(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
@@ -920,7 +916,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               ],
             ),
             child: ResponsiveRowColumn(
-              layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+              layout: isMobile
                   ? ResponsiveRowColumnType.COLUMN
                   : ResponsiveRowColumnType.ROW,
               rowSpacing: 32,
@@ -1037,13 +1033,12 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
   }
 
   Widget _buildRequestSection() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       key: _requestKey,
       padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        vertical: isMobile ? 40 : 64,
+        horizontal: isMobile ? 16 : 20,
       ),
       color: Colors.white,
       child: MaxWidthBox(
@@ -1052,9 +1047,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
           children: [
             customText(
               AppLocalizations.of(context).needFix,
-              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 24
-                  : 32,
+              fontSize: isMobile ? 24 : 32,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF1F2937),
             ),
@@ -1066,13 +1059,11 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
               height: 1.6,
             ),
             SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 32
-                  : 48,
+              height: isMobile ? 32 : 48,
             ),
             Container(
               padding: EdgeInsets.all(
-                ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 20 : 32,
+                isMobile ? 20 : 32,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -1102,10 +1093,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         },
                       ),
                       SizedBox(
-                        height: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 16
-                            : 24,
+                        height: isMobile ? 16 : 24,
                       ),
                       _buildOptimizedFormField(
                         controller: _phoneController,
@@ -1120,10 +1108,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         },
                       ),
                       SizedBox(
-                        height: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 16
-                            : 24,
+                        height: isMobile ? 16 : 24,
                       ),
                       _buildOptimizedFormField(
                         controller: _addressController,
@@ -1137,10 +1122,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         },
                       ),
                       SizedBox(
-                        height: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 16
-                            : 24,
+                        height: isMobile ? 16 : 24,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1177,10 +1159,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16,
-                                vertical: ResponsiveBreakpoints.of(context)
-                                        .smallerThan(TABLET)
-                                    ? 12
-                                    : 16,
+                                vertical: isMobile ? 12 : 16,
                               ),
                             ),
                             items: [
@@ -1225,10 +1204,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         ],
                       ),
                       SizedBox(
-                        height: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 16
-                            : 24,
+                        height: isMobile ? 16 : 24,
                       ),
                       _buildOptimizedFormField(
                         controller: _notesController,
@@ -1236,10 +1212,7 @@ class _HandyFixHomePageState extends State<HandyFixHomePage> {
                         hintText: AppLocalizations.of(context).describeNeeds,
                       ),
                       SizedBox(
-                        height: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 24
-                            : 32,
+                        height: isMobile ? 24 : 32,
                       ),
                       SizedBox(
                         width: double.infinity,
@@ -1306,6 +1279,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildReviewsSection() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       key: _reviewsKey,
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 20),
@@ -1334,10 +1308,9 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               children: [
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
+                    layout: isMobile
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     rowSpacing: 24,
                     columnSpacing: 16,
                     children: [
@@ -1373,10 +1346,9 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 ),
                 ResponsiveRowColumnItem(
                   child: ResponsiveRowColumn(
-                    layout:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? ResponsiveRowColumnType.COLUMN
-                            : ResponsiveRowColumnType.ROW,
+                    layout: isMobile
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                     rowSpacing: 24,
                     columnSpacing: 16,
                     children: [
@@ -1500,6 +1472,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildFooter() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       padding: EdgeInsets.symmetric(
         vertical:
@@ -1530,10 +1503,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                               borderRadius: BorderRadius.circular(12),
                               child: customImage(
                                 'assets/images/logo1.png',
-                                height: ResponsiveBreakpoints.of(context)
-                                        .smallerThan(TABLET)
-                                    ? 80
-                                    : 100,
+                                height: isMobile ? 80 : 100,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1546,10 +1516,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                             ),
                             const SizedBox(height: 12),
                             Wrap(
-                              spacing: ResponsiveBreakpoints.of(context)
-                                      .smallerThan(TABLET)
-                                  ? 3
-                                  : 12,
+                              spacing: isMobile ? 3 : 12,
                               runSpacing: 12,
                               children: [
                                 _buildSocialButton(Icons.facebook, () {
@@ -1574,10 +1541,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                             customText(
                               AppLocalizations.of(context).quickLinks,
                               textAlign: TextAlign.center,
-                              fontSize: ResponsiveBreakpoints.of(context)
-                                      .smallerThan(TABLET)
-                                  ? 16
-                                  : 18,
+                              fontSize: isMobile ? 16 : 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
@@ -1604,10 +1568,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                             customText(
                               AppLocalizations.of(context).services,
                               textAlign: TextAlign.center,
-                              fontSize: ResponsiveBreakpoints.of(context)
-                                      .smallerThan(TABLET)
-                                  ? 16
-                                  : 18,
+                              fontSize: isMobile ? 16 : 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
@@ -1640,10 +1601,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     children: [
                       customText(
                         AppLocalizations.of(context).contactUs,
-                        fontSize: ResponsiveBreakpoints.of(context)
-                                .smallerThan(TABLET)
-                            ? 16
-                            : 18,
+                        fontSize: isMobile ? 16 : 18,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -1660,9 +1618,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               ],
             ),
             SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 24
-                  : 32,
+              height: isMobile ? 24 : 32,
             ),
             Container(
               height: 1,
@@ -1670,7 +1626,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
             ),
             const SizedBox(height: 24),
             ResponsiveRowColumn(
-              layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+              layout: isMobile
                   ? ResponsiveRowColumnType.COLUMN
                   : ResponsiveRowColumnType.ROW,
               rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1687,9 +1643,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 ResponsiveRowColumnItem(
                   child: Wrap(
                     alignment:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? WrapAlignment.center
-                            : WrapAlignment.start,
+                        isMobile ? WrapAlignment.center : WrapAlignment.start,
                     spacing: 16,
                     runSpacing: 8,
                     children: [
@@ -1883,18 +1837,17 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildIntroSection() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        vertical: isMobile ? 40 : 64,
+        horizontal: isMobile ? 16 : 20,
       ),
       color: Colors.white,
       child: MaxWidthBox(
         maxWidth: 1200,
         child: ResponsiveRowColumn(
-          layout: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
+          layout: isMobile
               ? ResponsiveRowColumnType.COLUMN
               : ResponsiveRowColumnType.ROW,
           rowSpacing: 48,
@@ -1907,10 +1860,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                 children: [
                   customText(
                     AppLocalizations.of(context).trustedExpertsTitle,
-                    fontSize:
-                        ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                            ? 24
-                            : 32,
+                    fontSize: isMobile ? 24 : 32,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF1F2937),
                   ),
@@ -1942,9 +1892,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               rowFlex: 1,
               child: Container(
                 padding: EdgeInsets.all(
-                  ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                      ? 24
-                      : 32,
+                  isMobile ? 24 : 32,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9FAFB),
@@ -1955,26 +1903,17 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
                     _buildStatItem(
                         '30+', AppLocalizations.of(context).yearsExperience),
                     SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
+                      height: isMobile ? 16 : 24,
                     ),
                     _buildStatItem('5,000+',
                         AppLocalizations.of(context).projectsCompleted),
                     SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
+                      height: isMobile ? 16 : 24,
                     ),
                     _buildStatItem('98%',
                         AppLocalizations.of(context).customerSatisfaction),
                     SizedBox(
-                      height:
-                          ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                              ? 16
-                              : 24,
+                      height: isMobile ? 16 : 24,
                     ),
                     _buildStatItem('8.30-20.00',
                         AppLocalizations.of(context).emergencyService),
@@ -1989,12 +1928,11 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildServicesPreview() {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 40 : 64,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
+        vertical: isMobile ? 40 : 64,
+        horizontal: isMobile ? 16 : 20,
       ),
       color: const Color(0xFFF9FAFB),
       child: MaxWidthBox(
@@ -2003,9 +1941,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
           children: [
             customText(
               AppLocalizations.of(context).ourServices,
-              fontSize: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 24
-                  : 32,
+              fontSize: isMobile ? 24 : 32,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF1F2937),
             ),
@@ -2017,9 +1953,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
               height: 1.6,
             ),
             SizedBox(
-              height: ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-                  ? 32
-                  : 48,
+              height: isMobile ? 32 : 48,
             ),
             ResponsiveRowColumn(
               layout: ResponsiveRowColumnType.COLUMN,
@@ -2088,13 +2022,12 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
   }
 
   Widget _buildStatItem(String value, String label) {
+    final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 20,
-        horizontal:
-            ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 16 : 24,
+        vertical: isMobile ? 16 : 20,
+        horizontal: isMobile ? 16 : 24,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -2110,8 +2043,7 @@ ${_notesController.text.isNotEmpty ? 'Notlar: ${_notesController.text}' : ''}'''
         children: [
           customText(
             value,
-            fontSize:
-                ResponsiveBreakpoints.of(context).smallerThan(TABLET) ? 28 : 36,
+            fontSize: isMobile ? 28 : 36,
             fontWeight: FontWeight.bold,
             color: const Color(0xFF2B4B80),
           ),
