@@ -12,13 +12,15 @@
   <!-- URL Cleanup and Redirect -->
   <script>
     (function() {
-      // Force clean URL on every load
-      function cleanUrl() {
-        var currentUrl = window.location.href;
-        var cleanUrl = currentUrl;
-        
-        // Remove all instances of $1
-        cleanUrl = cleanUrl.replace(/\$1/g, '');
+      // Only run once to prevent infinite loops
+      if (window.urlCleaned) return;
+      window.urlCleaned = true;
+      
+      var currentUrl = window.location.href;
+      
+      // Only redirect if $1 is actually present
+      if (currentUrl.includes('$1')) {
+        var cleanUrl = currentUrl.replace(/\$1/g, '');
         
         // Remove trailing slash if it's just the domain
         if (cleanUrl.match(/^https?:\/\/[^\/]+\/$/)) {
@@ -30,32 +32,10 @@
           cleanUrl = cleanUrl.replace('http:', 'https:');
         }
         
-        // If URL changed, redirect
+        // Only redirect if URL actually changed
         if (cleanUrl !== currentUrl) {
           window.location.replace(cleanUrl);
-          return true;
         }
-        
-        return false;
-      }
-      
-      // Clean immediately
-      if (cleanUrl()) return;
-      
-      // Also clean on DOMContentLoaded
-      document.addEventListener('DOMContentLoaded', function() {
-        cleanUrl();
-      });
-      
-      // And on load
-      window.addEventListener('load', function() {
-        cleanUrl();
-      });
-      
-      // Force redirect if $1 is still present
-      if (window.location.href.includes('$1')) {
-        var finalUrl = window.location.href.replace(/\$1/g, '');
-        window.location.replace(finalUrl);
       }
     })();
   </script>
