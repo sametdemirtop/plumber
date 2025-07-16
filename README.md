@@ -1,6 +1,8 @@
-# HandyFix - Flutter Web Application
+# Özinan Yapı - Flutter Web Application
 
-A modern, responsive Flutter web application for HandyFix, a local repair and renovation service company. This project is a complete conversion of an HTML/CSS/JavaScript website into a fully functional Flutter web application with **optimized performance**.
+A modern, responsive Flutter web application for Özinan Yapı, a local repair and renovation service company. This project is a complete conversion of an HTML/CSS/JavaScript website into a fully functional Flutter web application with **optimized performance**.
+
+**🌐 Live Site:** https://ozinan-yapi.web.app
 
 ## 🚀 Performance Optimizations
 

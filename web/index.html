@@ -1,14 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="$FLUTTER_BASE_HREF">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Tesisat problemleriniz için profesyonel ve hızlı çözümler. İstanbul'da 7/24 hizmet.">
   <meta name="keywords" content="tesisatçı, su tesisatı, kalorifer, kombi, lavabo, tıkanıklık açma">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- URL Cleanup and Redirect -->
+  <script>
+    (function() {
+      // Force clean URL on every load
+      function cleanUrl() {
+        var currentUrl = window.location.href;
+        var cleanUrl = currentUrl;
+        
+        // Remove all instances of $1
+        cleanUrl = cleanUrl.replace(/\$1/g, '');
+        
+        // Remove trailing slash if it's just the domain
+        if (cleanUrl.match(/^https?:\/\/[^\/]+\/$/)) {
+          cleanUrl = cleanUrl.replace(/\/$/, '');
+        }
+        
+        // HTTP to HTTPS redirect
+        if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost') {
+          cleanUrl = cleanUrl.replace('http:', 'https:');
+        }
+        
+        // If URL changed, redirect
+        if (cleanUrl !== currentUrl) {
+          window.location.replace(cleanUrl);
+          return true;
+        }
+        
+        return false;
+      }
+      
+      // Clean immediately
+      if (cleanUrl()) return;
+      
+      // Also clean on DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', function() {
+        cleanUrl();
+      });
+      
+      // And on load
+      window.addEventListener('load', function() {
+        cleanUrl();
+      });
+      
+      // Force redirect if $1 is still present
+      if (window.location.href.includes('$1')) {
+        var finalUrl = window.location.href.replace(/\$1/g, '');
+        window.location.replace(finalUrl);
+      }
+    })();
+  </script>
+  
   <!-- Preload critical resources -->
   <link rel="preload" href="assets/images/logo1.png" as="image">
   <link rel="preload" href="assets/images/acil.png" as="image">
